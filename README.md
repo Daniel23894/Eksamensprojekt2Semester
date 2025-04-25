@@ -15,7 +15,7 @@ Points users to the `CONTRIBUTING.md` file where they can learn how to contribut
 Recognizes the author (you) and any contributors or inspiration behind the project.
 
 **License**  
-Specifies the licensing details (e.g., MIT License).
+See the [LICENSE](LICENSE.md) file
 
 **Project Status**  
 Indicates the current status of the project (e.g., active development).
