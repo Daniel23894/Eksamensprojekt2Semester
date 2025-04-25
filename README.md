@@ -38,7 +38,7 @@ If you encounter any issues with the project or would like to provide suggestion
 
 
 ## Contributing
-If you'd like to contribute to the project, please refer to the CONTRIBUTING.md file for guidelines.
+If you'd like to contribute to the project, please refer to the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
 
 
 ## License 
