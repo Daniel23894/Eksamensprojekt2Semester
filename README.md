@@ -1,8 +1,8 @@
-## Eksamensprojekt2Semester
+# Eksamensprojekt2Semester
 
 This tool is designed for project managers and scrum masters to assist in breaking down projects into smaller, manageable tasks while predicting the time required, assigning responsibilities, and understanding how everything is interconnected. It aims to simplify the process of project planning, improve time management, and potentially enhance resource allocation.
    
-**How to Try Out the Project Locally**  
+## How to Try Out the Project Locally
 1. **Clone the repository:**
 Clone this repository from GitHub and open it in your preferred Java IDE (e.g., IntelliJ IDEA or Eclipse).
 
@@ -13,7 +13,7 @@ Make sure you have Java 21+ and Maven installed. Then build and run the project 
 Once the application is running, open your browser and go to:
 http://localhost:8080. You’ll now see the Thymeleaf-powered web interface.
 
-**Technical Overview**  
+## Technical Overview  
 This project is built with **Java** and **Spring Boot**, following a standard layered architecture:  
 - **Backend**
   - `Model` classes for representing entities and data structures.
@@ -33,18 +33,18 @@ This project is built with **Java** and **Spring Boot**, following a standard la
   - Basic pipeline setup for continuous integration
   
 
-**Support**  
+## Support  
 If you encounter any issues with the project or would like to provide suggestions, feel free to contact me via email: [daso0005@stud.kea.dk](mailto:daso0005@stud.kea.dk).
 
 
-**Contributing** 
+## Contributing
 If you'd like to contribute to the project, please refer to the CONTRIBUTING.md file for guidelines.
 
 
-**License**  
+## License 
 See the [LICENSE](LICENSE.md) file.
 
-**Project Status**  
+## Project Status  
 Just getting started ;) 
 
 
