@@ -1,23 +1,50 @@
 ## Eksamensprojekt2Semester
 
-This tool is designed for project managers and scrum masters to assist in breaking down projects into smaller, manageable tasks while predicting the time required, assigning responsibilities, and understanding how everything is interconnected. It aims to simplify the process of project planning, improve time management, and enhance resource allocation. Additionally, it offers features to track progress, optimize workflows, and reduce environmental impact.
+This tool is designed for project managers and scrum masters to assist in breaking down projects into smaller, manageable tasks while predicting the time required, assigning responsibilities, and understanding how everything is interconnected. It aims to simplify the process of project planning, improve time management, and potentially enhance resource allocation.
    
-**How to Try Out the Project**  
-Provides instructions on how users can clone and run the project.
+**How to Try Out the Project Locally**  
+1. **Clone the repository:**
+Clone this repository from GitHub and open it in your preferred Java IDE (e.g., IntelliJ IDEA or Eclipse).
+
+2. **Build and run the project:**
+Make sure you have Java 21+ and Maven installed. Then build and run the project using your IDE’s run configuration or terminal commands.
+
+3. **Access the application:**
+Once the application is running, open your browser and go to:
+http://localhost:8080. You’ll now see the Thymeleaf-powered web interface.
+
+**Technical Overview**  
+This project is built with **Java** and **Spring Boot**, following a standard layered architecture:  
+- **Backend**
+  - `Model` classes for representing entities and data structures.
+  - `Repository` interfaces using Spring Data JPA for database access.
+  - `Service` classes to contain business logic.
+  - `Controller` classes to handle HTTP requests and connect to frontend.
+
+- **Frontend**
+  - HTML files with **Thymeleaf** annotations for dynamic content rendering.
+  - Static **CSS** files for styling.
+
+- **Database**
+  - SQL scripts included for schema setup and test data.
+  - Configured connection to a relational database (e.g., PostgreSQL/MySQL).
+
+- **CI/CD**
+  - Basic pipeline setup for continuous integration
+  
 
 **Support**  
-Gives users a way to contact you if they encounter any issues or have questions.
+If you encounter any issues with the project or would like to provide suggestions, feel free to contact me via email: [daso0005@stud.kea.dk](mailto:daso0005@stud.kea.dk).
+
 
 **Contributing** 
-Points users to the `CONTRIBUTING.md` file where they can learn how to contribute to the project.
+If you'd like to contribute to the project, please refer to the CONTRIBUTING.md file for guidelines.
 
-**Authors and Acknowledgment:**  
-Recognizes the author (you) and any contributors or inspiration behind the project.
 
 **License**  
-See the [LICENSE](LICENSE.md) file
+See the [LICENSE](LICENSE.md) file.
 
 **Project Status**  
-Indicates the current status of the project (e.g., active development).
+Just getting started ;) 
 
 
