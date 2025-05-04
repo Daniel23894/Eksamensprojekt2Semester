@@ -79,7 +79,7 @@ public class Subproject {
     }
 
     public void setProjectId(int projectId) {
-        if (projectId < 0) {
+        if (projectId <= 0) {
             throw new IllegalArgumentException("Project ID can't be less than 0.");
         }
         this.projectId = projectId;

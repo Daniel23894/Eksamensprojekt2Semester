@@ -23,7 +23,7 @@ public enum StateStatus {
                 return aStatus;
             }
         }
-        throw new IllegalArgumentException("Invalid status value: " + value + " Valid values are: 0, 1, 2, 3, 4.");
+        throw new IllegalArgumentException("Ugyldigt statusværdi: "+ value + " Gyldige værdier er: 0, 1, 2, 3, 4.");
     }
 
 }
