@@ -1,0 +1,196 @@
+/* Generisk stylesheet til Alpha Solutions sider */
+
+/* Grundlæggende nulstilling og standardstil */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: #ffffff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* Hovedcontainer */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* Modal/formular container styling - efterligner nyhedsbrev-popup */
+.modal-container {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 450px;
+    min-width: 200px;
+    max-width: 600px;
+    border-radius: 6px;
+    border-style: none;
+    background-color: rgb(240, 242, 245);
+    padding: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Modal overskrift styling */
+.modal-title {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.2;
+    color: rgb(0, 0, 0);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Underoverskrift/beskrivelse */
+.modal-subtitle {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+/* Form grup styling */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Label styling */
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Input felt styling */
+input, select, textarea {
+    width: 100%;
+    padding: 16px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 16px;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.3s;
+}
+
+input::placeholder, select::placeholder, textarea::placeholder {
+    color: #aaa;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: rgb(255, 50, 90);
+    box-shadow: 0 0 0 2px rgba(255, 50, 90, 0.1);
+}
+
+/* Aktionsknap styling - som i nyhedsbrevsformularen */
+.action-button {
+    background: rgb(255, 50, 90);
+    border-radius: 6px;
+    border: none;
+    color: rgb(255, 255, 255);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    height: 54px;
+    width: 100%;
+    padding: 16px;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #e6324d;
+}
+
+/* Responsivt design */
+@media screen and (max-width: 500px) {
+    .modal-container {
+        width: 100%;
+        padding: 20px;
+    }
+
+    .modal-title {
+        font-size: 24px;
+    }
+
+    input, select, textarea, .action-button {
+        padding: 14px;
+    }
+}
+
+/* Checkbox styling */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+/* Mindre knapper og sekundære knapper */
+.secondary-button {
+    background: transparent;
+    border: 1px solid rgb(255, 50, 90);
+    color: rgb(255, 50, 90);
+    font-weight: 600;
+}
+
+.secondary-button:hover {
+    background-color: rgba(255, 50, 90, 0.1);
+}
+
+/* Hjælp til links */
+a {
+    color: rgb(255, 50, 90);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+a:hover {
+    color: #e6324d;
+    text-decoration: underline;
+}
+
+/* Luk knap (X) */
+.close-button {
+    font-size: 24px;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Utility klasser */
+.text-center {
+    text-align: center;
+}
+
+.mt-20 {
+    margin-top: 20px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
