@@ -15,6 +15,9 @@
     <!-- Header -->
     <h1 class="modal-title">Opret Nyt Subprojekt</h1>
 
+    <!-- Error message display (if any error occurs) -->
+    <div th:if="${errorMessage}" class="error-message" th:text="${errorMessage}"></div> <!-- ERROR MESSAGE ADDED HERE -->
+
     <!-- Form For Creation Of Subproject -->
     <form th:action="@{/projects/subprojects/create}" method="post" th:object="${subproject}">
 
