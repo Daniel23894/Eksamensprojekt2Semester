@@ -13,6 +13,13 @@ public class ResponseDTO<T> {
         this.timestamp = LocalDateTime.now();
     }
 
+    public ResponseDTO(String status, String message) {
+        this.status = status;
+        this.message = message;
+        this.data = null;
+        this.timestamp = LocalDateTime.now();
+    }
+
     public ResponseDTO(String status, String message, T data) {
         this.status = status;
         this.message = message;

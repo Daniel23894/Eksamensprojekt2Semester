@@ -8,6 +8,11 @@ import java.time.LocalDate;
 
 public class ProjectDTO {
 
+    private static final long serialVersionUID = 1L;
+
+    @NotNull(message = "ID is required")
+    @NotBlank(message = "ID cannot be blank")
+
     private Long id;
 
     @NotBlank(message = "Project name is required")
