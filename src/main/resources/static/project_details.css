@@ -1,0 +1,73 @@
+/* Projektside styling - Kun styling specifik for projekt-detaljer siden */
+.project-container {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.project-info {
+    flex: 1;
+    min-width: 400px;
+}
+
+.subprojects-info {
+    flex: 1;
+    min-width: 400px;
+}
+
+.divider {
+    width: 100%;
+    height: 1px;
+    background-color: #ddd;
+    margin: 20px 0;
+}
+
+/* Knap styling specifik for denne side */
+.button-link {
+    display: inline-block;
+    text-decoration: none;
+    margin-right: 10px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.detail-button {
+    color: rgb(255, 50, 90);
+    border: 1px solid rgb(255, 50, 90);
+    background-color: transparent;
+}
+
+.detail-button:hover {
+    background-color: rgba(255, 50, 90, 0.1);
+    text-decoration: none;
+}
+
+/* Runde knapper */
+.rounded-button {
+    border-radius: 25px !important;  /* Meget afrundede hjørner */
+}
+
+/* Sikrer at teksten har plads i knappen */
+.action-button, .button-link, .secondary-button {
+    padding: 10px 20px;
+    min-width: 120px;
+    text-align: center;
+}
+
+/* Sikrer at teksten ikke forsvinder på action-button ved hover */
+.action-button:hover {
+    color: #fff; /* Behold hvid tekst ved hover */
+}
+
+/* Fjerner understregning fra alle knapper og links ved hover */
+a:hover,
+.action-button:hover,
+.secondary-button:hover,
+.button-link:hover {
+    text-decoration: none !important;
+}
