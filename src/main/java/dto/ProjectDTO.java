@@ -77,8 +77,4 @@ public class ProjectDTO {
     public BigDecimal getBudget() {
         return budget;
     }
-
-    public void setBudget(BigDecimal budget) {
-        this.budget = budget;
-    }
 }
