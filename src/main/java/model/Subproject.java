@@ -52,40 +52,52 @@ public class Subproject {
     /** Setter methods **/
     public void setId(int id) {
         if (id < 0)
-            throw new IllegalArgumentException("ID can't be less than 0.");
+            throw new IllegalArgumentException("ID kan ikke være mindre end 0.");
         this.id = id;
     }
 
     public void setName(String name) {
         if (name == null || name.trim().isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be null or empty.");
+            throw new IllegalArgumentException("Navnet kan ikke være null eller tomt.");
         }
         if (name.length() < 4) {
-            throw new IllegalArgumentException("Name must be at least 4 characters long.");
+            throw new IllegalArgumentException("Navnet skal være mindst 4 tegn langt.");
         }
         if (!Character.isUpperCase(name.charAt(0))) {
-            throw new IllegalArgumentException("Name must start with an uppercase letter.");
+            throw new IllegalArgumentException("Navnet skal starte med et stort bogstav.");
         }
         this.name = name;
     }
 
     public void setCompletionPercentage(int completionPercentage) {
         if (completionPercentage < 0 || completionPercentage > 100) {
-            throw new IllegalArgumentException("Completion percentage must be between 0 and 100.");
+            throw new IllegalArgumentException("Fuldførelsesprocenten skal være mellem 0 og 100.");
         }
         this.completionPercentage = completionPercentage;
     }
     public void setStatus(StateStatus status){
         if (status == null) {
-            throw new IllegalArgumentException("Status cannot be null.");
+            throw new IllegalArgumentException("Status kan ikke være null.");
         }
         this.status = status;
     }
 
     public void setProjectId(int projectId) {
         if (projectId <= 0) {
-            throw new IllegalArgumentException("Project ID can't be less than 0.");
+            throw new IllegalArgumentException("Projekt-ID kan ikke være mindre end 0.");
         }
         this.projectId = projectId;
+    }
+
+    /** Override toString() method for better readability **/
+    @Override
+    public String toString() {
+        return "Subproject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", completionPercentage=" + completionPercentage +
+                ", status=" + status +
+                ", projectId=" + projectId +
+                '}';
     }
 }
