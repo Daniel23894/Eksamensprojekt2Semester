@@ -53,7 +53,7 @@
 
       <div class="form-group">
         <label>Status:</label>
-        <p th:text="${project.status}">Ikke startet</p>
+        <p th:text="${project.status.description}">Ikke startet</p>
       </div>
 
       <div class="form-group mt-20">
@@ -86,7 +86,7 @@
 
           <div class="form-group">
             <label>Status:</label>
-            <p th:text="${subproject.status}">Ikke startet</p>
+            <p th:text="${subproject.status.description}">Ikke startet</p>
           </div>
 
           <div class="form-group">
