@@ -1,10 +1,17 @@
 package controller;
 
 import exception.ResourceNotFoundException;
+import exception.SubprojectNotFoundException;
+import model.StateStatus;
+import model.Subproject;
+import model.Task;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import service.SubprojectService;
 import service.TaskService;
 import service.TeamMemberService;
 import model.TeamMember;
@@ -13,12 +20,17 @@ import java.util.List;
 
 @Controller
 public class TaskController {
+    /** Logger for TaskController **/
+    private static final Logger logger = LoggerFactory.getLogger(TaskController.class);
 
     @Autowired
     private TaskService taskService;
 
     @Autowired
     private TeamMemberService teamMemberService;
+
+    @Autowired
+    private SubprojectService subprojectService;
 
     @GetMapping("/tasks/{id}")
     public String viewTask(@PathVariable int id, Model model) {
@@ -39,7 +51,7 @@ public class TaskController {
         if (!taskService.existsById(taskId)) {
             throw new ResourceNotFoundException("Task not found with ID: " + taskId);
         }
-        if (!TeamMemberService.existsById(memberId)) {
+        if (!teamMemberService.existsById(memberId)) {
             throw new ResourceNotFoundException("Team member not found with ID: " + memberId);
         }
         taskService.assignMemberToTask(taskId, memberId);
@@ -56,5 +68,41 @@ public class TaskController {
         }
         taskService.unassignMemberFromTask(taskId, memberId);
         return "redirect:/tasks/" + taskId;
+    }
+
+    /** Displays the form for creating a new task **/
+    @GetMapping("/tasks/create")
+    public String showCreateTaskForm(Model model){
+        List<Subproject> listOfAllSubprojects = subprojectService.getAllSubprojects();
+        Task task = new Task();
+        task.setStatus(StateStatus.NOT_STARTED);
+
+        /** Add list of subprojects to the model and new Task instance **/
+        model.addAttribute("subprojects", listOfAllSubprojects);
+        model.addAttribute("task", task);
+
+        return "create_task";
+    }
+
+    /** Processes the submission of the create task form **/
+    @PostMapping("/tasks/create")
+    public String createTask(@ModelAttribute("task") Task task, Model model){
+        try {
+            taskService.createTask(task);
+            return "redirect:/subprojects/" + task.getSubprojectId(); /** Redirect to subproject details page **/
+        }
+        /** Handle case where parent subproject doesn't exist **/
+        catch (SubprojectNotFoundException e){
+            model.addAttribute("errorMessage", "Det valgte subprojekt findes ikke.");
+            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            return "create_task";
+        }
+        /** Generic fallback for unexpected errors **/
+        catch (Exception e){
+            logger.error("Fejl ved oprettelse af task:", e);
+            model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
+            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            return "create_task";
+        }
     }
 }

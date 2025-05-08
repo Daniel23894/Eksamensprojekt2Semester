@@ -19,7 +19,10 @@ import java.util.List;
 public class SubprojectController {
     private final ProjectService projectService;
     private final SubprojectService subprojectService;
-    private static  final Logger logger = LoggerFactory.getLogger(SubprojectController.class);
+
+    /** Set up logger from Logger interface using SLF4J to access logging methods.
+        It provides clear error tracking and separates user-friendly error messages from developer diagnostics **/
+    private static final Logger logger = LoggerFactory.getLogger(SubprojectController.class);
 
     /** Constructor for SubprojectController with Dependency Injection **/
     public SubprojectController(ProjectService projectService, SubprojectService subprojectService) {
@@ -55,7 +58,7 @@ public class SubprojectController {
 
         /** Generic fallback for unexpected errors **/
         } catch (Exception e) {
-            logger.error("Fejl ved oprettelse af subprojekt: ", e);
+            logger.error("Fejl ved oprettelse af subprojekt: ", e); /** Logs the error message and includes technical details of the exception e **/
             model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
             model.addAttribute("projects", projectService.findAll());
             return "create_subproject";
