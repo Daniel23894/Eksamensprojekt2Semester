@@ -1,21 +1,26 @@
 package service;
 
 import model.TeamMember;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import repository.TeamMemberRepository;
 
 import java.util.List;
 
+@Service
 public class TeamMemberService {
-    private JdbcTemplate jdbcTemplate;
+    private final TeamMemberRepository teamMemberRepository;
 
-    public static boolean existsById(int memberId) {
-        // Simulate a check in the database
-        return memberId >= 0 && memberId < 100; // Example condition
+    @Autowired
+    public TeamMemberService(TeamMemberRepository teamMemberRepository) {
+        this.teamMemberRepository = teamMemberRepository;
+    }
+
+    public boolean existsById(int memberId) {
+        return teamMemberRepository.existsById(memberId);
     }
 
     public List<TeamMember> getAllMembers() {
-        String sql = "SELECT * FROM team_member";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TeamMember.class));
+        return teamMemberRepository.findAll();
     }
 }
