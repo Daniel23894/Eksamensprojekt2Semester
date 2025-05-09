@@ -15,8 +15,10 @@ import java.util.Optional;
 public class SubprojectRepository {
     private final JdbcTemplate jdbcTemplate;;
 
-    public SubprojectRepository(JdbcTemplate jdbcTemplate, HikariDataSource dataSource){
-        this.jdbcTemplate = new JdbcTemplate(dataSource);
+
+    /** Constructor-based dependency injection **/
+    public SubprojectRepository(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     private RowMapper<Subproject> subprojectRowMapper = (rs, rowNum) -> {

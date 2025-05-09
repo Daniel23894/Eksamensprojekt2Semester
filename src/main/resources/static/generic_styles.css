@@ -73,6 +73,12 @@ label {
     color: #333;
 }
 
+/* For styling af stjernen: *, ved værdier som brugen SKAL ange  */
+.required {
+    color: red;
+    margin-left: 2px;
+}
+
 /* Input felt styling */
 input, select, textarea {
     width: 100%;
