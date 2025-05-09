@@ -1,10 +1,10 @@
 package service;
 
+import dto.ProjectDTO;
+import model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import dto.ProjectDTO;
-import model.Project;
 import repository.ProjectRepository;
 
 import java.math.BigDecimal;
@@ -28,7 +28,6 @@ public class ProjectServiceImpl implements ProjectService {
         project.setDescription(projectDTO.getDescription());
         project.setStartDate(projectDTO.getStartDate());
         project.setEndDate(projectDTO.getEndDate());
-
         project.setStatus("NEW");
         project.setBudget(BigDecimal.ZERO);
 
@@ -37,16 +36,16 @@ public class ProjectServiceImpl implements ProjectService {
 
     @Override
     public List<Project> getAllProjects() {
+        return projectRepository.findAll();
+    }
+
+    @Override
+    public List<Project> existsById() {
         return List.of();
     }
 
     @Override
-    public List<Project> findAll() {
-        return List.of();
-    }
-
-    @Override
-    public List<Project> existByID() {
-        return List.of();
+    public boolean existsById(Long id) {
+        return projectRepository.existsById(id);
     }
 }

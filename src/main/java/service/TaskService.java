@@ -1,5 +1,6 @@
 package service;
 
+import model.Task;
 import model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
