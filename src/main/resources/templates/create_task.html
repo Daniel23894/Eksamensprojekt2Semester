@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Opret Ny Task</title>
+  <link rel="stylesheet" th:href="@{/css/generic_styles.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="main-container">
+  <div class="modal-container">
+    <!-- Header -->
+    <h1 class="modal-title">Opret Ny Task</h1>
+
+    <!-- Note about required fields -->
+    <div class="form-group text-center">
+      <small><span class="required">*</span> Påkrævede felter</small>
+    </div>
+
+    <!-- Error message display (if any error occurs) -->
+    <div th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></div>
+
+    <!-- Form For Creation Of Task -->
+    <form th:action="@{/tasks/create}" method="post">
+
+      <!-- Name field (required) -->
+      <div class="form-group">
+        <label for="taskName">Task navn: <span class="required">*</span></label>
+        <input type="text" id="taskName" name="name" required placeholder="Navn (minimum 4 tegn)">
+      </div>
+
+      <!-- Deadline field (required) -->
+      <div class="form-group">
+        <label for="deadline">Deadline: <span class="required">*</span></label>
+        <input type="date" id="deadline" name="deadline" required>
+      </div>
+
+      <!-- Estimated Hours field
+      <By using step="0.5", the user can enter decimals such as 0.5, 1.0, 1.5. -->
+      <div class="form-group">
+        <label for="estimatedHours">Estimerede timer:</label>
+        <input type="number" id="estimatedHours" name="estimatedHours" min="0" step="0.5" placeholder="Angiv estimerede timer">
+      </div>
+
+      <!-- Used Hours field -->
+      <div class="form-group">
+        <label for="usedHours">Brugte timer:</label>
+        <input type="number" id="usedHours" name="usedHours" min="0" step="0.5" placeholder="Angiv brugte timer">
+      </div>
+
+      <!-- Completion percentage field  -->
+      <div class="form-group">
+        <label for="completionPercentage">Færdiggørelse (%):</label>
+        <input type="number" id="completionPercentage" name="completionPercentage" min="0" max="100" placeholder="Angiv færdiggørelsesprocent">
+      </div>
+
+      <!-- Status field
+       With the T operator you can access enums directly in Thymeleaf templates without having to prepare them
+       in the controller (e.g. via model.addAttribute("statusOptions", StateStatus.values())) -->
+      <div class="form-group">
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+          <option value="">-- Vælg Status --</option>
+          <option th:each="statusOption : ${T(model.StateStatus).values()}"
+                  th:value="${statusOption}"
+                  th:text="${statusOption}">
+          </option>
+        </select>
+      </div>
+
+      <!-- Parent Subproject field (required) -->
+      <div class="form-group">
+        <label for="parentSubproject">Vælg Subprojekt: <span class="required">*</span></label>
+        <select id="parentSubproject" name="subprojectId" required>
+          <option value="">-- Vælg Subprojekt --</option>
+          <option th:each="subproject : ${subprojects}"
+                  th:value="${subproject.id}"
+                  th:text="${subproject.name}">
+          </option>
+        </select>
+      </div>
+
+      <!-- Submit User Input From The Form Button -->
+      <div class="form-group">
+        <button type="submit" class="action-button">Opret Task</button>
+      </div>
+    </form>
+  </div>
+</div>
+</body>
+</html>
