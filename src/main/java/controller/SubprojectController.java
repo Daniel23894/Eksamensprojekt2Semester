@@ -42,7 +42,7 @@ public class SubprojectController {
         return "create_subproject";                                     /** Page for creating a new subproject **/
     }
 
-    @PostMapping("/projects/subproject/create")
+    @PostMapping("/projects/subprojects/create")
     public String createSubproject(@ModelAttribute("subproject")Subproject subproject, Model model){
 
         /** Validate the subproject object **/
