@@ -21,7 +21,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public Project createProject(ProjectDTO projectDTO) {
         Project project = new Project();
-        project.setProjectName(projectDTO.getName());
+        project.setName(projectDTO.getName());
         project.setStartDate(projectDTO.getStartDate());
         project.setEndDate(projectDTO.getEndDate());
         project.setStatus(projectDTO.getStatus());
@@ -36,12 +36,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public Project getProjectById(Long id) {
+    public Project getProjectById(int id) {
         return projectRepository.findById(id);
     }
 
     @Override
-    public boolean existsById(Long id) {
+    public boolean existsById(int id) {
         return projectRepository.existsById(id);
     }
 }

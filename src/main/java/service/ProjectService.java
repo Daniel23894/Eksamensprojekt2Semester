@@ -9,6 +9,6 @@ public interface ProjectService {
 
     Project createProject(ProjectDTO projectDTO);
     List<Project> getAllProjects();
-    Project getProjectById(Long id);
-    boolean existsById(Long id);
+    Project getProjectById(int id);
+    boolean existsById(int id);
 }

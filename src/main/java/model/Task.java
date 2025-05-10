@@ -18,9 +18,7 @@ public class Task {
     }
 
     /** No-args constructor – required by frameworks and libraries like RowMapper **/
-    public Task(String name, LocalDate deadline, BigDecimal estimatedHours, BigDecimal usedHours,
-                int completionPercentage, StateStatus status, int subprojectId) {
-        this.id = id;
+    public Task(String name, LocalDate deadline, BigDecimal estimatedHours, BigDecimal usedHours, int completionPercentage, StateStatus status, int subprojectId) {
         this.name = name;
         this.deadline = deadline;
         this.estimatedHours = estimatedHours;

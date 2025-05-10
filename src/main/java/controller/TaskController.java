@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ResourceNotFoundException;
 import exception.SubprojectNotFoundException;
 import model.StateStatus;
 import model.Subproject;
@@ -48,9 +49,11 @@ public class TaskController {
     @PostMapping("/tasks/assign")
     public String assignMember(@RequestParam int taskId, @RequestParam int memberId) {
         if (!taskService.existsById(taskId)) {
+            logger.error("Task not found with ID: " + taskId);
             throw new ResourceNotFoundException("Task not found with ID: " + taskId);
         }
         if (!teamMemberService.existsById(memberId)) {
+            logger.error("Task not found with ID: " + taskId);
             throw new ResourceNotFoundException("Team member not found with ID: " + memberId);
         }
         taskService.assignMemberToTask(taskId, memberId);
@@ -72,7 +75,7 @@ public class TaskController {
     /** Displays the form for creating a new task **/
     @GetMapping("/tasks/create")
     public String showCreateTaskForm(Model model){
-        List<Subproject> listOfAllSubprojects = subprojectService.getAllSubprojects();
+        List<Subproject> listOfAllSubprojects = subprojectService.findAll();
         Task task = new Task();
         task.setStatus(StateStatus.NOT_STARTED);
 
@@ -93,14 +96,14 @@ public class TaskController {
         /** Handle case where parent subproject doesn't exist **/
         catch (SubprojectNotFoundException e){
             model.addAttribute("errorMessage", "Det valgte subprojekt findes ikke.");
-            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            model.addAttribute("subprojects", subprojectService.findAll());
             return "create_task";
         }
         /** Generic fallback for unexpected errors **/
         catch (Exception e){
             logger.error("Fejl ved oprettelse af task:", e);
             model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
-            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            model.addAttribute("subprojects", subprojectService.findAll());
             return "create_task";
         }
     }

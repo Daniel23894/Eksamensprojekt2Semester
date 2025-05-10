@@ -42,7 +42,7 @@ public class TaskService {
 
 
     public boolean existsById(int taskId) {
-        return TaskRepository.existsById(taskId);
+        return taskRepo.existsById(taskId);
     }
 
     public void createTask(Task task) {

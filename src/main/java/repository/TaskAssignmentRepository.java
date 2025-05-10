@@ -33,4 +33,11 @@ public class TaskAssignmentRepository {
                 "WHERE ta.task_id = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TeamMember.class), taskId);
     }
+
+    /** Fjerner alle tildelinger for en bestemt opgave **/
+    public void removeAllAssignmentsForTask(int taskId) {
+        String sql = "DELETE FROM task_assignments WHERE task_id = ?";
+        jdbcTemplate.update(sql, taskId);
+    }
+
 }

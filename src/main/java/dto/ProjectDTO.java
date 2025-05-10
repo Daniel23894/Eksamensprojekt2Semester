@@ -3,6 +3,8 @@ package dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import model.StateStatus;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -21,7 +23,7 @@ public class ProjectDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
-    private String status;
+    private StateStatus status;
 
     private BigDecimal budget;
 
@@ -66,11 +68,11 @@ public class ProjectDTO {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
+    public StateStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StateStatus status) {
         this.status = status;
     }
 
