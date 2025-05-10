@@ -6,9 +6,9 @@ import model.Project;
 import java.util.List;
 
 public interface ProjectService {
+
     Project createProject(ProjectDTO projectDTO);
     List<Project> getAllProjects();
-    List<Project> existsById();
-
+    Project getProjectById(Long id);
     boolean existsById(Long id);
 }

@@ -1,6 +1,5 @@
 package controller;
 
-import exception.ResourceNotFoundException;
 import exception.SubprojectNotFoundException;
 import model.StateStatus;
 import model.Subproject;
