@@ -4,10 +4,8 @@ import dto.ProjectDTO;
 import model.Project;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import repository.ProjectRepository;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -21,15 +19,13 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    @Transactional
     public Project createProject(ProjectDTO projectDTO) {
         Project project = new Project();
-        project.setName(projectDTO.getName());
-        project.setDescription(projectDTO.getDescription());
+        project.setProjectName(projectDTO.getName());
         project.setStartDate(projectDTO.getStartDate());
         project.setEndDate(projectDTO.getEndDate());
-        project.setStatus("NEW");
-        project.setBudget(BigDecimal.ZERO);
+        project.setStatus(projectDTO.getStatus());
+        project.setBudget(projectDTO.getBudget());
 
         return projectRepository.save(project);
     }
@@ -40,8 +36,8 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<Project> existsById() {
-        return List.of();
+    public Project getProjectById(Long id) {
+        return projectRepository.findById(id);
     }
 
     @Override
