@@ -73,7 +73,7 @@ public class TaskController {
     /** Displays the form for creating a new task **/
     @GetMapping("/tasks/create")
     public String showCreateTaskForm(Model model){
-        List<Subproject> listOfAllSubprojects = subprojectService.getAllSubprojects();
+        List<Subproject> listOfAllSubprojects = subprojectService.findAll();
         Task task = new Task();
         task.setStatus(StateStatus.NOT_STARTED);
 
@@ -94,14 +94,14 @@ public class TaskController {
         /** Handle case where parent subproject doesn't exist **/
         catch (SubprojectNotFoundException e){
             model.addAttribute("errorMessage", "Det valgte subprojekt findes ikke.");
-            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            model.addAttribute("subprojects", subprojectService.findAll());
             return "create_task";
         }
         /** Generic fallback for unexpected errors **/
         catch (Exception e){
             logger.error("Fejl ved oprettelse af task:", e);
             model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
-            model.addAttribute("subprojects", subprojectService.getAllSubprojects());
+            model.addAttribute("subprojects", subprojectService.findAll());
             return "create_task";
         }
     }
