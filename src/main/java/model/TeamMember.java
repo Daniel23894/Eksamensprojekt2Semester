@@ -6,6 +6,7 @@ public class TeamMember {
     private String name;
     private String email;
     private String role;
+    private int hoursPerDay;
 
     public int getMemberId() {
         return memberId;
@@ -37,5 +38,35 @@ public class TeamMember {
 
     public void setRole(String role) {
         this.role = role;
+    }
+    public int getHoursPerDay() {
+        return hoursPerDay;
+    }
+
+    public void setHoursPerDay(int hoursPerDay) {
+        this.hoursPerDay = hoursPerDay;
+    }
+
+    // Metoder til at tjekke om teammedlemmet har en bestemt rolle
+    public boolean isAdmin() {
+        return "ADMIN".equalsIgnoreCase(role);
+    }
+    public boolean isDeveloper() {
+        return "DEVELOPER".equalsIgnoreCase(role);
+    }
+    public boolean isPO() {
+        return "PO".equalsIgnoreCase(role) || "PRODUCT_OWNER".equalsIgnoreCase(role);
+    }
+
+    // ToString metode for at vise objektet som tekst
+    @Override
+    public String toString() {
+        return "TeamMember{" +
+                "memberId=" + memberId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", role='" + role + '\'' +
+                ", hoursPerDay=" + hoursPerDay +
+                '}';
     }
 }

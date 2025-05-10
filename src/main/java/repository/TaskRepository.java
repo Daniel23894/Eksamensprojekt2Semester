@@ -117,7 +117,7 @@ public class TaskRepository {
     }
 
     /** UTILITY **/
-    public boolean existsById(int id) {
+    public static boolean existsById(int id) {
         /** 1. SQL Query returns 1 for each row that matches the where condition **/
         String sql = "SELECT 1 FROM Task WHERE taskId = ? LIMIT 1";
 

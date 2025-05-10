@@ -4,36 +4,51 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Project {
-    private Long id;
-    private String name;
-    private String description;
+    private int projectId;
+    private String projectName;
     private LocalDate startDate;
     private LocalDate endDate;
-    private String status = "NEW"; // Default status
-    private BigDecimal budget = BigDecimal.ZERO; // Default budget
+    private LocalDate actualStartDate;
+    private LocalDate actualEndDate;
+    private BigDecimal budget;
+    private int completionPercentage;
+    private String status;
+    private int statusId;
 
-    public Long getId() {
-        return id;
+    // Tom konstruktør
+    public Project() {
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    // Fuld konstruktør
+    public Project(int projectId, String projectName, LocalDate startDate, LocalDate endDate,
+                   LocalDate actualStartDate, LocalDate actualEndDate, BigDecimal budget,
+                   int completionPercentage, String status, int statusId) {
+        this.projectId = projectId;
+        this.projectName = projectName;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.actualStartDate = actualStartDate;
+        this.actualEndDate = actualEndDate;
+        this.budget = budget;
+        this.completionPercentage = completionPercentage;
+        this.status = status;
+        this.statusId = statusId;
+    }
+    // Getters og setters
+    public int getProjectId() {
+        return projectId;
     }
 
-    public String getName() {
-        return name;
+    public void setProjectId(int projectId) {
+        this.projectId = projectId;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getProjectName() {
+        return projectName;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+    public void setProjectName(String projectName) {
+        this.projectName = projectName;
     }
 
     public LocalDate getStartDate() {
@@ -52,12 +67,20 @@ public class Project {
         this.endDate = endDate;
     }
 
-    public String getStatus() {
-        return status;
+    public LocalDate getActualStartDate() {
+        return actualStartDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setActualStartDate(LocalDate actualStartDate) {
+        this.actualStartDate = actualStartDate;
+    }
+
+    public LocalDate getActualEndDate() {
+        return actualEndDate;
+    }
+
+    public void setActualEndDate(LocalDate actualEndDate) {
+        this.actualEndDate = actualEndDate;
     }
 
     public BigDecimal getBudget() {
@@ -66,5 +89,45 @@ public class Project {
 
     public void setBudget(BigDecimal budget) {
         this.budget = budget;
+    }
+
+    public int getCompletionPercentage() {
+        return completionPercentage;
+    }
+
+    public void setCompletionPercentage(BigDecimal completionPercentage) {
+        this.completionPercentage = completionPercentage;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public int getStatusId() {
+        return statusId;
+    }
+
+    public void setStatusId(int statusId) {
+        this.statusId = statusId;
+    }
+
+    // ToString metode for at vise objektet som tekst
+    @Override
+    public String toString() {
+        return "Project{" +
+                "projectId=" + projectId +
+                ", projectName='" + projectName + '\'' +
+                ", startDate=" + startDate +
+                ", endDate=" + endDate +
+                ", actualStartDate=" + actualStartDate +
+                ", actualEndDate=" + actualEndDate +
+                ", budget=" + budget +
+                ", completionPercentage=" + completionPercentage +
+                ", status='" + status + '\'' +
+                ", statusId=" + statusId +
+                '}';
     }
 }

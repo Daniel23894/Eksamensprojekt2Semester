@@ -53,14 +53,14 @@ public class SubprojectController {
         /** Handle case where parent project doesn't exist with custom exception for improved readability **/
         } catch (ProjectNotFoundException e) {
             model.addAttribute("errorMessage", "Det valgte projekt findes ikke.");
-            model.addAttribute("projects", projectService.findAll());
+            model.addAttribute("projects", projectService.getAllProjects());
             return "create_subproject";
 
         /** Generic fallback for unexpected errors **/
         } catch (Exception e) {
             logger.error("Fejl ved oprettelse af subprojekt: ", e); /** Logs the error message and includes technical details of the exception e **/
             model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
-            model.addAttribute("projects", projectService.findAll());
+            model.addAttribute("projects", projectService.getAllProjects());
             return "create_subproject";
         }
     }
