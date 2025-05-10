@@ -1,5 +1,6 @@
 package controller;
 
+import exception.ResourceNotFoundException;
 import exception.SubprojectNotFoundException;
 import model.StateStatus;
 import model.Subproject;
@@ -48,9 +49,11 @@ public class TaskController {
     @PostMapping("/tasks/assign")
     public String assignMember(@RequestParam int taskId, @RequestParam int memberId) {
         if (!taskService.existsById(taskId)) {
+            logger.error("Task not found with ID: " + taskId);
             throw new ResourceNotFoundException("Task not found with ID: " + taskId);
         }
         if (!teamMemberService.existsById(memberId)) {
+            logger.error("Task not found with ID: " + taskId);
             throw new ResourceNotFoundException("Team member not found with ID: " + memberId);
         }
         taskService.assignMemberToTask(taskId, memberId);

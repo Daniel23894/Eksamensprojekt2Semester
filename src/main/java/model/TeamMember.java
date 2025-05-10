@@ -6,7 +6,7 @@ public class TeamMember {
     private int memberId;
     private String name;
     private String email;
-    private String role;
+    private Role role;
     private BigDecimal hoursPerDay; /** Amount of hours a person can work per day **/
 
     /** No-args constructor **/
@@ -14,7 +14,7 @@ public class TeamMember {
     }
 
     /** Constructor with all fields except id, it will be auto-generated **/
-    public TeamMember(String name, String email, String role, BigDecimal hoursPerDay) {
+    public TeamMember(String name, String email, Role role, BigDecimal hoursPerDay) {
         this.name = name;
         this.email = email;
         this.role = role;
@@ -34,7 +34,7 @@ public class TeamMember {
         return email;
     }
 
-    public String getRole() {
+    public Role getRole() {
         return role;
     }
 
@@ -74,7 +74,7 @@ public class TeamMember {
         if (role == null || role.trim().isEmpty()) {
             throw new IllegalArgumentException("Role cannot be empty.");
         }
-        this.role = role;
+        this.role = Role.fromValue(Integer.parseInt(role));
     }
 
     public void setHoursPerDay(BigDecimal hoursPerDay) {

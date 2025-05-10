@@ -5,6 +5,7 @@ import dto.ResponseDTO;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import model.Project;
+import model.Role;
 import model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,16 +28,18 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    //Tilføjer rolleinformation til alle views
+    /**  ModelAttribute, makes so that is automatically invoked before every controller method. **/
     @ModelAttribute
     public void addRoleAttributesToModel(HttpSession session, Model model) {
         TeamMember teamMember = (TeamMember) session.getAttribute("teamMember");
         if (teamMember != null) {
-            model.addAttribute("isAdmin", teamMember.isAdmin());
-            model.addAttribute("isDeveloper", teamMember.isDeveloper());
-            model.addAttribute("isPO", teamMember.isPO());
-      }
+            /** == to compare enum constants **/
+            model.addAttribute("isAdmin", teamMember.getRole() == Role.ADMIN);
+            model.addAttribute("isDeveloper", teamMember.getRole() == Role.DEVELOPER);
+            model.addAttribute("isPO", teamMember.getRole() == Role.PRODUCT_OWNER);
+        }
     }
+
 
     //Viser en liste med alle projekter, kræver login
     @GetMapping
