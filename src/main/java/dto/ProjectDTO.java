@@ -26,6 +26,12 @@ public class ProjectDTO {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate actualStartDate;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate actualEndDate;
+
     @NotNull(message = "Projektstatus er påkrævet")
     private StateStatus status; // Enum for the project status
 
@@ -85,6 +91,23 @@ public class ProjectDTO {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public LocalDate getActualStartDate() {
+        return actualStartDate;
+    }
+
+
+    public void setActualStartDate(LocalDate actualStartDate) {
+        this.actualStartDate = actualStartDate;
+    }
+
+    public LocalDate getActualEndDate() {
+        return actualEndDate;
+    }
+
+    public void setActualEndDate(LocalDate actualEndDate) {
+        this.actualEndDate = actualEndDate;
     }
 
     public StateStatus getStatus() {
