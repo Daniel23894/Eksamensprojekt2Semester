@@ -34,6 +34,12 @@ public class TeamMemberRepository {
         }
     }
 
+    /** Counts the number of team members associated with a specific project ID **/
+    public int countByProjectId(int projectId) {
+        String sql = "SELECT COUNT(*) FROM team_member WHERE project_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
+    }
+
     // Tjekker om et teammedlem eksisterer baseret på ID
     public boolean existsById(int memberId) {
         String sql = "SELECT COUNT(1) FROM team_member WHERE member_id = ?";

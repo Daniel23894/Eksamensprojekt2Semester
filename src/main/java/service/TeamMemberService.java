@@ -46,4 +46,13 @@ public class TeamMemberService {
             throw new IllegalArgumentException("Teammedlemmet findes ikke.");
         }
     }
+
+    /** Count amount of team members for a specific project **/
+    public int getTeamMemberCountByProjectId(int projectId){
+        return teamMemberRepository.countByProjectId(projectId);
+    }
+
+    public List<TeamMember> getTeamMembersByProjectId(int projectId){
+        return teamMemberRepository.findByProjectId(projectId);
+    }
 }

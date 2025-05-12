@@ -21,6 +21,7 @@ public class TaskRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
+    /** Reusable RowMapper for mapping rows of resultSets to Java objects **/
     private RowMapper<Task> taskRowMapper = (rs, rowNum) -> {
         Task task = new Task();
         task.setId(rs.getInt("taskId"));
@@ -84,8 +85,25 @@ public class TaskRepository {
     public List<Task> findBySubprojectId(int subprojectId) {
         String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId " +
                 "FROM Task WHERE subprojectId = ?";
-        /** Returns a list of objects. Uses RowMapper to convert each row **/
         return jdbcTemplate.query(sql, taskRowMapper, subprojectId);
+    }
+
+    /** Finds all tasks by project ID **/
+    public List<Task> findByProjectId(int projectId){
+        String sql = "SELECT * FROM Task WHERE projectId = ?";
+        return jdbcTemplate.query(sql,taskRowMapper,projectId);
+    }
+
+    /** Counts tasks based on a project and status user chosen **/
+    public int countByProjectIdAndStatus(int projectId, StateStatus status){
+        String sql = "SELECT COUNT (*) FROM Task WHERE projectId = ? AND status = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId, status.getValue());
+    }
+
+    /** Count amount of tasks for a project by project ID **/
+    public int countByProjectId(int projectId){
+        String sql = "SELECT COUNT (*) FROM Task WHERE projectId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
     }
 
     /** UPDATE **/
