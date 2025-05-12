@@ -3,7 +3,6 @@ package service;
 
 
 import exception.SubprojectNotFoundException;
-import model.StateStatus;
 import model.Task;
 import model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +11,7 @@ import repository.SubprojectRepository;
 import repository.TaskAssignmentRepository;
 import repository.TaskRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -20,7 +20,7 @@ public class TaskService {
     private TaskAssignmentRepository taskAssignmentRepo;
 
     @Autowired
-    private TaskRepository taskRepo;
+    private static TaskRepository taskRepo;
 
     @Autowired
     private SubprojectRepository subprojectRepo;
@@ -86,40 +86,23 @@ public class TaskService {
         return taskRepo.findBySubprojectId(subprojectId);
     }
 
-    /**  Method to calculate the completion percentage of a subproject **/
-    public int calculateProjectCompletion(int subprojectId) {
-        /** Find all tasks for the specified subproject **/
-        List<Task> tasks = taskRepo.findBySubprojectId(subprojectId);
-
-        /** If there are no tasks, the completion percentage is 0% **/
-        if (tasks.isEmpty()) {
-            return 0;
-        }
-
-        /** Count how many tasks have status COMPLETED **/
-        int completedTasks = 0;
-        for (Task task : tasks) {
-
-            /** Check if the task's status is COMPLETED **/
-            if (task.getStatus() == StateStatus.COMPLETED) {
-                completedTasks++;
-            }
-        }
-
-        /** Calculate the percentage of completed tasks and round to the nearest whole number.
-         *  The (double) is used to ensure precision in the division.
-         *  Math.round() rounds the result to the nearest whole number **/
-        return (int) Math.round((double) completedTasks / tasks.size() * 100);
-    }
-
-    /** Method to get the number of completed tasks for a subproject **/
-    public int getCompletedTaskCount(int subprojectId) {
-        return taskRepo.countBySubProjectIdAndStatus(subprojectId, StateStatus.COMPLETED);
-    }
-
-    /** Method to get the total number of tasks for a subproject **/
-    public int getTotalTaskCount(int subprojectId) {
-        return taskRepo.countBySubProjectId(subprojectId);
+    public static BigDecimal calculateTotalHoursBySubproject(int subprojectId) {
+        // Beregner det samlede antal estimerede timer for alle opgaver i et subprojekt
+        return taskRepo.findBySubprojectId(subprojectId).stream()
+                // Brug estimerede timer eller 0 hvis null
+                .map(task -> task.getEstimatedHours() != null ? task.getEstimatedHours() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle timer sammen og returnér summen
+}
+    public static BigDecimal calculateRemainingHoursBySubproject(int subprojectId) {
+        // Beregner hvor mange timer der samlet set er tilbage i et subprojekt
+        return taskRepo.findBySubprojectId(subprojectId).stream()// Hent alle opgaver for subprojektet som en stream
+                .map(task -> {
+                    BigDecimal estimated = task.getEstimatedHours()
+                            != null ? task.getEstimatedHours()
+                            : BigDecimal.ZERO;
+                    BigDecimal used = task.getUsedHours() != null ? task.getUsedHours() : BigDecimal.ZERO; // Brug brugte timer eller 0 hvis null
+                    return estimated.subtract(used); // Beregn tilbageværende timer for opgaven
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle tilbageværende timer sammen og returnér summen
     }
 }
-

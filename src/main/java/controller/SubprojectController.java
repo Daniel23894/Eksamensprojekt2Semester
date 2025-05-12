@@ -5,15 +5,17 @@ import model.StateStatus;
 import model.Subproject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import service.ProjectService;
 import service.SubprojectService;
+import dto.ResponseDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class SubprojectController {
@@ -64,4 +66,23 @@ public class SubprojectController {
             return "create_subproject";
         }
     }
+
+    @GetMapping("/projects/{projectId}")
+    public String showProjectDetails(@PathVariable int projectId, Model model) {
+        Project project = projectService.getProjectById(projectId);
+
+        // Calculate total and remaining hours for each subproject
+        for (Subproject subproject : project.getSubprojects()) {
+            BigDecimal totalHours = subprojectService.calculateTotalHours(subproject.getId());
+            BigDecimal remainingHours = subprojectService.calculateRemainingHours(subproject.getId());
+
+            // Set the calculated values to the subproject
+            subproject.setTotalHours(totalHours);
+            subproject.setRemainingHours(remainingHours);
+        }
+
+        model.addAttribute("project", project); // Send the project object with subprojects to the view
+        return "project_details"; // Return the Thymeleaf template name
+    }
 }
+
