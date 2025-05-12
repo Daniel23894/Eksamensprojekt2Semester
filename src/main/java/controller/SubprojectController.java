@@ -71,8 +71,10 @@ public class SubprojectController {
     public String showProjectDetails(@PathVariable int projectId, Model model) {
         Project project = projectService.getProjectById(projectId);
 
+        List<Subproject> subprojects = subprojectService.findByProjectId(projectId);
+
         // Calculate total and remaining hours for each subproject
-        for (Subproject subproject : project.getSubprojects()) {
+        for (Subproject subproject :subprojects) {
             BigDecimal totalHours = subprojectService.calculateTotalHours(subproject.getId());
             BigDecimal remainingHours = subprojectService.calculateRemainingHours(subproject.getId());
 
@@ -82,6 +84,8 @@ public class SubprojectController {
         }
 
         model.addAttribute("project", project); // Send the project object with subprojects to the view
+        model.addAttribute("subprojects", subprojects);  // Add the list of subprojects
+
         return "project_details"; // Return the Thymeleaf template name
     }
 }

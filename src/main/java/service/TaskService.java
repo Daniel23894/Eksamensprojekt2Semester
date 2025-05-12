@@ -3,6 +3,7 @@ package service;
 
 
 import exception.SubprojectNotFoundException;
+import model.StateStatus;
 import model.Task;
 import model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -104,5 +105,41 @@ public class TaskService {
                     return estimated.subtract(used); // Beregn tilbageværende timer for opgaven
                 })
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle tilbageværende timer sammen og returnér summen
+    }
+
+    /**  Method to calculate the completion percentage of a subproject **/
+    public int calculateProjectCompletion(int subprojectId) {
+        /** Find all tasks for the specified subproject **/
+        List<Task> tasks = taskRepo.findBySubprojectId(subprojectId);
+
+        /** If there are no tasks, the completion percentage is 0% **/
+        if (tasks.isEmpty()) {
+            return 0;
+        }
+
+        /** Count how many tasks have status COMPLETED **/
+        int completedTasks = 0;
+        for (Task task : tasks) {
+
+            /** Check if the task's status is COMPLETED **/
+            if (task.getStatus() == StateStatus.COMPLETED) {
+                completedTasks++;
+            }
+        }
+
+        /** Calculate the percentage of completed tasks and round to the nearest whole number.
+         *  The (double) is used to ensure precision in the division.
+         *  Math.round() rounds the result to the nearest whole number **/
+        return (int) Math.round((double) completedTasks / tasks.size() * 100);
+    }
+
+    /** Method to get the number of completed tasks for a subproject **/
+    public int getCompletedTaskCount(int subprojectId) {
+        return taskRepo.countBySubProjectIdAndStatus(subprojectId, StateStatus.COMPLETED);
+    }
+
+    /** Method to get the total number of tasks for a subproject **/
+    public int getTotalTaskCount(int subprojectId) {
+        return taskRepo.countBySubProjectId(subprojectId);
     }
 }

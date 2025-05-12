@@ -106,6 +106,19 @@ public class TaskRepository {
         return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
     }
 
+    /** Counts tasks based on a subproject and status user chosen **/
+    public int countBySubProjectIdAndStatus(int subprojectId, StateStatus status) {
+        String sql = "SELECT COUNT(*) FROM Task WHERE subprojectId = ? AND statusId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId, status.getValue());
+    }
+
+    /** Counts tasks based on a subproject ID **/
+    public int countBySubProjectId(int subprojectId) {
+        String sql = "SELECT COUNT(*) FROM Task WHERE subprojectId = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, subprojectId);
+    }
+
+
     /** UPDATE **/
     public void update(Task task) {
         String sql = "UPDATE Task SET taskName = ?, deadline = ?, estimatedHours = ?, usedHours = ?, " +

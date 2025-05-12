@@ -57,6 +57,11 @@ public class SubprojectService {
                 .orElseThrow(() -> new RuntimeException("Subprojekt ikke fundet"));
     }
 
+    /** READ - find subprojects by project ID **/
+    public List<Subproject> findByProjectId(int projectId) {
+        return subprojectRepository.findAllByProjectId(projectId);
+    }
+
     /** READ - find all subprojects for a projekt **/
     public List<Subproject> findAllByProjectId(int projectId) {
         return subprojectRepository.findAllByProjectId(projectId);
