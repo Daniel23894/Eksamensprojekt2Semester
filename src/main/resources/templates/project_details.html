@@ -90,6 +90,16 @@
           </div>
 
           <div class="form-group">
+            <label>Total Hours:</label>
+            <p th:text="${subproject.totalHours}">0</p>
+          </div>
+
+          <div class="form-group">
+            <label>Remaining Hours:</label>
+            <p th:text="${subproject.remainingHours}">0</p>
+          </div>
+
+          <div class="form-group">
             <a th:href="@{/projects/subprojects/{id}(id=${subproject.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
           </div>
 

@@ -185,5 +185,4 @@ public class Project {
                     ", completionPercentage=" + completionPercentage +
                     '}';
         }
-
-    }
+}

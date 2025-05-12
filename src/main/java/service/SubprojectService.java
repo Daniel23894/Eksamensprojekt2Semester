@@ -1,8 +1,15 @@
 package service;
 
+import model.Project;
 import model.Subproject;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import repository.SubprojectRepository;
+import service.TaskService;
+
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -92,4 +99,29 @@ public class SubprojectService {
         subprojectRepository.deleteById(id);
     }
 
+    public static BigDecimal calculateTotalHours(int subprojectId) {
+        return TaskService.calculateTotalHoursBySubproject(subprojectId);
+    }
+
+    public static BigDecimal calculateRemainingHours(int subprojectId) {
+        return TaskService.calculateRemainingHoursBySubproject(subprojectId);
+    }
+
+    public BigDecimal getTotalEstimatedHours(int subprojectId) {
+        try {
+            return TaskService.calculateTotalHoursBySubproject(subprojectId);
+        } catch (Exception e) {
+            System.err.println("Error calculating total estimated hours: " + e.getMessage());
+            return BigDecimal.ZERO;
+        }
+    }
+
+    public BigDecimal getRemainingHours(int subprojectId) {
+        try {
+            return TaskService.calculateRemainingHoursBySubproject(subprojectId);
+        } catch (Exception e) {
+            System.err.println("Error calculating remaining hours: " + e.getMessage());
+            return BigDecimal.ZERO;
+            }
+        }
 }
