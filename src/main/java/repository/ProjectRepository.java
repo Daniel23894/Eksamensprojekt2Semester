@@ -5,15 +5,33 @@ import model.Project;
 import model.StateStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public class ProjectRepository {
     private final JdbcTemplate jdbcTemplate;
 
     public ProjectRepository(HikariDataSource dataSource) {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
+
+    /** Reusable RowMapper **/
+    private RowMapper<Project> projectRowMapper = (rs, rowNum) -> {
+        Project project = new Project();
+        project.setProjectId(rs.getInt("id"));
+        project.setName(rs.getString("name"));
+        project.setStartDate(rs.getDate("start_date").toLocalDate());
+        project.setEndDate(rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null);
+        project.setActualStartDate(rs.getDate("actual_start_date") != null ? rs.getDate("actual_start_date").toLocalDate() : null);
+        project.setActualEndDate(rs.getDate("actual_end_date") != null ? rs.getDate("actual_end_date").toLocalDate() : null);
+        project.setBudget(rs.getBigDecimal("budget"));
+        project.setCompletionPercentage(rs.getInt("completion_percentage"));
+        project.setStatus(StateStatus.fromValue(rs.getInt("status_id"))); /** Handels id from the database as int, and converts it into a matching enum value**/
+        return project;
+    };
 
     // Metode til at gemme et nyt projekt i databasen
     public Project save(Project project) {
@@ -69,6 +87,27 @@ public class ProjectRepository {
             return project;
         }, id);
         return (projects.isEmpty()) ? null : projects.get(0);
+    }
+
+    /** Find projects by name containing a specific string **/
+    public List<Project> findByNameContaining(String name) {
+        String sql = "SELECT * FROM project WHERE name LIKE ?";
+
+        /** "%": mean there can be text before and after 'name',
+         *  projects that contain the searched keyword anywhere in the title will show up **/
+        return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%");
+    }
+
+    /** Find projects by status **/
+    public List<Project> findByStatus(StateStatus status) {
+        String sql = "SELECT * FROM project WHERE status_id = ?";
+        return jdbcTemplate.query(sql, projectRowMapper, status.getValue());  // Get projects with a specific status
+    }
+
+    /** Find projects by name and status **/
+    public List<Project> findByNameContainingAndStatus(String name, StateStatus status) {
+        String sql = "SELECT * FROM project WHERE name LIKE ? AND status_id = ?";
+        return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%", status.getValue());  // Projects that match both criteria
     }
 
     // Metode til at opdatere et eksisterende projekt i databasen

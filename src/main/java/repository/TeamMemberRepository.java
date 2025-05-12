@@ -4,6 +4,7 @@ import model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -17,6 +18,16 @@ public class TeamMemberRepository {
     public TeamMemberRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
+
+    private RowMapper<TeamMember> teamMemberRowMapper = (rs, rowNum) ->{
+        TeamMember teamMember = new TeamMember();
+        teamMember.setMemberId(rs.getInt("member_id"));
+        teamMember.setName(rs.getString("name"));
+        teamMember.setEmail(rs.getString("email"));
+        teamMember.setRole(rs.getString("role"));
+        teamMember.setHoursPerDay(rs.getBigDecimal("hours_per_day"));
+        return teamMember;
+    };
 
     // Henter alle teammedlemmer fra databasen
     public List<TeamMember> findAll() {
@@ -32,6 +43,19 @@ public class TeamMemberRepository {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public List<TeamMember> findByProjectId(int projectId){
+        String sql = "SELECT * FROM team_member WHERE project_id =?";
+        return jdbcTemplate.query(sql, teamMemberRowMapper, projectId);
+    }
+
+
+
+    /** Counts the number of team members associated with a specific project ID **/
+    public int countByProjectId(int projectId) {
+        String sql = "SELECT COUNT(*) FROM team_member WHERE project_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
     }
 
     // Tjekker om et teammedlem eksisterer baseret på ID
