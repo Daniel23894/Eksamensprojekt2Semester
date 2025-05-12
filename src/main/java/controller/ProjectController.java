@@ -82,12 +82,12 @@ public class ProjectController {
     public String showProjectOverview(Model model,
                                        /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
                                       @RequestParam(required = false) String search,
-                                      @RequestParam(required = false) String status){
+                                      @RequestParam(required = false) StateStatus status){
 
         List<ProjectDTO> projects;
 
         /** Retrieve all filtered or none filtered projects**/
-        if(search != null && !search.isEmpty() || status != null && !status.isEmpty()) {
+        if(search != null && !search.isEmpty() || status != null) {
             projects = projectService.findProjectsBySearchAndStatus(search,status);
         } else {
             projects = projectService.getAllProjectsDTO();
@@ -109,4 +109,34 @@ public class ProjectController {
         return "overview_of_projects";
     }
 
+    /** Displays the details of a single project based on its id **/
+    @GetMapping("/details/{id}")
+    public String showProjectDetails(@PathVariable int id, Model model) {
+
+        /** Retrieve the project from the database based on the ID **/
+        ProjectDTO project = projectService.getProjectDTOById(id);
+
+        /** If the project does not exist, redirect to the overview page **/
+        if (project == null) {
+            return "redirect:/project/overview";
+        }
+
+        /** Calculate project statistics **/
+        int completionPercentage = taskService.calculateProjectCompletion(id);
+        int totalTasks = taskService.getTotalTaskCount(id);
+        int completedTasks = taskService.getCompletedTaskCount(id);
+        List<TeamMember> teamMembers = teamMemberService.getTeamMembersByProjectId(id);
+
+        /** Update the DTO with the dynamically calculated statistics, to avoid lack the correct values for those statistics since they may change **/
+        project.setCompletionPercentage(completionPercentage);
+        project.setTotalTasks(totalTasks);
+        project.setCompletedTasks(completedTasks);
+
+        /** Add the project statistiks and team members data to the model **/
+        model.addAttribute("project", project);
+        model.addAttribute("teamMembers", teamMembers);
+
+        /**  Return projects containment with updated details*/
+        return "project_details";
     }
+}

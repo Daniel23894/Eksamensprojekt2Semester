@@ -10,6 +10,7 @@ public interface ProjectService {
 
     Project createProject(ProjectDTO projectDTO);
     List<Project> getAllProjects();
+    ProjectDTO getProjectDTOById(int id);
     List<ProjectDTO> getAllProjectsDTO();
     List<ProjectDTO> findProjectsBySearchAndStatus(String search, StateStatus status);
     Project getProjectById(int id);
