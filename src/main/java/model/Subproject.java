@@ -1,11 +1,15 @@
 package model;
 
+import java.math.BigDecimal;
+
 public class Subproject {
     private int id;
     private String name;
     private int completionPercentage;
     private StateStatus status;
     private int projectId;
+    private BigDecimal totalHours;
+    private BigDecimal remainingHours;
 
 
     /** No-args constructor – required by frameworks and libraries like RowMapper **/
@@ -88,6 +92,22 @@ public class Subproject {
         }
         this.projectId = projectId;
     }
+    public BigDecimal getTotalHours() {
+        return totalHours;
+    }
+    public BigDecimal getRemainingHours() {
+        return remainingHours;
+    }
+
+    public void setTotalHours(BigDecimal totalHours) {
+        this.totalHours = totalHours;
+
+    }
+
+    public void setRemainingHours(BigDecimal remainingHours) {
+        this.remainingHours = remainingHours;
+
+    }
 
     /** Override toString() method for better readability **/
     @Override
@@ -101,3 +121,5 @@ public class Subproject {
                 '}';
     }
 }
+
+

@@ -11,6 +11,7 @@ import repository.SubprojectRepository;
 import repository.TaskAssignmentRepository;
 import repository.TaskRepository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -19,7 +20,7 @@ public class TaskService {
     private TaskAssignmentRepository taskAssignmentRepo;
 
     @Autowired
-    private TaskRepository taskRepo;
+    private static TaskRepository taskRepo;
 
     @Autowired
     private SubprojectRepository subprojectRepo;
@@ -85,6 +86,23 @@ public class TaskService {
         return taskRepo.findBySubprojectId(subprojectId);
     }
 
-
+    public static BigDecimal calculateTotalHoursBySubproject(int subprojectId) {
+        // Beregner det samlede antal estimerede timer for alle opgaver i et subprojekt
+        return taskRepo.findBySubprojectId(subprojectId).stream()
+                // Brug estimerede timer eller 0 hvis null
+                .map(task -> task.getEstimatedHours() != null ? task.getEstimatedHours() : BigDecimal.ZERO)
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle timer sammen og returnér summen
 }
-
+    public static BigDecimal calculateRemainingHoursBySubproject(int subprojectId) {
+        // Beregner hvor mange timer der samlet set er tilbage i et subprojekt
+        return taskRepo.findBySubprojectId(subprojectId).stream()// Hent alle opgaver for subprojektet som en stream
+                .map(task -> {
+                    BigDecimal estimated = task.getEstimatedHours()
+                            != null ? task.getEstimatedHours()
+                            : BigDecimal.ZERO;
+                    BigDecimal used = task.getUsedHours() != null ? task.getUsedHours() : BigDecimal.ZERO; // Brug brugte timer eller 0 hvis null
+                    return estimated.subtract(used); // Beregn tilbageværende timer for opgaven
+                })
+                .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle tilbageværende timer sammen og returnér summen
+    }
+}
