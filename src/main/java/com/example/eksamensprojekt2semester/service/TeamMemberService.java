@@ -1,9 +1,9 @@
-package service;
+package com.example.eksamensprojekt2semester.service;
 
-import model.TeamMember;
+import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.TeamMemberRepository;
+import com.example.eksamensprojekt2semester.repository.TeamMemberRepository;
 
 import java.util.List;
 

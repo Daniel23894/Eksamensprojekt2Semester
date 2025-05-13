@@ -1,4 +1,4 @@
-package exception;
+package com.example.eksamensprojekt2semester.exception;
 
 public class SubprojectNotFoundException extends RuntimeException {
     public SubprojectNotFoundException(String message) {

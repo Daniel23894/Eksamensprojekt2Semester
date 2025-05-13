@@ -1,4 +1,4 @@
-package exception;
+package com.example.eksamensprojekt2semester.exception;
 
 public class ProjectNotFoundException extends RuntimeException {
 

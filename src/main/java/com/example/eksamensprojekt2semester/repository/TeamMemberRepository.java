@@ -1,6 +1,6 @@
-package repository;
+package com.example.eksamensprojekt2semester.repository;
 
-import model.TeamMember;
+import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
