@@ -1,21 +1,18 @@
-package controller;
-import exception.ProjectNotFoundException;
-import model.Project;
-import model.StateStatus;
-import model.Subproject;
+package com.example.eksamensprojekt2semester.controller;
+import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
+import com.example.eksamensprojekt2semester.model.Project;
+import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Subproject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.ProjectService;
-import service.SubprojectService;
-import dto.ResponseDTO;
+import com.example.eksamensprojekt2semester.service.ProjectService;
+import com.example.eksamensprojekt2semester.service.SubprojectService;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class SubprojectController {

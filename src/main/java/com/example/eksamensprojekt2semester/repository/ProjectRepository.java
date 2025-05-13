@@ -1,8 +1,8 @@
-package repository;
+package com.example.eksamensprojekt2semester.repository;
 
 import com.zaxxer.hikari.HikariDataSource;
-import model.Project;
-import model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Project;
+import com.example.eksamensprojekt2semester.model.StateStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;

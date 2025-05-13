@@ -1,4 +1,4 @@
-package dto;
+package com.example.eksamensprojekt2semester.dto;
 
 import java.time.LocalDateTime;
 

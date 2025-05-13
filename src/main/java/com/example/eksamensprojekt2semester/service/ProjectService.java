@@ -1,8 +1,8 @@
-package service;
+package com.example.eksamensprojekt2semester.service;
 
-import dto.ProjectDTO;
-import model.Project;
-import model.StateStatus;
+import com.example.eksamensprojekt2semester.dto.ProjectDTO;
+import com.example.eksamensprojekt2semester.model.Project;
+import com.example.eksamensprojekt2semester.model.StateStatus;
 
 import java.util.List;
 

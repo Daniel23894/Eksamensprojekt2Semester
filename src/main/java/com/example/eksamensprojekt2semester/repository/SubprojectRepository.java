@@ -1,8 +1,8 @@
-package repository;
+package com.example.eksamensprojekt2semester.repository;
 
 import com.zaxxer.hikari.HikariDataSource;
-import model.StateStatus;
-import model.Subproject;
+import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Subproject;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

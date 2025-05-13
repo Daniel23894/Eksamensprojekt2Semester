@@ -1,20 +1,20 @@
-package controller;
+package com.example.eksamensprojekt2semester.controller;
 
-import exception.ResourceNotFoundException;
-import exception.SubprojectNotFoundException;
-import model.StateStatus;
-import model.Subproject;
-import model.Task;
+import com.example.eksamensprojekt2semester.exception.ResourceNotFoundException;
+import com.example.eksamensprojekt2semester.exception.SubprojectNotFoundException;
+import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Subproject;
+import com.example.eksamensprojekt2semester.model.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import service.SubprojectService;
-import service.TaskService;
-import service.TeamMemberService;
-import model.TeamMember;
+import com.example.eksamensprojekt2semester.service.SubprojectService;
+import com.example.eksamensprojekt2semester.service.TaskService;
+import com.example.eksamensprojekt2semester.service.TeamMemberService;
+import com.example.eksamensprojekt2semester.model.TeamMember;
 
 import java.util.List;
 

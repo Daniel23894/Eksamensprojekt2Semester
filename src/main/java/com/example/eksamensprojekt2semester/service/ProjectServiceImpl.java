@@ -1,12 +1,12 @@
-package service;
+package com.example.eksamensprojekt2semester.service;
 
-import dto.ProjectDTO;
-import exception.ProjectNotFoundException;
-import model.Project;
-import model.StateStatus;
+import com.example.eksamensprojekt2semester.dto.ProjectDTO;
+import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
+import com.example.eksamensprojekt2semester.model.Project;
+import com.example.eksamensprojekt2semester.model.StateStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.ProjectRepository;
+import com.example.eksamensprojekt2semester.repository.ProjectRepository;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,16 +1,16 @@
-package service;
+package com.example.eksamensprojekt2semester.service;
 
 
 
-import exception.SubprojectNotFoundException;
-import model.StateStatus;
-import model.Task;
-import model.TeamMember;
+import com.example.eksamensprojekt2semester.exception.SubprojectNotFoundException;
+import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Task;
+import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import repository.SubprojectRepository;
-import repository.TaskAssignmentRepository;
-import repository.TaskRepository;
+import com.example.eksamensprojekt2semester.repository.SubprojectRepository;
+import com.example.eksamensprojekt2semester.repository.TaskAssignmentRepository;
+import com.example.eksamensprojekt2semester.repository.TaskRepository;
 
 import java.math.BigDecimal;
 import java.util.List;

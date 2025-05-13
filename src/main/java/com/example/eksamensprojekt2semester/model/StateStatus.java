@@ -1,4 +1,4 @@
-package model;
+package com.example.eksamensprojekt2semester.model;
 
 public enum StateStatus {
     NOT_STARTED(0, "Ikke startet"),

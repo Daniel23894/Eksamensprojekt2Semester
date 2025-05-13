@@ -1,11 +1,11 @@
-package dto;
+package com.example.eksamensprojekt2semester.dto;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import model.StateStatus;
+import com.example.eksamensprojekt2semester.model.StateStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

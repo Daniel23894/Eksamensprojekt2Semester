@@ -1,4 +1,4 @@
-package model;
+package com.example.eksamensprojekt2semester.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

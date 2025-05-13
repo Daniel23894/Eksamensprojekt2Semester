@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Projektoversigt</title>
-  <link rel="stylesheet" th:href="@{/css/generic_styles.css}">
-  <link rel="stylesheet" th:href="@{/css/dashboard_specific.css}">
+  <link rel="stylesheet" th:href="@{/generic_styles.css}">
+  <link rel="stylesheet" th:href="@{/dashboard_specific.css}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
 </head>
 <body>
@@ -15,16 +15,16 @@
     <p class="modal-subtitle">Her kan du se alle dine projekter med nøgleinformation.</p>
 
     <!-- Søgefunktion og filter -->
-    <form th:action="@{/project/filter}" method="get" class="filter-container">
+    <form th:action="@{/projects/overview}" method="get" class="filter-container">
       <div class="form-group search-group">
         <input type="text" id="projectSearch" name="search" placeholder="Søg efter projektnavn...">
       </div>
       <div class="form-group filter-group">
         <select id="statusFilter" name="status">
-          <option value="">Alle statusser</option>                  <!-- Displays all statuses because none is selected -->
-          <option th:each="status : ${stateStatuses}"               <!-- Iterates over all statuses -->
-          th:value="${status}"                                      <!-- Enum value sent to the server, for example, NOT_STARTED -->
-          th:text="${status}"                                       <!-- Enum value displayed to the user, for example, Ikke startet -->
+          <option value="">Alle statusser</option>
+          <option th:each="status : ${stateStatuses}"
+          th:value="${status}"
+          th:text="${status}"
           th:selected="${param.status == status.name()}"></option>  <!-- Selects the appropriate status based on the selected status in the URL, accessed via param. -->
         </select>
 
@@ -65,12 +65,12 @@
           </td>
 
           <td>
-            <a th:href="@{/project/details/{id}(id=${project.projectId})}" class="secondary-button">Se detaljer</a>
+            <a th:href="@{/projects/details/{id}(id=${project.projectId})}" class="secondary-button">Se detaljer</a>
           </td>
 
         </tr>
         <!-- Hvis der ikke er nogen projekter -->
-        <tr th:if="${projects.empty}">
+        <tr th:if="${#lists.isEmpty(projects)}">
           <td colspan="4" class="text-center">Ingen projekter fundet</td>
         </tr>
         </tbody>
@@ -79,7 +79,7 @@
 
     <!-- Opret nyt projekt knap -->
     <div class="form-group">
-      <a th:href="@{/project/create}" class="action-button">Opret nyt projekt</a>
+      <a th:href="@{/projects/new}" class="action-button">Opret nyt projekt</a>
     </div>
   </div>
 </div>

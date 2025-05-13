@@ -1,4 +1,4 @@
-package model;
+package com.example.eksamensprojekt2semester.model;
 
 public enum Role {
     ADMIN(0, "Administrator"),
