@@ -21,7 +21,7 @@ import service.TeamMemberService;
 import java.util.List;
 
 @Controller
-@RequestMapping("projects") //Angiver grund URL for alle endpoints i denne controller
+@RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -49,7 +49,7 @@ public class ProjectController {
 
 
     //Viser en liste med alle projekter, kræver login
-    @GetMapping
+    @GetMapping("/")
     public String showAllProjects(HttpSession session, Model model) {
         if(session.getAttribute("employee") == null){
             return "redirect:/login"; //Omdiriger til login
