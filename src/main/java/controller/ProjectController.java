@@ -21,7 +21,7 @@ import service.TeamMemberService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
+@RequestMapping("/projects") //Angiver grund (base) URL for alle endpoints i denne controller
 public class ProjectController {
 
     private final ProjectService projectService;
