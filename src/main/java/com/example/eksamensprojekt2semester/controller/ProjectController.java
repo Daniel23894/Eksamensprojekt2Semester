@@ -1,6 +1,9 @@
 package com.example.eksamensprojekt2semester.controller;
 
+import com.example.eksamensprojekt2semester.dto.ProjectDTO;
 import com.example.eksamensprojekt2semester.model.StateStatus;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -49,24 +52,24 @@ public class ProjectController {
 //    }
 
     // Viser formular til at oprette et nyt projekt
-    /*@GetMapping("/new")
-    public String showNewProjectForm(HttpSession session, Model model) {
-        if (session.getAttribute("employee") == null) {
-            return "redirect:/login";
-        }
+    @GetMapping("/new")
+    public String showNewProjectForm(Model model) {
         model.addAttribute("projectDTO", new ProjectDTO()); // Tilføjer tom DTO til formularen
-        return "projectForm";
+        return "projectForm"; // Returns the project creation form
     }
 
     // Gemmer et nyt projekt baseret projectForm
-    @PostMapping
+    @PostMapping("/projects")
     public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO) {
-        projectService.createProject(projectDTO); // Kalder service til at oprette projekt
-        return "redirect:/projectList"; // Omdiriger til projektlisten
-        }
+        projectService.createProject(projectDTO); // Calls the service to create the project
+        return "redirect:/projectList"; // Redirects to the project list after creation
+    }
+
+
 
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
+
     @GetMapping("/overview")
     public String showProjectOverview(Model model,
                                       /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
