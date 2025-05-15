@@ -21,7 +21,7 @@ public class TaskService {
     private TaskAssignmentRepository taskAssignmentRepo;
 
     @Autowired
-    private static TaskRepository taskRepo;
+    private TaskRepository taskRepo;
 
     @Autowired
     private SubprojectRepository subprojectRepo;
@@ -87,14 +87,14 @@ public class TaskService {
         return taskRepo.findBySubprojectId(subprojectId);
     }
 
-    public static BigDecimal calculateTotalHoursBySubproject(int subprojectId) {
+    public  BigDecimal calculateTotalHoursBySubproject(int subprojectId) {
         // Beregner det samlede antal estimerede timer for alle opgaver i et subprojekt
         return taskRepo.findBySubprojectId(subprojectId).stream()
                 // Brug estimerede timer eller 0 hvis null
                 .map(task -> task.getEstimatedHours() != null ? task.getEstimatedHours() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle timer sammen og returnér summen
 }
-    public static BigDecimal calculateRemainingHoursBySubproject(int subprojectId) {
+    public  BigDecimal calculateRemainingHoursBySubproject(int subprojectId) {
         // Beregner hvor mange timer der samlet set er tilbage i et subprojekt
         return taskRepo.findBySubprojectId(subprojectId).stream()// Hent alle opgaver for subprojektet som en stream
                 .map(task -> {

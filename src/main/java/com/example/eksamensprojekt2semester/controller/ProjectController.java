@@ -12,6 +12,8 @@ import com.example.eksamensprojekt2semester.service.ProjectService;
 import com.example.eksamensprojekt2semester.service.TaskService;
 import com.example.eksamensprojekt2semester.service.TeamMemberService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
 public class ProjectController {
@@ -55,14 +57,15 @@ public class ProjectController {
     @GetMapping("/new")
     public String showNewProjectForm(Model model) {
         model.addAttribute("projectDTO", new ProjectDTO()); // Tilføjer tom DTO til formularen
+        model.addAttribute("statuses", StateStatus.values()); // Tilføjer alle mulige statusser til formularen
         return "projectForm"; // Returns the project creation form
     }
 
     // Gemmer et nyt projekt baseret projectForm
-    @PostMapping("/projects")
+    @PostMapping("/new")
     public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         projectService.createProject(projectDTO); // Calls the service to create the project
-        return "redirect:/projectList"; // Redirects to the project list after creation
+        return "redirect:/projects/overview"; // Redirects to the project list after creation
     }
 
 
@@ -76,30 +79,30 @@ public class ProjectController {
                                       @RequestParam(required = false) String search,
                                       @RequestParam(required = false) StateStatus status) {
 
-//        List<ProjectDTO> projects;
-//
-//        /** Retrieve all filtered or none filtered projects**/
-//        if(search != null && !search.isEmpty() || status != null) {
-//            projects = projectService.findProjectsBySearchAndStatus(search,status);
-//        } else {
-//            projects = projectService.getAllProjectsDTO();
-//        }
-//
-//        /** For each project we calculate the completion% and the amount of team members **/
-//        for (ProjectDTO project : projects){
-//            int completionPercentage = taskService.calculateProjectCompletion(project.getId());
-//            project.setCompletionPercentage(completionPercentage);
-//
-//            int teamMemberCount = teamMemberService.getTeamMemberCountByProjectId(project.getId());
-//            project.setTeamMemberCount(teamMemberCount);
-//        }
-//
-//        /** Adds all possible status values, and list of projects (filtered or not, depending on the search) **/
-//        model.addAttribute("stateStatuses", StateStatus.values());
-//        model.addAttribute("projects", projects);
-//
-//        return "overview_of_projects";
-//    }
+        List<ProjectDTO> projects;
+
+        /** Retrieve all filtered or none filtered projects**/
+        if(search != null && !search.isEmpty() || status != null) {
+            projects = projectService.findProjectsBySearchAndStatus(search,status);
+        } else {
+            projects = projectService.getAllProjectsDTO();
+        }
+
+        /** For each project we calculate the completion% and the amount of team members **/
+        for (ProjectDTO project : projects){
+            int completionPercentage = taskService.calculateProjectCompletion(project.getId());
+            project.setCompletionPercentage(completionPercentage);
+
+            int teamMemberCount = teamMemberService.getTeamMemberCountByProjectId(project.getId());
+            project.setTeamMemberCount(teamMemberCount);
+        }
+
+        /** Adds all possible status values, and list of projects (filtered or not, depending on the search) **/
+        model.addAttribute("stateStatuses", StateStatus.values());
+        model.addAttribute("projects", projects);
+
+        return "overview_of_projects";
+    }
 
         /** Displays the details of a single project based on its id **/
 //    @GetMapping("/details/{id}")
@@ -131,6 +134,6 @@ public class ProjectController {
 //        /**  Return projects containment with updated details*/
 //        return "project_details";
 //    }
-        return "overview_of_projects";
+
     }
-}
+
