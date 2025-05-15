@@ -59,10 +59,10 @@ public class ProjectController {
     }
 
     // Gemmer et nyt projekt baseret projectForm
-    @PostMapping("/projects")
+    @PostMapping("/overview")
     public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         projectService.createProject(projectDTO); // Calls the service to create the project
-        return "redirect:/projectList"; // Redirects to the project list after creation
+        return "redirect:/overview"; // Redirects to the project list after creation
     }
 
 
@@ -70,11 +70,11 @@ public class ProjectController {
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
 
-    @GetMapping("/overview")
-    public String showProjectOverview(Model model,
-                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
-                                      @RequestParam(required = false) String search,
-                                      @RequestParam(required = false) StateStatus status) {
+//    @GetMapping("/overview")
+//    public String showProjectOverview(Model model,
+//                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
+//                                      @RequestParam(required = false) String search,
+//                                      @RequestParam(required = false) StateStatus status) {
 
 //        List<ProjectDTO> projects;
 //
@@ -131,6 +131,17 @@ public class ProjectController {
 //        /**  Return projects containment with updated details*/
 //        return "project_details";
 //    }
-        return "overview_of_projects";
+//        return "overview_of_projects";
+//    }
+//}
+
+        @GetMapping("/overview")
+        public String showProjectOverview(@RequestParam(required = false) Boolean loggedIn, Model model) {
+            if (loggedIn == null || !loggedIn) {
+                return "redirect:/login"; // Redirect to login if user is not logged in
+            }
+
+            // Proceed with displaying the projects
+            return "overview_of_projects";
+        }
     }
-}

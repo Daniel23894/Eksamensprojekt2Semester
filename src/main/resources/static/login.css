@@ -1,0 +1,72 @@
+/* General styles for login */
+.login-container {
+    width: 95%;
+    max-width: 400px;
+    padding: 35px;
+    margin: 50px auto;
+    background-color: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    border-radius: 6px;
+}
+
+.login-header {
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 30px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    color: #333;
+}
+
+.input-group input:focus {
+    border-color: #0288d1;
+    outline: none;
+}
+
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background: #0288d1;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.login-button:hover {
+    background: #0277bd;
+}
+
+.error-message {
+    color: red;
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Media query for responsive design */
+@media screen and (max-width: 768px) {
+    .login-container {
+        width: 100%;
+        padding: 20px;
+    }
+}
