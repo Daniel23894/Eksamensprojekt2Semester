@@ -1,32 +1,30 @@
--- Opret database
 CREATE DATABASE IF NOT EXISTS alphasolutions;
 USE alphasolutions;
 
--- Opret StateStatus table
-CREATE TABLE StateStatus (
+CREATE TABLE stateStatus (
                              statusId INTEGER PRIMARY KEY AUTO_INCREMENT,
                              statusName VARCHAR(255) NOT NULL
 );
 
--- Opret TeamMember table
-CREATE TABLE TeamMember (
+CREATE TABLE teamMember (
                             memberId INTEGER PRIMARY KEY AUTO_INCREMENT,
                             name VARCHAR(255) NOT NULL,
-                            email VARCHAR(255) NOT NULL,
-                            role VARCHAR(255),
+                            email VARCHAR(255) NOT NULL UNIQUE,     -- unique for login
+                            password VARCHAR(255) NOT NULL,          -- store hashed password
+                            role INTEGER(255),                      -- e.g., 'admin', 'user', 'project_manager'
                             hoursPerDay DECIMAL(19, 0)
 );
 
--- Opret Role table
-CREATE TABLE Role (
+
+CREATE TABLE role (
                       roleId INTEGER PRIMARY KEY,
                       roleName VARCHAR(100) NOT NULL
 );
 
--- Opret Project table
-CREATE TABLE Project (
+CREATE TABLE project (
                          projectId INTEGER PRIMARY KEY AUTO_INCREMENT,
                          projectName VARCHAR(255) NOT NULL,
+                         description VARCHAR(255),
                          startDate DATE,
                          endDate DATE,
                          actualStartDate DATE,
@@ -34,22 +32,20 @@ CREATE TABLE Project (
                          budget DECIMAL(19, 0),
                          completionPercentage INTEGER,
                          statusId INTEGER,
-                         FOREIGN KEY (statusId) REFERENCES StateStatus(statusId)
+                         FOREIGN KEY (statusId) REFERENCES stateStatus(statusId)
 );
 
--- Opret Subproject table
-CREATE TABLE Subproject (
-                            subprojectId INTEGER PRIMARY KEY AUTO_INCREMENT,
-                            subprojectName VARCHAR(255) NOT NULL,
+CREATE TABLE subProject (
+                            subProjectId INTEGER PRIMARY KEY AUTO_INCREMENT,
+                            subProjectName VARCHAR(255) NOT NULL,
                             completionPercentage INTEGER NOT NULL,
                             statusId INTEGER,
                             projectId INTEGER,
-                            FOREIGN KEY (statusId) REFERENCES StateStatus(statusId),
-                            FOREIGN KEY (projectId) REFERENCES Project(projectId)
+                            FOREIGN KEY (statusId) REFERENCES stateStatus(statusId),
+                            FOREIGN KEY (projectId) REFERENCES project(projectId)
 );
 
--- Opret Task table
-CREATE TABLE Task (
+CREATE TABLE task (
                       taskId INTEGER PRIMARY KEY AUTO_INCREMENT,
                       taskName VARCHAR(255) NOT NULL,
                       deadline DATE,
@@ -57,42 +53,39 @@ CREATE TABLE Task (
                       usedHours DECIMAL(19, 0),
                       completionPercentage INTEGER,
                       statusId INTEGER,
-                      subprojectId INTEGER,
-                      FOREIGN KEY (statusId) REFERENCES StateStatus(statusId),
-                      FOREIGN KEY (subprojectId) REFERENCES Subproject(subprojectId)
+                      subProjectId INTEGER,
+                      FOREIGN KEY (statusId) REFERENCES stateStatus(statusId),
+                      FOREIGN KEY (subProjectId) REFERENCES subProject(subProjectId)
 );
 
--- Opret Subtask table
-CREATE TABLE Subtask (
-                         subtaskId INTEGER PRIMARY KEY AUTO_INCREMENT,
-                         subtaskName INTEGER NOT NULL,
+CREATE TABLE subTask (
+                         subTaskId INTEGER PRIMARY KEY AUTO_INCREMENT,
+                         subTaskName VARCHAR(255) NOT NULL,
                          deadline DATE,
                          estimatedHours DECIMAL(19, 0),
                          usedHours DECIMAL(19, 0),
                          completionPercentage INTEGER,
                          statusId INTEGER,
                          taskId INTEGER,
-                         FOREIGN KEY (statusId) REFERENCES StateStatus(statusId),
-                         FOREIGN KEY (taskId) REFERENCES Task(taskId)
+                         FOREIGN KEY (statusId) REFERENCES stateStatus(statusId),
+                         FOREIGN KEY (taskId) REFERENCES task(taskId)
 );
 
--- Opret TaskAssignment table
-CREATE TABLE TaskAssignment (
+CREATE TABLE taskAssignment (
                                 taskId INTEGER,
                                 memberId INTEGER,
                                 assignedHours DECIMAL(19, 0),
                                 actualHours DECIMAL(19, 0),
                                 PRIMARY KEY (taskId, memberId),
-                                FOREIGN KEY (taskId) REFERENCES Task(taskId),
-                                FOREIGN KEY (memberId) REFERENCES TeamMember(memberId)
+                                FOREIGN KEY (taskId) REFERENCES task(taskId),
+                                FOREIGN KEY (memberId) REFERENCES teamMember(memberId)
 );
 
--- Opret TaskDependency table
-CREATE TABLE TaskDependency (
+CREATE TABLE taskDependency (
                                 sourceTaskId INTEGER,
                                 targetTaskId INTEGER,
                                 dependencyType INTEGER,
                                 PRIMARY KEY (sourceTaskId, targetTaskId),
-                                FOREIGN KEY (sourceTaskId) REFERENCES Task(taskId),
-                                FOREIGN KEY (targetTaskId) REFERENCES Task(taskId)
+                                FOREIGN KEY (sourceTaskId) REFERENCES task(taskId),
+                                FOREIGN KEY (targetTaskId) REFERENCES task(taskId)
 );

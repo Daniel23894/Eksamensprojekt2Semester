@@ -19,61 +19,91 @@ public class TeamMemberRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<TeamMember> teamMemberRowMapper = (rs, rowNum) ->{
+    private final RowMapper<TeamMember> teamMemberRowMapper = (rs, rowNum) -> {
         TeamMember teamMember = new TeamMember();
-        teamMember.setMemberId(rs.getInt("member_id"));
+        teamMember.setMemberId(rs.getInt("memberId"));
         teamMember.setName(rs.getString("name"));
         teamMember.setEmail(rs.getString("email"));
+        teamMember.setPassword(rs.getString("password"));
         teamMember.setRole(rs.getString("role"));
-        teamMember.setHoursPerDay(rs.getBigDecimal("hours_per_day"));
+        teamMember.setHoursPerDay(rs.getBigDecimal("hoursPerDay"));
         return teamMember;
     };
 
-    // Henter alle teammedlemmer fra databasen
-    public List<TeamMember> findAll() {
-        String sql = "SELECT * FROM team_member";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TeamMember.class));
+    /** Henter alle teammedlemmer tilknyttet et projekt baseret på projectId **/
+    public List<TeamMember> findByProjectId(int projectId) {
+        String sql = "SELECT * FROM teamMember WHERE project_id = ?";
+        return jdbcTemplate.query(sql, teamMemberRowMapper, projectId);
     }
 
-    // Henter et teammedlem baseret på ID
+    /** Tæller antal teammedlemmer i et projekt **/
+    public int countByProjectId(int projectId) {
+        String sql = "SELECT COUNT(*) FROM teamMember WHERE project_id = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
+    }
+
+    /** Fetch all team members **/
+    public List<TeamMember> findAll() {
+        String sql = "SELECT * FROM teamMember";
+        return jdbcTemplate.query(sql, teamMemberRowMapper);
+    }
+
+    /** Fetch team member by memberId **/
     public TeamMember findById(int memberId) {
-        String sql = "SELECT * FROM team_member WHERE member_id = ?";
+        String sql = "SELECT * FROM teamMember WHERE memberId = ?";
         try {
-            return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(TeamMember.class), memberId);
+            return jdbcTemplate.queryForObject(sql, teamMemberRowMapper, memberId);
         } catch (Exception e) {
             return null;
         }
     }
 
-    public List<TeamMember> findByProjectId(int projectId){
-        String sql = "SELECT * FROM team_member WHERE project_id =?";
-        return jdbcTemplate.query(sql, teamMemberRowMapper, projectId);
+    public TeamMember findByEmail(String email) {
+        String sql = "SELECT * FROM teamMember WHERE email = ?";
+        try {
+            return jdbcTemplate.queryForObject(sql, teamMemberRowMapper, email);
+        } catch (Exception e) {
+            /** No user found or other query issue **/
+            return null;
+        }
     }
 
 
-
-    /** Counts the number of team members associated with a specific project ID **/
-    public int countByProjectId(int projectId) {
-        String sql = "SELECT COUNT(*) FROM team_member WHERE project_id = ?";
-        return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
-    }
-
-    // Tjekker om et teammedlem eksisterer baseret på ID
+    /** Check if team member exists by memberId **/
     public boolean existsById(int memberId) {
-        String sql = "SELECT COUNT(1) FROM team_member WHERE member_id = ?";
+        String sql = "SELECT COUNT(1) FROM teamMember WHERE memberId = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, memberId);
         return count != null && count > 0;
     }
 
-    // Gemmer et teammedlem i databasen (både oprettelse og opdatering)
+    /** Save or update a team member **/
     public TeamMember save(TeamMember teamMember) {
         if (existsById(teamMember.getMemberId())) {
-            String sql = "UPDATE team_member SET name = ?, email = ?, role = ?, hours_per_day = ? WHERE member_id = ?";
-            jdbcTemplate.update(sql, teamMember.getName(), teamMember.getEmail(), teamMember.getRole(), teamMember.getHoursPerDay(), teamMember.getMemberId());
+            String sql = "UPDATE teamMember SET name = ?, email = ?, password = ?, role = ?, hoursPerDay = ? WHERE memberId = ?";
+            jdbcTemplate.update(sql,
+                    teamMember.getName(),
+                    teamMember.getEmail(),
+                    teamMember.getPassword(),
+                    teamMember.getRole(),
+                    teamMember.getHoursPerDay(),
+                    teamMember.getMemberId());
         } else {
-            String sql = "INSERT INTO team_member (name, email, role, hours_per_day) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, teamMember.getName(), teamMember.getEmail(), teamMember.getRole(), teamMember.getHoursPerDay());
+            String sql = "INSERT INTO teamMember (name, email, password, role, hoursPerDay) VALUES (?, ?, ?, ?, ?)";
+            jdbcTemplate.update(sql,
+                    teamMember.getName(),
+                    teamMember.getEmail(),
+                    teamMember.getPassword(),
+                    teamMember.getRole(),
+                    teamMember.getHoursPerDay());
         }
         return teamMember;
     }
+
+    /** Delete a team member by memberId **/
+    public void deleteById(int memberId) {
+        String sql = "DELETE FROM teamMember WHERE memberId = ?";
+        jdbcTemplate.update(sql, memberId);
+    }
+
+
 }

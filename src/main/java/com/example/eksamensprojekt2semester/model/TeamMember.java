@@ -8,17 +8,20 @@ public class TeamMember {
     private String email;
     private Role role;
     private BigDecimal hoursPerDay; /** Amount of hours a person can work per day **/
+    private String password;
 
     /** No-args constructor **/
     public TeamMember() {
     }
 
     /** Constructor with all fields except id, it will be auto-generated **/
-    public TeamMember(String name, String email, Role role, BigDecimal hoursPerDay) {
+    public TeamMember(String name, String email, Role role, BigDecimal hoursPerDay, String password) {
         this.name = name;
         this.email = email;
         this.role = role;
         this.hoursPerDay = hoursPerDay;
+        this.password = password;
+
     }
 
     /** Getter methods **/
@@ -40,6 +43,10 @@ public class TeamMember {
 
     public BigDecimal getHoursPerDay() {
         return hoursPerDay;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     /** Setter methods with validation **/
@@ -84,14 +91,29 @@ public class TeamMember {
         this.hoursPerDay = hoursPerDay;
     }
 
+    public void setPassword(String password) {
+        if (password == null || password.trim().isEmpty()) {
+            throw new IllegalArgumentException("Password cannot be empty.");
+        }
+        if (password.length() < 6) {
+            throw new IllegalArgumentException("Password must be at least 6 characters long.");
+        }
+        // Optional: check for spaces inside password (you can remove if you want)
+        if (password.contains(" ")) {
+            throw new IllegalArgumentException("Password cannot contain spaces.");
+        }
+        this.password = password;
+    }
+
     @Override
     public String toString() {
         return "TeamMember{" +
                 "memberId=" + memberId +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
-                ", role='" + role + '\'' +
+                ", role=" + role +
                 ", hoursPerDay=" + hoursPerDay +
+                ", password='" + password + '\'' +
                 '}';
     }
 }

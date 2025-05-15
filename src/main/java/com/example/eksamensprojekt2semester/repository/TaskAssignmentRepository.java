@@ -14,30 +14,29 @@ public class TaskAssignmentRepository {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    // Tildeler et teammedlem til en opgave
+    // Assign a team member to a task
     public void assignMember(int taskId, int memberId) {
-        String sql = "INSERT INTO task_assignments (task_id, member_id) VALUES (?, ?)";
+        String sql = "INSERT INTO taskAssignment (taskId, memberId) VALUES (?, ?)";
         jdbcTemplate.update(sql, taskId, memberId);
     }
 
-    // Fjerner tildelingen af et teammedlem fra en opgave
+    // Remove assignment of a team member from a task
     public void unassignMember(int taskId, int memberId) {
-        String sql = "DELETE FROM task_assignments WHERE task_id = ? AND member_id = ?";
+        String sql = "DELETE FROM taskAssignment WHERE taskId = ? AND memberId = ?";
         jdbcTemplate.update(sql, taskId, memberId);
     }
 
-    // Henter alle medlemmer, der er tildelt en opgave
+    // Get all members assigned to a task
     public List<TeamMember> getAssignedMembers(int taskId) {
-        String sql = "SELECT tm.* FROM team_member tm " +
-                "JOIN task_assignments ta ON tm.member_Id = ta.member_id " +
-                "WHERE ta.task_id = ?";
+        String sql = "SELECT tm.* FROM teamMember tm " +
+                "JOIN taskAssignment ta ON tm.memberId = ta.memberId " +
+                "WHERE ta.taskId = ?";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TeamMember.class), taskId);
     }
 
-    /** Fjerner alle tildelinger for en bestemt opgave **/
+    // Remove all assignments for a specific task
     public void removeAllAssignmentsForTask(int taskId) {
-        String sql = "DELETE FROM task_assignments WHERE task_id = ?";
+        String sql = "DELETE FROM taskAssignment WHERE taskId = ?";
         jdbcTemplate.update(sql, taskId);
     }
-
 }
