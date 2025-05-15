@@ -1,6 +1,5 @@
 package com.example.eksamensprojekt2semester.repository;
 
-import com.zaxxer.hikari.HikariDataSource;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 import com.example.eksamensprojekt2semester.model.Subproject;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -13,27 +12,28 @@ import java.util.Optional;
 
 @Repository
 public class SubprojectRepository {
-    private final JdbcTemplate jdbcTemplate;;
 
+    private final JdbcTemplate jdbcTemplate;
 
     /** Constructor-based dependency injection **/
     public SubprojectRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<Subproject> subprojectRowMapper = (rs, rowNum) -> {
+    /** RowMapper to convert SQL result to Subproject object **/
+    private final RowMapper<Subproject> subprojectRowMapper = (rs, rowNum) -> {
         Subproject subproject = new Subproject();
-        subproject.setId(rs.getInt("subprojectId"));
-        subproject.setName(rs.getString("subprojectName"));
+        subproject.setId(rs.getInt("subProjectId"));
+        subproject.setName(rs.getString("subProjectName"));
         subproject.setCompletionPercentage(rs.getInt("completionPercentage"));
         subproject.setStatus(StateStatus.fromValue(rs.getInt("statusId")));
-        subproject.setProjectId(rs.getInt("ProjectId"));
+        subproject.setProjectId(rs.getInt("projectId"));
         return subproject;
     };
 
     /** CREATE **/
-    public void save(Subproject subproject){
-        String sql = "INSERT INTO Subproject (subprojectName, completionPercentage, statusId, ProjectId) VALUES (?, ?. ?. ?)";
+    public void save(Subproject subproject) {
+        String sql = "INSERT INTO subProject (subProjectName, completionPercentage, statusId, projectId) VALUES (?, ?, ?, ?)";
         jdbcTemplate.update(sql,
                 subproject.getName(),
                 subproject.getCompletionPercentage(),
@@ -41,35 +41,32 @@ public class SubprojectRepository {
                 subproject.getProjectId());
     }
 
-    /**  READ **/
+    /** READ (find by ID) **/
     public Optional<Subproject> findById(int id) {
-        String sql = "SELECT subprojectId, subprojectName, completionPercentage, statusId, ProjectId FROM Subproject WHERE subprojectId = ?";
+        String sql = "SELECT subProjectId, subProjectName, completionPercentage, statusId, projectId FROM subProject WHERE subProjectId = ?";
         try {
-            /** QueryForObject expects exactly one row. Uses RowMapper to convert it **/
             Subproject subproject = jdbcTemplate.queryForObject(sql, subprojectRowMapper, id);
             return Optional.ofNullable(subproject);
         } catch (EmptyResultDataAccessException e) {
-            /** If no row is found, we return an empty Optional **/
             return Optional.empty();
         }
     }
 
+    /** READ (find all subprojects by projectId) **/
     public List<Subproject> findAllByProjectId(int projectId) {
-        String sql = "SELECT subprojectId, subprojectName, completionPercentage, statusId, ProjectId FROM Subproject WHERE ProjectId = ?";
-        /** Returns a list of objects. Uses RowMapper to convert each row **/
+        String sql = "SELECT subProjectId, subProjectName, completionPercentage, statusId, projectId FROM subProject WHERE projectId = ?";
         return jdbcTemplate.query(sql, subprojectRowMapper, projectId);
     }
 
+    /** READ (all subprojects) **/
     public List<Subproject> findAll() {
-        String sql = "SELECT subprojectId, subprojectName, completionPercentage, statusId, ProjectId FROM Subproject";
+        String sql = "SELECT subProjectId, subProjectName, completionPercentage, statusId, projectId FROM subProject";
         return jdbcTemplate.query(sql, subprojectRowMapper);
     }
 
-    /**  UPDATE **/
+    /** UPDATE **/
     public void update(Subproject subproject) {
-        String sql = "UPDATE Subproject SET subprojectName = ?, completionPercentage = ?, statusId = ?, ProjectId = ? WHERE subprojectId = ?";
-
-        /** jdbcTemplate.update() returns an integer (int) that tells how many rows in the database were actually changed by your UPDATE command **/
+        String sql = "UPDATE subProject SET subProjectName = ?, completionPercentage = ?, statusId = ?, projectId = ? WHERE subProjectId = ?";
         int affectedRows = jdbcTemplate.update(sql,
                 subproject.getName(),
                 subproject.getCompletionPercentage(),
@@ -77,7 +74,6 @@ public class SubprojectRepository {
                 subproject.getProjectId(),
                 subproject.getId()
         );
-        /** If affectedRows is 0, it means no rows were updated **/
         if (affectedRows == 0) {
             throw new RuntimeException("Kunne ikke opdatere subprojekt med ID: " + subproject.getId() + ". Subprojektet blev ikke fundet i databasen.");
         }
@@ -85,27 +81,18 @@ public class SubprojectRepository {
 
     /** DELETE **/
     public void deleteById(int id) {
-        String sql = "DELETE FROM Subproject WHERE subprojectId = ?";
+        String sql = "DELETE FROM subProject WHERE subProjectId = ?";
         jdbcTemplate.update(sql, id);
     }
 
-    /** UTILITY **/
+    /** UTILITY: Check if subproject exists by ID **/
     public boolean existsById(int id) {
-        /** 1. SQL Query returns 1 for each row that matches the where condition **/
-        String sql = "SELECT 1 FROM Subproject WHERE subprojectId = ? LIMIT 1";
-
+        String sql = "SELECT 1 FROM subProject WHERE subProjectId = ? LIMIT 1";
         try {
-            /** 2.Expected Java type for the output from the SELECT part (the result 1 should be treated as an Integer)**/
             jdbcTemplate.queryForObject(sql, Integer.class, id);
-
-            /** 3. If subproject exists (no errors) **/
             return true;
-
         } catch (EmptyResultDataAccessException e) {
-            /** 4.  The subproject does not exist **/
             return false;
         }
     }
-
 }
-
