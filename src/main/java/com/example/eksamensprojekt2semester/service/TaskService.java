@@ -141,11 +141,11 @@ public class TaskService {
 
     /** Method to get the number of completed tasks for a subproject **/
     public int getCompletedTaskCount(int subprojectId) {
-        return taskRepo.countBySubProjectIdAndStatus(subprojectId, StateStatus.COMPLETED);
+        return taskRepo.countBySubprojectIdAndStatus(subprojectId, StateStatus.COMPLETED);
     }
 
     /** Method to get the total number of tasks for a subproject **/
     public int getTotalTaskCount(int subprojectId) {
-        return taskRepo.countBySubProjectId(subprojectId);
+        return taskRepo.countBySubprojectId(subprojectId);
     }
 }
