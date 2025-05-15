@@ -73,36 +73,36 @@ public class ProjectController {
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
 
-//    @GetMapping("/overview")
-//    public String showProjectOverview(Model model,
-//                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
-//                                      @RequestParam(required = false) String search,
-//                                      @RequestParam(required = false) StateStatus status) {
+    @GetMapping("/overview")
+    public String showProjectOverview(Model model,
+                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
+                                      @RequestParam(required = false) String search,
+                                      @RequestParam(required = false) StateStatus status) {
 
-//        List<ProjectDTO> projects;
-//
-//        /** Retrieve all filtered or none filtered projects**/
-//        if(search != null && !search.isEmpty() || status != null) {
-//            projects = projectService.findProjectsBySearchAndStatus(search,status);
-//        } else {
-//            projects = projectService.getAllProjectsDTO();
-//        }
-//
-//        /** For each project we calculate the completion% and the amount of team members **/
-//        for (ProjectDTO project : projects){
-//            int completionPercentage = taskService.calculateProjectCompletion(project.getId());
-//            project.setCompletionPercentage(completionPercentage);
-//
-//            int teamMemberCount = teamMemberService.getTeamMemberCountByProjectId(project.getId());
-//            project.setTeamMemberCount(teamMemberCount);
-//        }
-//
-//        /** Adds all possible status values, and list of projects (filtered or not, depending on the search) **/
-//        model.addAttribute("stateStatuses", StateStatus.values());
-//        model.addAttribute("projects", projects);
-//
-//        return "overview_of_projects";
-//    }
+        List<ProjectDTO> projects;
+
+        /** Retrieve all filtered or none filtered projects**/
+        if(search != null && !search.isEmpty() || status != null) {
+            projects = projectService.findProjectsBySearchAndStatus(search,status);
+        } else {
+            projects = projectService.getAllProjectsDTO();
+        }
+
+        /** For each project we calculate the completion% and the amount of team members **/
+        for (ProjectDTO project : projects){
+            int completionPercentage = taskService.calculateProjectCompletion(project.getId());
+            project.setCompletionPercentage(completionPercentage);
+
+            int teamMemberCount = teamMemberService.getTeamMemberCountByProjectId(project.getId());
+            project.setTeamMemberCount(teamMemberCount);
+        }
+
+        /** Adds all possible status values, and list of projects (filtered or not, depending on the search) **/
+        model.addAttribute("stateStatuses", StateStatus.values());
+        model.addAttribute("projects", projects);
+
+        return "overview_of_projects";
+    }
 
         /** Displays the details of a single project based on its id **/
 //    @GetMapping("/details/{id}")
@@ -138,13 +138,13 @@ public class ProjectController {
 //    }
 //}
 
-        @GetMapping("/overview")
-        public String showProjectOverview(@RequestParam(required = false) Boolean loggedIn, Model model) {
-            if (loggedIn == null || !loggedIn) {
-                return "redirect:/login"; // Redirect to login if user is not logged in
-            }
-
-            // Proceed with displaying the projects
-            return "overview_of_projects";
-        }
+//        @GetMapping("/overview")
+//        public String showProjectOverview(@RequestParam(required = false) Boolean loggedIn, Model model) {
+//            if (loggedIn == null || !loggedIn) {
+//                return "redirect:/login"; // Redirect to login if user is not logged in
+//            }
+//
+//            // Proceed with displaying the projects
+//            return "overview_of_projects";
+//        }
     }

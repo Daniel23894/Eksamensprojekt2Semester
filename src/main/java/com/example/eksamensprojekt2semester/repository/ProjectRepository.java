@@ -4,7 +4,6 @@ import com.zaxxer.hikari.HikariDataSource;
 import com.example.eksamensprojekt2semester.model.Project;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.ResultSetExtractor;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
@@ -18,124 +17,87 @@ public class ProjectRepository {
         this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    /** Reusable RowMapper **/
-    private RowMapper<Project> projectRowMapper = (rs, rowNum) -> {
+    private final RowMapper<Project> projectRowMapper = (rs, rowNum) -> {
         Project project = new Project();
-        project.setProjectId(rs.getInt("id"));
-        project.setName(rs.getString("name"));
-        project.setStartDate(rs.getDate("start_date").toLocalDate());
-        project.setEndDate(rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null);
-        project.setActualStartDate(rs.getDate("actual_start_date") != null ? rs.getDate("actual_start_date").toLocalDate() : null);
-        project.setActualEndDate(rs.getDate("actual_end_date") != null ? rs.getDate("actual_end_date").toLocalDate() : null);
+        project.setProjectId(rs.getInt("projectId"));
+        project.setName(rs.getString("projectName"));
+        project.setDescription(rs.getString("description"));
+        project.setStartDate(rs.getDate("startDate").toLocalDate());
+        project.setEndDate(rs.getDate("endDate") != null ? rs.getDate("endDate").toLocalDate() : null);
+        project.setActualStartDate(rs.getDate("actualStartDate") != null ? rs.getDate("actualStartDate").toLocalDate() : null);
+        project.setActualEndDate(rs.getDate("actualEndDate") != null ? rs.getDate("actualEndDate").toLocalDate() : null);
         project.setBudget(rs.getBigDecimal("budget"));
-        project.setCompletionPercentage(rs.getInt("completion_percentage"));
-        project.setStatus(StateStatus.fromValue(rs.getInt("status_id"))); /** Handels id from the database as int, and converts it into a matching enum value**/
+        project.setCompletionPercentage(rs.getInt("completionPercentage"));
+        project.setStatus(StateStatus.fromValue(rs.getInt("statusId")));
         return project;
     };
 
-    // Metode til at gemme et nyt projekt i databasen
     public Project save(Project project) {
-        // Get the statusId from the StateStatus object
-        int statusId = project.getStatus().getValue(); // Correctly use the value from the enum
+        int statusId = project.getStatus().getValue();
 
-        String sql = "INSERT INTO project (projectName, startDate, endDate, actualStartDate, actualEndDate, budget, completionPercentage, statusId) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO project (projectName, description, startDate, endDate, actualStartDate, actualEndDate, budget, completionPercentage, statusId) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Execute the insert statement
-        jdbcTemplate.update(sql, project.getName(), project.getStartDate(),
+        jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(),
                 project.getEndDate(), project.getActualStartDate(), project.getActualEndDate(), project.getBudget(),
-                project.getCompletionPercentage(), statusId); // Use statusId here, not the StateStatus object
+                project.getCompletionPercentage(), statusId);
 
-        // Retrieve the last inserted projectId
         String sqlGetLastInsertId = "SELECT LAST_INSERT_ID()";
         int projectId = jdbcTemplate.queryForObject(sqlGetLastInsertId, Integer.class);
-
-        // Set the generated projectId on the project object
         project.setProjectId(projectId);
 
         return project;
     }
 
-
-
-
-    // Metode til at hente alle projekter fra databasen
     public List<Project> findAll() {
         String sql = "SELECT * FROM project";
-        // Bruger ResultSetExtractor for at konvertere resultater til en liste af projekter
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Project project = new Project();
-            project.setProjectId(rs.getInt("id"));
-            project.setName(rs.getString("name"));
-            project.setStartDate(rs.getDate("start_date").toLocalDate());
-            project.setEndDate(rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null);
-            project.setActualStartDate(rs.getDate("actual_start_date") != null ? rs.getDate("actual_start_date").toLocalDate() : null);
-            project.setActualEndDate(rs.getDate("actual_end_date") != null ? rs.getDate("actual_end_date").toLocalDate() : null);
-            project.setBudget(rs.getBigDecimal("budget"));
-            project.setCompletionPercentage(rs.getInt("completion_percentage"));
-            project.setStatus(StateStatus.fromValue(rs.getInt("status_id"))); /** Konverterer status ID til enum **/
-            return project;
-        });
+        return jdbcTemplate.query(sql, projectRowMapper);
     }
 
-    // Metode til at kontrollere, om et projekt eksisterer baseret på projektets ID
     public boolean existsById(int id) {
-        String sql = "SELECT 1 FROM project WHERE id = ? LIMIT 1";
+        String sql = "SELECT 1 FROM project WHERE projectId = ? LIMIT 1";
         return jdbcTemplate.queryForObject(sql, Integer.class, id) != null;
     }
 
-    // Metode til at hente et projekt baseret på ID
     public Project findById(int id) {
-        String sql = "SELECT * FROM project WHERE id = ?";
-        List<Project> projects = jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Project project = new Project();
-            project.setProjectId(rs.getInt("id"));
-            project.setName(rs.getString("name"));
-            project.setStartDate(rs.getDate("start_date").toLocalDate());
-            project.setEndDate(rs.getDate("end_date") != null ? rs.getDate("end_date").toLocalDate() : null);
-            project.setActualStartDate(rs.getDate("actual_start_date") != null ? rs.getDate("actual_start_date").toLocalDate() : null);
-            project.setActualEndDate(rs.getDate("actual_end_date") != null ? rs.getDate("actual_end_date").toLocalDate() : null);
-            project.setBudget(rs.getBigDecimal("budget"));
-            project.setCompletionPercentage(rs.getInt("completion_percentage"));
-            project.setStatus(StateStatus.fromValue(rs.getInt("status_id"))); /** Konverterer status ID til enum **/
-            return project;
-        }, id);
+        String sql = "SELECT * FROM project WHERE projectId = ?";
+        List<Project> projects = jdbcTemplate.query(sql, projectRowMapper, id);
         return (projects.isEmpty()) ? null : projects.get(0);
     }
 
-    /** Find projects by name containing a specific string **/
     public List<Project> findByNameContaining(String name) {
-        String sql = "SELECT * FROM project WHERE name LIKE ?";
-
-        /** "%": mean there can be text before and after 'name',
-         *  projects that contain the searched keyword anywhere in the title will show up **/
+        String sql = "SELECT * FROM project WHERE projectName LIKE ?";
         return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%");
     }
 
-    /** Find projects by status **/
     public List<Project> findByStatus(StateStatus status) {
-        String sql = "SELECT * FROM project WHERE status_id = ?";
-        return jdbcTemplate.query(sql, projectRowMapper, status.getValue());  // Get projects with a specific status
+        String sql = "SELECT * FROM project WHERE statusId = ?";
+        return jdbcTemplate.query(sql, projectRowMapper, status.getValue());
     }
 
-    /** Find projects by name and status **/
     public List<Project> findByNameContainingAndStatus(String name, StateStatus status) {
-        String sql = "SELECT * FROM project WHERE name LIKE ? AND status_id = ?";
-        return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%", status.getValue());  // Projects that match both criteria
+        String sql = "SELECT * FROM project WHERE projectName LIKE ? AND statusId = ?";
+        return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%", status.getValue());
     }
 
-    // Metode til at opdatere et eksisterende projekt i databasen
     public void update(Project project) {
-        String sql = "UPDATE project SET name = ?, description = ?, start_date = ?, end_date = ?, actual_start_date = ?, actual_end_date = ?, budget = ?, completion_percentage = ?, status_id = ? " +
-                "WHERE id = ?";
-        jdbcTemplate.update(sql, project.getName(), project.getStartDate(),
-                project.getEndDate(), project.getActualStartDate(), project.getActualEndDate(), project.getBudget(),
-                project.getCompletionPercentage(), project.getStatus(), project.getProjectId());
+        String sql = "UPDATE project SET projectName = ?, description = ?, startDate = ?, endDate = ?, actualStartDate = ?, actualEndDate = ?, budget = ?, completionPercentage = ?, statusId = ? " +
+                "WHERE projectId = ?";
+        jdbcTemplate.update(sql,
+                project.getName(),
+                project.getDescription(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getActualStartDate(),
+                project.getActualEndDate(),
+                project.getBudget(),
+                project.getCompletionPercentage(),
+                project.getStatus().getValue(),
+                project.getProjectId());
     }
 
-    // Metode til at slette et projekt baseret på ID
     public void delete(int id) {
-        String sql = "DELETE FROM project WHERE id = ?";
+        String sql = "DELETE FROM project WHERE projectId = ?";
         jdbcTemplate.update(sql, id);
     }
 }
