@@ -55,7 +55,7 @@
 <body>
 <div class="form-container">
     <h1>Create New Project</h1>
-    <form th:action="@{/projects}" th:object="${projectDTO}" method="post">
+    <form th:action="@{/projects/overview}" th:object="${projectDTO}" method="post">
         <div class="form-group">
             <label for="name">Name *</label>
             <input type="text" id="name" th:field="*{name}" required>
