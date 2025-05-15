@@ -4,6 +4,7 @@ import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.eksamensprojekt2semester.repository.TeamMemberRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,11 +34,13 @@ public class TeamMemberService {
     }
 
     // Opretter et nyt teammedlem
+    @Transactional
     public TeamMember createTeamMember(TeamMember teamMember) {
         return teamMemberRepository.save(teamMember);
     }
 
     // Opdaterer et eksisterende teammedlem
+    @Transactional
     public TeamMember updateTeamMember(int memberId, TeamMember updatedTeamMember) {
         if (teamMemberRepository.existsById(memberId)) {
             updatedTeamMember.setMemberId(memberId);

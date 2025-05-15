@@ -3,6 +3,7 @@ package com.example.eksamensprojekt2semester.service;
 import com.example.eksamensprojekt2semester.model.Subproject;
 import org.springframework.stereotype.Service;
 import com.example.eksamensprojekt2semester.repository.SubprojectRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,13 +15,14 @@ public class SubprojectService {
     private final TaskService taskService;
 
     /** Constructor injection for SubprojectRepository **/
-    public SubprojectService(SubprojectRepository subprojectRepository, ProjectService projectService){
+    public SubprojectService(SubprojectRepository subprojectRepository, ProjectService projectService, TaskService taskService){
         this.subprojectRepository = subprojectRepository;
         this.projectService = projectService;
-        this.taskService = new TaskService();
+        this.taskService = taskService;
     }
 
     /** CREATE - method to create a new subproject **/
+    @Transactional
     public void createSubproject(Subproject subproject){
 
         /** Check if the subproject name is null or empty **/
@@ -59,11 +61,6 @@ public class SubprojectService {
         return subprojectRepository.findAllByProjectId(projectId);
     }
 
-    /** READ - find all subprojects for a projekt **/
-    public List<Subproject> findAllByProjectId(int projectId) {
-        return subprojectRepository.findAllByProjectId(projectId);
-    }
-
     /** READ - find all subprojects **/
     public List<Subproject> findAll() {
         return subprojectRepository.findAll();
@@ -71,6 +68,7 @@ public class SubprojectService {
 
 
     /** UPDATE - update a existing subproject **/
+    @Transactional
     public void updateSubproject(Subproject subproject) {
 
         /** Convert primitives to Integer objects for null checks **/
@@ -97,6 +95,7 @@ public class SubprojectService {
 
 
     /** DELETE - delete a subproject **/
+    @Transactional
     public void deleteById(int id) {
         subprojectRepository.deleteById(id);
     }
