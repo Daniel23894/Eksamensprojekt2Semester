@@ -73,11 +73,11 @@ public class ProjectController {
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
 
-    @GetMapping("/overview")
-    public String showProjectOverview(Model model,
-                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
-                                      @RequestParam(required = false) String search,
-                                      @RequestParam(required = false) StateStatus status) {
+//    @GetMapping("/overview")
+//    public String showProjectOverview(Model model,
+//                                      /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
+//                                      @RequestParam(required = false) String search,
+//                                      @RequestParam(required = false) StateStatus status) {
 
 //        List<ProjectDTO> projects;
 //
