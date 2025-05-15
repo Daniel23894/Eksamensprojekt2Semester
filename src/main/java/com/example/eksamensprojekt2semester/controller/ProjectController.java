@@ -12,6 +12,8 @@ import com.example.eksamensprojekt2semester.service.ProjectService;
 import com.example.eksamensprojekt2semester.service.TaskService;
 import com.example.eksamensprojekt2semester.service.TeamMemberService;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
 public class ProjectController {
@@ -55,14 +57,15 @@ public class ProjectController {
     @GetMapping("/new")
     public String showNewProjectForm(Model model) {
         model.addAttribute("projectDTO", new ProjectDTO()); // Tilføjer tom DTO til formularen
+        model.addAttribute("statuses", StateStatus.values()); // Tilføjer alle mulige statusser til formularen
         return "projectForm"; // Returns the project creation form
     }
 
     // Gemmer et nyt projekt baseret projectForm
-    @PostMapping("/overview")
+    @PostMapping("/new")
     public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO) {
         projectService.createProject(projectDTO); // Calls the service to create the project
-        return "redirect:/overview"; // Redirects to the project list after creation
+        return "redirect:/projects/overview"; // Redirects to the project list after creation
     }
 
 

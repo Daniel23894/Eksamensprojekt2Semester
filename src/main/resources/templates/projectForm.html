@@ -55,7 +55,7 @@
 <body>
 <div class="form-container">
     <h1>Create New Project</h1>
-    <form th:action="@{/projects/overview}" th:object="${projectDTO}" method="post">
+    <form th:action="@{/projects/new}" th:object="${projectDTO}" method="post">
         <div class="form-group">
             <label for="name">Name *</label>
             <input type="text" id="name" th:field="*{name}" required>
@@ -77,11 +77,12 @@
         </div>
 
         <div class="form-group">
-            <label for="status">Status</label>
-            <select id="status" th:field="*{status}">
-                <option value="NEW">NEW</option>
-                <option value="IN_PROGRESS">IN_PROGRESS</option>
-                <option value="COMPLETED">COMPLETED</option>
+            <label for="statusId">Status</label>
+            <select id="statusId" th:field="*{status}">
+                <option th:each="status : ${statuses}"
+                        th:value="${status.value}"
+                        th:text="${status.description}">
+                </option>
             </select>
         </div>
 

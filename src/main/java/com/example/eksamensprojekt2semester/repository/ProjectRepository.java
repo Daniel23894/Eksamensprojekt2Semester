@@ -35,15 +35,29 @@ public class ProjectRepository {
 
     // Metode til at gemme et nyt projekt i databasen
     public Project save(Project project) {
-        String sql = "INSERT INTO project (name, description, start_date, end_date, actual_start_date, actual_end_date, budget, completion_percentage, status_id) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+        // Get the statusId from the StateStatus object
+        int statusId = project.getStatus().getValue(); // Correctly use the value from the enum
 
-        // Udfører opdateringen
+        String sql = "INSERT INTO project (projectName, startDate, endDate, actualStartDate, actualEndDate, budget, completionPercentage, statusId) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        // Execute the insert statement
         jdbcTemplate.update(sql, project.getName(), project.getStartDate(),
                 project.getEndDate(), project.getActualStartDate(), project.getActualEndDate(), project.getBudget(),
-                project.getCompletionPercentage(), project.getStatus());
-        return project; // Returnerer det gemte projekt
+                project.getCompletionPercentage(), statusId); // Use statusId here, not the StateStatus object
+
+        // Retrieve the last inserted projectId
+        String sqlGetLastInsertId = "SELECT LAST_INSERT_ID()";
+        int projectId = jdbcTemplate.queryForObject(sqlGetLastInsertId, Integer.class);
+
+        // Set the generated projectId on the project object
+        project.setProjectId(projectId);
+
+        return project;
     }
+
+
+
 
     // Metode til at hente alle projekter fra databasen
     public List<Project> findAll() {

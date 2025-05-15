@@ -11,11 +11,13 @@ import java.util.List;
 public class SubprojectService {
     private final SubprojectRepository subprojectRepository;
     private final ProjectService projectService;
+    private final TaskService taskService;
 
     /** Constructor injection for SubprojectRepository **/
     public SubprojectService(SubprojectRepository subprojectRepository, ProjectService projectService){
         this.subprojectRepository = subprojectRepository;
         this.projectService = projectService;
+        this.taskService = new TaskService();
     }
 
     /** CREATE - method to create a new subproject **/
@@ -99,17 +101,17 @@ public class SubprojectService {
         subprojectRepository.deleteById(id);
     }
 
-    public static BigDecimal calculateTotalHours(int subprojectId) {
-        return TaskService.calculateTotalHoursBySubproject(subprojectId);
+    public BigDecimal calculateTotalHours(int subprojectId) {
+        return taskService.calculateTotalHoursBySubproject(subprojectId);
     }
 
-    public static BigDecimal calculateRemainingHours(int subprojectId) {
-        return TaskService.calculateRemainingHoursBySubproject(subprojectId);
+    public BigDecimal calculateRemainingHours(int subprojectId) {
+        return taskService.calculateRemainingHoursBySubproject(subprojectId);
     }
 
     public BigDecimal getTotalEstimatedHours(int subprojectId) {
         try {
-            return TaskService.calculateTotalHoursBySubproject(subprojectId);
+            return taskService.calculateTotalHoursBySubproject(subprojectId);
         } catch (Exception e) {
             System.err.println("Error calculating total estimated hours: " + e.getMessage());
             return BigDecimal.ZERO;
@@ -118,7 +120,7 @@ public class SubprojectService {
 
     public BigDecimal getRemainingHours(int subprojectId) {
         try {
-            return TaskService.calculateRemainingHoursBySubproject(subprojectId);
+            return taskService.calculateRemainingHoursBySubproject(subprojectId);
         } catch (Exception e) {
             System.err.println("Error calculating remaining hours: " + e.getMessage());
             return BigDecimal.ZERO;
