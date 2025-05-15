@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.example.eksamensprojekt2semester.repository.SubprojectRepository;
 import com.example.eksamensprojekt2semester.repository.TaskAssignmentRepository;
 import com.example.eksamensprojekt2semester.repository.TaskRepository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -26,10 +27,12 @@ public class TaskService {
     @Autowired
     private SubprojectRepository subprojectRepo;
 
+    @Transactional
     public void assignMemberToTask(int taskId, int memberId) {
         taskAssignmentRepo.assignMember(taskId, memberId);
     }
 
+    @Transactional
     public void unassignMemberFromTask(int taskId, int memberId) {
         taskAssignmentRepo.unassignMember(taskId, memberId);
     }
@@ -47,6 +50,7 @@ public class TaskService {
         return taskRepo.existsById(taskId);
     }
 
+    @Transactional
     public void createTask(Task task) {
         /** Check if parent subproject exists **/
         if (!subprojectRepo.existsById(task.getSubprojectId())) {
@@ -55,6 +59,7 @@ public class TaskService {
         taskRepo.save(task);
     }
 
+    @Transactional
     public void updateTask(Task task) {
         /** Ensure the task exists **/
         if (!taskRepo.existsById(task.getId())) {
@@ -69,6 +74,7 @@ public class TaskService {
         taskRepo.update(task);
     }
 
+    @Transactional
     public void deleteTask(int id) {
         /** First remove any team member assignments,to avoid assignments referring to a task that no longer exists **/
         taskAssignmentRepo.removeAllAssignmentsForTask(id);
