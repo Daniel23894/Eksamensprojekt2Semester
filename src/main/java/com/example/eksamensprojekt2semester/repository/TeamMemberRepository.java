@@ -19,7 +19,7 @@ public class TeamMemberRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    private RowMapper<TeamMember> teamMemberRowMapper = (rs, rowNum) ->{
+    private RowMapper<TeamMember> teamMemberRowMapper = (rs, rowNum) -> {
         TeamMember teamMember = new TeamMember();
         teamMember.setMemberId(rs.getInt("member_id"));
         teamMember.setName(rs.getString("name"));
@@ -29,13 +29,13 @@ public class TeamMemberRepository {
         return teamMember;
     };
 
-    // Henter alle teammedlemmer fra databasen
+    /** Henter alle teammedlemmer fra databasen **/
     public List<TeamMember> findAll() {
         String sql = "SELECT * FROM team_member";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(TeamMember.class));
     }
 
-    // Henter et teammedlem baseret på ID
+    /** Henter et teammedlem baseret på ID **/
     public TeamMember findById(int memberId) {
         String sql = "SELECT * FROM team_member WHERE member_id = ?";
         try {
@@ -45,34 +45,42 @@ public class TeamMemberRepository {
         }
     }
 
-    public List<TeamMember> findByProjectId(int projectId){
-        String sql = "SELECT * FROM team_member WHERE project_id =?";
+    /** Henter alle teammedlemmer tilknyttet et projekt baseret på projectId **/
+    public List<TeamMember> findByProjectId(int projectId) {
+        String sql = "SELECT * FROM team_member WHERE project_id = ?";
         return jdbcTemplate.query(sql, teamMemberRowMapper, projectId);
     }
 
-
-
-    /** Counts the number of team members associated with a specific project ID **/
+    /** Tæller antal teammedlemmer i et projekt **/
     public int countByProjectId(int projectId) {
         String sql = "SELECT COUNT(*) FROM team_member WHERE project_id = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
     }
 
-    // Tjekker om et teammedlem eksisterer baseret på ID
+    /** Tjekker om et teammedlem eksisterer baseret på memberId **/
     public boolean existsById(int memberId) {
         String sql = "SELECT COUNT(1) FROM team_member WHERE member_id = ?";
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, memberId);
         return count != null && count > 0;
     }
 
-    // Gemmer et teammedlem i databasen (både oprettelse og opdatering)
+    /** Gemmer et teammedlem (opdaterer hvis eksisterer, ellers opretter) **/
     public TeamMember save(TeamMember teamMember) {
         if (existsById(teamMember.getMemberId())) {
             String sql = "UPDATE team_member SET name = ?, email = ?, role = ?, hours_per_day = ? WHERE member_id = ?";
-            jdbcTemplate.update(sql, teamMember.getName(), teamMember.getEmail(), teamMember.getRole(), teamMember.getHoursPerDay(), teamMember.getMemberId());
+            jdbcTemplate.update(sql,
+                    teamMember.getName(),
+                    teamMember.getEmail(),
+                    teamMember.getRole(),
+                    teamMember.getHoursPerDay(),
+                    teamMember.getMemberId());
         } else {
             String sql = "INSERT INTO team_member (name, email, role, hours_per_day) VALUES (?, ?, ?, ?)";
-            jdbcTemplate.update(sql, teamMember.getName(), teamMember.getEmail(), teamMember.getRole(), teamMember.getHoursPerDay());
+            jdbcTemplate.update(sql,
+                    teamMember.getName(),
+                    teamMember.getEmail(),
+                    teamMember.getRole(),
+                    teamMember.getHoursPerDay());
         }
         return teamMember;
     }
