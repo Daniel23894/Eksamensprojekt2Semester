@@ -11,7 +11,7 @@ CREATE TABLE teamMember (
                             name VARCHAR(255) NOT NULL,
                             email VARCHAR(255) NOT NULL UNIQUE,     -- unique for login
                             password VARCHAR(255) NOT NULL,          -- store hashed password
-                            role VARCHAR(255),                      -- e.g., 'admin', 'user', 'project_manager'
+                            role INTEGER(255),                      -- e.g., 'admin', 'user', 'project_manager'
                             hoursPerDay DECIMAL(19, 0)
 );
 

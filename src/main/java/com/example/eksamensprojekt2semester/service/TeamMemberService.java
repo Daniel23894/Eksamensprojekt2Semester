@@ -92,4 +92,14 @@ public class TeamMemberService {
     public List<TeamMember> getTeamMembersByProjectId(int projectId){
         return teamMemberRepository.findByProjectId(projectId);
     }
+
+    @Transactional
+    public void deleteTeamMember(int memberId) {
+        if (!existsById(memberId)) {
+            throw new IllegalArgumentException("Teammedlemmet findes ikke.");
+        }
+        teamMemberRepository.deleteById(memberId);
+    }
+
+
 }
