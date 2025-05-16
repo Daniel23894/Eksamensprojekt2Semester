@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt2semester.repository;
 
+import com.example.eksamensprojekt2semester.model.Role;
 import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -25,7 +26,11 @@ public class TeamMemberRepository {
         teamMember.setName(rs.getString("name"));
         teamMember.setEmail(rs.getString("email"));
         teamMember.setPassword(rs.getString("password"));
-        teamMember.setRole(rs.getString("role"));
+
+        int roleAsInt = rs.getInt("role");
+        Role roleAsEnumValue = Role.fromValue(roleAsInt);
+        teamMember.setRole(roleAsEnumValue);
+
         teamMember.setHoursPerDay(rs.getBigDecimal("hoursPerDay"));
         return teamMember;
     };
@@ -76,6 +81,12 @@ public class TeamMemberRepository {
         return count != null && count > 0;
     }
 
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM teamMember WHERE email = ?";
+        Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count != null && count > 0;
+    }
+
     /** Save or update a team member **/
     public TeamMember save(TeamMember teamMember) {
         if (existsById(teamMember.getMemberId())) {
@@ -84,7 +95,7 @@ public class TeamMemberRepository {
                     teamMember.getName(),
                     teamMember.getEmail(),
                     teamMember.getPassword(),
-                    teamMember.getRole(),
+                    teamMember.getRole().getValue(), /** Role is saved as a int in database **/
                     teamMember.getHoursPerDay(),
                     teamMember.getMemberId());
         } else {
@@ -93,7 +104,7 @@ public class TeamMemberRepository {
                     teamMember.getName(),
                     teamMember.getEmail(),
                     teamMember.getPassword(),
-                    teamMember.getRole(),
+                    teamMember.getRole().getValue(),
                     teamMember.getHoursPerDay());
         }
         return teamMember;

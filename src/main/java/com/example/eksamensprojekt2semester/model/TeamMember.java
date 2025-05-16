@@ -77,11 +77,11 @@ public class TeamMember {
         this.email = email;
     }
 
-    public void setRole(String role) {
-        if (role == null || role.trim().isEmpty()) {
+    public void setRole(Role role) {
+        if (role == null) {
             throw new IllegalArgumentException("Role cannot be empty.");
         }
-        this.role = Role.fromValue(Integer.parseInt(role));
+        this.role = role;
     }
 
     public void setHoursPerDay(BigDecimal hoursPerDay) {
@@ -105,6 +105,7 @@ public class TeamMember {
         this.password = password;
     }
 
+
     @Override
     public String toString() {
         return "TeamMember{" +
@@ -113,7 +114,6 @@ public class TeamMember {
                 ", email='" + email + '\'' +
                 ", role=" + role +
                 ", hoursPerDay=" + hoursPerDay +
-                ", password='" + password + '\'' +
                 '}';
     }
 }
