@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt2semester.service;
 
+import com.example.eksamensprojekt2semester.model.Role;
 import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -8,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
-
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service // Marker klassen som en servicekomponent
@@ -39,13 +40,31 @@ public class TeamMemberService {
         return teamMemberRepository.findById(memberId);
     }
 
-    // Opretter et nyt teammedlem
+    /** Creates new team member  **/
     @Transactional
     public TeamMember createTeamMember(TeamMember teamMember) {
         String rawPassword = teamMember.getPassword();
         String hashedPassword = passwordEncoder.encode(rawPassword);
         teamMember.setPassword(hashedPassword);
         return teamMemberRepository.save(teamMember);
+    }
+
+    @Transactional
+    public void createAdminIfMissing() {
+        String email = "admin@alphasolutions.dk";
+        if (!teamMemberRepository.existsByEmail(email)) {
+            TeamMember admin = new TeamMember();
+            admin.setName("System Admin");
+            admin.setEmail(email);
+            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setRole(Role.ADMIN);
+            admin.setHoursPerDay(BigDecimal.valueOf(8));
+
+            teamMemberRepository.save(admin);
+            System.out.println("✅ Admin created");
+        } else {
+            System.out.println("ℹ️ Admin already exists");
+        }
     }
 
     // Opdaterer et eksisterende teammedlem
@@ -68,7 +87,7 @@ public class TeamMemberService {
         }
 
         if (updatedData.getRole() != null) {
-            existing.setRole(updatedData.getRole().toString()); // or .getValue(), depending on your Role enum
+            existing.setRole(updatedData.getRole()); // or .getValue(), depending on your Role enum
         }
 
         if (updatedData.getHoursPerDay() != null) {

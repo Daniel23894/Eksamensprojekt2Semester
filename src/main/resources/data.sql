@@ -13,10 +13,11 @@ INSERT INTO StateStatus (statusName) VALUES
 ('Annulleret');
 
 -- Indsæt i TeamMember
-INSERT INTO TeamMember (name, email, role, hoursPerDay) VALUES
-('Alice Hansen', 'alice@example.com', 'Administrator', 8),
-('Bob Madsen', 'bob@example.com', 'Developer', 7),
-('Clara Nielsen', 'clara@example.com', 'Product Owner', 6);
+INSERT INTO TeamMember (name, email, password, role, hoursPerDay) VALUES
+('Alice Hansen', 'alice@example.com', 'someHashedPassword1', 0, 8),
+('Bob Madsen', 'bob@example.com', 'someHashedPassword2', 1, 7),
+('Clara Nielsen', 'clara@example.com', 'someHashedPassword3', 2, 6);
+
 
 -- Indsæt i Project
 INSERT INTO Project (projectName, startDate, endDate, actualStartDate, actualEndDate, budget, completionPercentage, statusId) VALUES
