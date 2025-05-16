@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Rediger Projekt</title>
+    <link rel="stylesheet" th:href="@{/generic_styles.css}">
+    <link rel="stylesheet" th:href="@{/edit_project.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="main-container">
+    <div class="modal-container">
+        <!-- Header -->
+        <h1 class="modal-title">Rediger Projekt</h1>
+        <p class="modal-subtitle">Opdater projektets oplysninger</p>
+
+        <!-- Error message display (if any) - hidden by inline style -->
+        <div th:if="${errorMessage}" class="error-message mb-20" style="display: none !important;" th:text="${errorMessage}"></div>
+
+        <!-- Redigeringsformular -->
+        <form th:action="@{/projects/edit/{id}(id=${projectDTO.id})}" method="post" th:object="${projectDTO}" style="background-color: transparent !important; border: none !important;">
+            <!-- Skjult felt til at gemme projekt ID -->
+            <input type="hidden" th:field="*{id}" />
+
+            <!-- Projektnavn -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="name">Navn <span class="required">*</span></label>
+                <input type="text" id="name" th:field="*{name}" required placeholder="Indtast projektnavn" />
+            </div>
+
+            <!-- Projektbeskrivelse -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="description">Beskrivelse</label>
+                <textarea id="description" th:field="*{description}" rows="3" placeholder="Beskriv projektet"></textarea>
+            </div>
+
+            <!-- Startdato -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="startDate">Startdato <span class="required">*</span></label>
+                <input type="date" id="startDate" th:field="*{startDate}" required />
+            </div>
+
+            <!-- Slutdato -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="endDate">Slutdato <span class="required">*</span></label>
+                <input type="date" id="endDate" th:field="*{endDate}" required />
+            </div>
+
+            <!-- Faktisk startdato -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="actualStartDate">Faktisk startdato</label>
+                <input type="date" id="actualStartDate" th:field="*{actualStartDate}" />
+            </div>
+
+            <!-- Faktisk slutdato -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="actualEndDate">Faktisk slutdato</label>
+                <input type="date" id="actualEndDate" th:field="*{actualEndDate}" />
+            </div>
+
+            <!-- Status dropdown -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="status">Status <span class="required">*</span></label>
+                <select id="status" th:field="*{status}" required>
+                    <option value="">Vælg status</option>
+                    <option th:each="statusOption : ${allStatuses}"
+                            th:value="${statusOption}"
+                            th:text="${statusOption}">Status option</option>
+                </select>
+            </div>
+
+            <!-- Budget -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="budget">Budget (kr.)</label>
+                <input type="number" id="budget" th:field="*{budget}" step="0.01" min="0" placeholder="0,00" />
+            </div>
+
+            <!-- Færdiggørelse -->
+            <div class="form-group" style="background-color: transparent !important; border: none !important;">
+                <label for="completionPercentage">Færdiggørelse (%)</label>
+                <input type="number" id="completionPercentage" th:field="*{completionPercentage}" min="0" max="100" placeholder="0" />
+            </div>
+
+            <!-- Knapper -->
+            <div class="form-group button-group mt-20" style="background-color: transparent !important; border: none !important;">
+                <button type="submit" class="action-button">Gem ændringer</button>
+                <a th:href="@{/projects/details/{id}(id=${projectDTO.id})}" class="secondary-button">Annuller</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

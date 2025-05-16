@@ -147,4 +147,31 @@ public class ProjectController {
 //            // Proceed with displaying the projects
 //            return "overview_of_projects";
 //        }
+
+        /** The edit form for a specific project based on its id **/
+        @GetMapping("/edit/{id}")
+        public String showEditForm(@PathVariable("id") int id, Model model) {
+            ProjectDTO projectDTO = projectService.getProjectDTOById(id);
+
+            if (projectDTO == null) {
+                model.addAttribute("errorMessage", "Projekt ikke fundet");
+                return "general"; /** Redirect to a general error page **/
+            }
+
+            model.addAttribute("projectDTO", projectDTO);
+            model.addAttribute("allStatuses", StateStatus.values());
+            return "edit_project";
+        }
+
+    @PostMapping("/edit/{id}")
+    public String updateProject(@PathVariable int id, @ModelAttribute("projectDTO") ProjectDTO projectDTO, Model model) {
+        boolean updated = projectService.updateProject(projectDTO);
+        if (!updated) {
+            model.addAttribute("errorMessage", "Projekt opdatering fejlede");
+            return "general";
+        }
+        return "redirect:/projects/overview";
     }
+
+
+}
