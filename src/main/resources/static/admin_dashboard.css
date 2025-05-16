@@ -1,0 +1,138 @@
+
+/* admin-dashboard.css - Enhanced styling for a more polished look */
+
+/* Refined container styling */
+.modal-container {
+    width: 480px;
+    padding: 35px 40px;
+    background-color: #f8f9fa;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+}
+
+/* Subtle background gradient for depth */
+body {
+    background: linear-gradient(135deg, #f0f2f5, #e9ecef);
+}
+
+/* Title styling with modern typography */
+.modal-title {
+    margin-bottom: 12px;
+    font-size: 34px;
+    letter-spacing: -0.5px;
+    font-weight: 900;
+    color: #212529;
+}
+
+/* Welcome message styling */
+.modal-subtitle {
+    margin-top: 8px;
+    margin-bottom: 22px;
+    font-size: 20px;
+    color: #495057;
+    font-weight: 500;
+}
+
+/* Container for info text */
+.form-group {
+    margin-bottom: 25px;
+}
+
+/* Info text styling */
+.info-text {
+    margin-bottom: 30px;
+    color: #6c757d;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+/* Section block styling with subtle borders */
+.section-block {
+    margin: 30px 0;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.section-block:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* Section titles with better spacing */
+.section-title {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #343a40;
+}
+
+/* Enhanced button styling */
+.action-button {
+    width: 100%;
+    display: block;
+    border-radius: 6px;
+    padding: 14px 20px;
+    height: auto;
+    font-size: 16px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 5px rgba(255, 50, 90, 0.2);
+    margin-top: 15px;
+}
+
+.action-button:hover {
+    background-color: #ff2055;
+    box-shadow: 0 4px 8px rgba(255, 50, 90, 0.3);
+    transform: translateY(-1px);
+    color: white;
+}
+
+/* Logout button styling */
+.secondary-button {
+    margin: 15px auto;
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px 15px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    border: 1px solid rgba(255, 50, 90, 0.3);
+}
+
+.secondary-button:hover {
+    background-color: rgba(255, 50, 90, 0.08);
+    border-color: rgb(255, 50, 90);
+}
+
+/* Logout section styling */
+.logout-section {
+    margin-top: 35px;
+}
+
+/* Ensure text doesn't disappear on buttons */
+.action-button, .secondary-button {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Description text under section titles */
+.section-block p {
+    color: #6c757d;
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+
+/* Add subtle animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.modal-container {
+    animation: fadeIn 0.5s ease-out;
+}
