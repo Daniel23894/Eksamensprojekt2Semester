@@ -100,6 +100,17 @@ public class ProjectServiceImpl implements ProjectService {
         return convertToProjectDTOList(projects);
     }
 
+
+    @Override
+    @Transactional
+    public void updateProject(Project project) {
+        if (!projectRepository.existsById(project.getProjectId())) {
+            throw new ProjectNotFoundException("Project with ID " + project.getProjectId() + " not found");
+        }
+        projectRepository.update(project);
+    }
+
+
     /** Converts a list of Project objects to a list of ProjectDTO objects **/
     private List<ProjectDTO> convertToProjectDTOList(List<Project> projects) {
         List<ProjectDTO> projectDTOs = new ArrayList<>();
