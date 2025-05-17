@@ -23,11 +23,10 @@
         <select id="statusFilter" name="status">
           <option value="">Alle statusser</option>
           <option th:each="status : ${stateStatuses}"
-          th:value="${status}"
-          th:text="${status}"
-          th:selected="${param.status == status.name()}"></option>  <!-- Selects the appropriate status based on the selected status in the URL, accessed via param. -->
+                  th:value="${status}"
+                  th:text="${status}"
+                  th:selected="${param.status == status.name()}"></option>  <!-- Selects the appropriate status based on the selected status in the URL, accessed via param. -->
         </select>
-
       </div>
       <button type="submit" class="filter-button">Filtrer</button>
     </form>
@@ -52,8 +51,8 @@
           <td>
             <!-- th:classappend appends a CSS class based on the status, allowing unique styling for each status -->
             <span class="status-badge"
-                    th:classappend="${'status-' + project.status.toString().toLowerCase()}"
-                    th:text="${project.status}"></span>
+                  th:classappend="${'status-' + project.status.toString().toLowerCase()}"
+                  th:text="${project.status}"></span>
           </td>
 
           <td>
@@ -64,10 +63,12 @@
             </div>
           </td>
 
-          <td>
+          <td class="actions-cell">
             <a th:href="@{/projects/details/{id}(id=${project.projectId})}" class="secondary-button">Se detaljer</a>
+            <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
+               class="secondary-button"
+               onclick="return confirm('Er du sikker på, at du vil slette dette projekt? Alle underprojekter og opgaver vil også blive slettet.')">Slet</a>
           </td>
-
         </tr>
         <!-- Hvis der ikke er nogen projekter -->
         <tr th:if="${#lists.isEmpty(projects)}">
