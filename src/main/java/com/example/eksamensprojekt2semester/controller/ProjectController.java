@@ -1,6 +1,8 @@
 package com.example.eksamensprojekt2semester.controller;
 
 import com.example.eksamensprojekt2semester.dto.ProjectDTO;
+import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
+import com.example.eksamensprojekt2semester.model.Project;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
@@ -147,4 +149,53 @@ public class ProjectController {
 //            // Proceed with displaying the projects
 //            return "overview_of_projects";
 //        }
+
+        /** The edit form for a specific project based on its id **/
+        @GetMapping("/edit/{id}")
+        public String showEditForm(@PathVariable("id") int id, Model model) {
+            ProjectDTO projectDTO = projectService.getProjectDTOById(id);
+
+            if (projectDTO == null) {
+                model.addAttribute("errorMessage", "Projekt ikke fundet");
+                return "general"; /** Redirect to a general error page **/
+            }
+
+            model.addAttribute("projectDTO", projectDTO);
+            model.addAttribute("allStatuses", StateStatus.values());
+            return "edit_project";
+        }
+
+    @PostMapping("/edit/{id}")
+    public String updateProject(@PathVariable int id, @ModelAttribute("projectDTO") ProjectDTO projectDTO, Model model) {
+
+        /** Form does not include the id field because users shouldn’t edit IDs.
+         *  So we must set it ourselves because update logic needs to know the ID to update the right project.**/
+        projectDTO.setId(id);
+
+        try {
+            /** Convert DTO to Project for use in our domain-driven logic **/
+            Project project = convertToProject(projectDTO);
+
+            projectService.updateProject(project);
+            return "redirect:/projects/overview";
+        } catch (ProjectNotFoundException e) {
+            model.addAttribute("errorMessage", "Projekt opdatering fejlede: " + e.getMessage());
+            return "general";
+        }
     }
+
+    private Project convertToProject(ProjectDTO dto) {
+        Project project = new Project();
+        project.setProjectId(dto.getId());
+        project.setName(dto.getName());
+        project.setDescription(dto.getDescription());
+        project.setStartDate(dto.getStartDate());
+        project.setEndDate(dto.getEndDate());
+        project.setActualStartDate(dto.getActualStartDate());
+        project.setActualEndDate(dto.getActualEndDate());
+        project.setBudget(dto.getBudget());
+        project.setCompletionPercentage(dto.getCompletionPercentage());
+        project.setStatus(dto.getStatus()); /** Status represented as a int in database **/
+        return project;
+    }
+}

@@ -1,0 +1,120 @@
+/* Specifik styling for redigering af projekt */
+
+/* Breddejusteringer for inputfelter */
+textarea {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Dato-input styling */
+input[type="date"] {
+    padding-right: 10px;
+}
+
+/* Nummerfelter styling */
+input[type="number"] {
+    text-align: right;
+    padding-right: 15px;
+}
+
+/* Knap gruppe styling */
+.button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: space-between;
+}
+
+.button-group .secondary-button {
+    width: 45%;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid rgb(255, 50, 90);
+}
+
+.button-group .secondary-button:hover {
+    background-color: rgba(255, 50, 90, 0.1);
+    text-decoration: none !important;
+}
+
+.button-group .action-button {
+    width: 55%;
+    text-decoration: none;
+}
+
+.button-group .action-button:hover {
+    text-decoration: none;
+}
+
+/* Fejlmeddelelser styling */
+.error-message {
+    background-color: rgba(231, 76, 60, 0.1);
+    border-left: 4px solid #e74c3c;
+    padding: 15px;
+    color: #e74c3c;
+    font-weight: 500;
+    border-radius: 4px;
+}
+
+/* Validering styling */
+input:invalid, select:invalid, textarea:invalid {
+    border-color: #e74c3c;
+}
+
+/* Tooltip for hjælp */
+.form-tooltip {
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 12px;
+    color: #888;
+    cursor: help;
+}
+
+/* Sikrer korrekt baggrundfarve og fjerner uønskede baggrundselementer */
+.modal-container {
+    background-color: rgb(240, 242, 245);
+    position: relative;
+    border: none !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Remove any pseudo-elements that might be causing the red triangle */
+.modal-container:before,
+.modal-container:after,
+form:before,
+form:after,
+.form-group:before,
+.form-group:after {
+    display: none !important;
+    content: none !important;
+    background: none !important;
+    border: none !important;
+}
+
+form {
+    background-color: transparent;
+    border: none;
+    position: relative;
+}
+
+.form-group {
+    background-color: transparent;
+    border: none;
+}
+
+/* Responsiv styling for mindre skærme */
+@media screen and (max-width: 500px) {
+    .button-group {
+        flex-direction: column;
+    }
+
+    .button-group .action-button,
+    .button-group .secondary-button {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+

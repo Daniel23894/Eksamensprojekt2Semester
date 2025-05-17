@@ -15,4 +15,6 @@ public interface ProjectService {
     List<ProjectDTO> findProjectsBySearchAndStatus(String search, StateStatus status);
     Project getProjectById(int id);
     boolean existsById(int id);
+    void updateProject(Project project);
+
 }
