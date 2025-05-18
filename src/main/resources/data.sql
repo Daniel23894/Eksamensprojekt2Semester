@@ -30,8 +30,8 @@ INSERT INTO Subproject (subprojectName, completionPercentage, statusId, projectI
 
 -- Indsæt i Task
 INSERT INTO Task (taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId) VALUES
-('Design UI', '2025-03-01', 120, 80, 70, 2, 1),
-('API Development', '2025-04-01', 150, 60, 40, 2, 2);
+('Design UI', '2025-09-01', 120, 80, 70, 2, 1),
+('API Development', '2025-10-01', 150, 60, 40, 2, 2);
 
 -- Indsæt i Subtask
 INSERT INTO Subtask (subtaskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, taskId) VALUES

@@ -18,7 +18,7 @@
     <p class="text-right">Velkommen, <span th:text="${member.name}">Bruger</span></p>
 
     <!-- Søgefunktion og filter -->
-    <form th:action="@{/overview}" method="get" class="filter-container">
+    <form th:action="@{/projects/overview}" method="get" class="filter-container">
       <div class="form-group search-group">
         <input type="text" id="projectSearch" name="search" placeholder="Søg efter projektnavn...">
       </div>
@@ -67,8 +67,8 @@
           </td>
 
           <td class="actions-cell">
-            <a th:href="@{/projects/details/{id}(id=${project.projectId})}" class="secondary-button">Se detaljer</a>
-            <a th:href="@{/projects/delete/{id}(id=${project.projectId})}"
+            <a th:href="@{/projects/details/{id}(id=${project.id})}" class="secondary-button">Se detaljer</a>
+            <a th:href="@{/projects/delete/{id}(id=${project.id})}"
                class="secondary-button"
                onclick="return confirm('Er du sikker på, at du vil slette dette projekt? Alle underprojekter og opgaver vil også blive slettet.')">Slet</a>
           </td>

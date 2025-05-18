@@ -100,8 +100,8 @@ public class Task {
         }
 
         /** Check om deadline er for langt ude i fremtiden (max 1 måned frem) **/
-        if (deadline.isAfter(LocalDate.now().plusMonths(1))) {
-            throw new IllegalArgumentException("Task deadline kan ikke være mere end 1 måned frem i tiden.");
+        if (deadline.isAfter(LocalDate.now().plusYears(1))) {
+            throw new IllegalArgumentException("Task deadline kan ikke være mere end 1 år frem i tiden.");
         }
         this.deadline = deadline;
     }
