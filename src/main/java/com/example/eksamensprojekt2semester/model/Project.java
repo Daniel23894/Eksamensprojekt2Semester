@@ -109,12 +109,13 @@ public class Project {
 
     public void setDescription(String description) {
         if (description == null || description.trim().isEmpty()) {
-            throw new IllegalArgumentException("Beskrivelsen kan ikke være tom.");
+            this.description = "Ingen beskrivelse angivet";
         }
-        if (description.length() > 100) {
+        else if (description.length() > 100) {
             throw new IllegalArgumentException("Beskrivelsen må ikke være længere end 100 tegn.");
+        } else{
+            this.description = description;
         }
-        this.description = description;
     }
 
     public void setStartDate(LocalDate startDate) {

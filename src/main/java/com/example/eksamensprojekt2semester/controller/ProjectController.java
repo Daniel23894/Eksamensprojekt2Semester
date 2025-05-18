@@ -4,11 +4,13 @@ import com.example.eksamensprojekt2semester.dto.ProjectDTO;
 import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
 import com.example.eksamensprojekt2semester.model.Project;
 import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.TeamMember;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import com.example.eksamensprojekt2semester.service.ProjectService;
 import com.example.eksamensprojekt2semester.service.TaskService;
@@ -34,7 +36,7 @@ public class ProjectController {
 //    /**  ModelAttribute, makes so that is automatically invoked before every controller method. **/
 //    @ModelAttribute
 //    public void addRoleAttributesToModel(HttpSession session, Model model) {
-//        TeamMember teamMember = (TeamMember) session.getAttribute("teamMember");
+//        TeamMember teamMember = (TeamMember) session.getAttribute("loggedInUser");
 //        if (teamMember != null) {
 //            /** == to compare enum constants **/
 //            model.addAttribute("isAdmin", teamMember.getRole() == Role.ADMIN);
@@ -65,7 +67,14 @@ public class ProjectController {
 
     // Gemmer et nyt projekt baseret projectForm
     @PostMapping("/new")
-    public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO) {
+    public String createProject(@Valid @ModelAttribute("projectDTO") ProjectDTO projectDTO,
+                                BindingResult bindingResult, Model model) { /** BindingResult = captures any validation errors so we can check them **/
+
+        /** If validation errors exist, return the form again with error messages **/
+        if (bindingResult.hasErrors()) {
+            return "projectForm"; // Return to form view
+        }
+
         projectService.createProject(projectDTO); // Calls the service to create the project
         return "redirect:/projects/overview"; // Redirects to the project list after creation
     }
@@ -76,10 +85,16 @@ public class ProjectController {
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
 
     @GetMapping("/overview")
-    public String showProjectOverview(Model model,
+    public String showProjectOverview(HttpSession session,
+                                      Model model,
                                       /** required = false: Makes search and status optional, so we don´t get a null value and error if user don't specify them  **/
                                       @RequestParam(required = false) String search,
                                       @RequestParam(required = false) StateStatus status) {
+
+        TeamMember member = (TeamMember) session.getAttribute("loggedInUser");
+        if (member == null) {
+            return "redirect:/login";
+        }
 
         List<ProjectDTO> projects;
 
@@ -99,9 +114,10 @@ public class ProjectController {
             project.setTeamMemberCount(teamMemberCount);
         }
 
-        /** Adds all possible status values, and list of projects (filtered or not, depending on the search) **/
-        model.addAttribute("stateStatuses", StateStatus.values());
-        model.addAttribute("projects", projects);
+
+        model.addAttribute("member", member);    /** Adds retrieved from the session team member,so the HTML page can access and display user-specific data **/
+        model.addAttribute("stateStatuses", StateStatus.values());   /** Adds all possible status values  **/
+        model.addAttribute("projects", projects);    /** Adds list of projects (filtered or not, depending on the search)  **/
 
         return "overview_of_projects";
     }

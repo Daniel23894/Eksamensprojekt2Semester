@@ -14,6 +14,9 @@
     <h1 class="modal-title">Projektoversigt</h1>
     <p class="modal-subtitle">Her kan du se alle dine projekter med nøgleinformation.</p>
 
+    <!-- Show logged-in user's name -->
+    <p class="text-right">Velkommen, <span th:text="${member.name}">Bruger</span></p>
+
     <!-- Søgefunktion og filter -->
     <form th:action="@{/overview}" method="get" class="filter-container">
       <div class="form-group search-group">
