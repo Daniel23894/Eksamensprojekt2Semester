@@ -37,13 +37,13 @@ public class TeamMemberRepository {
 
     /** Henter alle teammedlemmer tilknyttet et projekt baseret på projectId **/
     public List<TeamMember> findByProjectId(int projectId) {
-        String sql = "SELECT * FROM teamMember WHERE project_id = ?";
+        String sql = "SELECT * FROM teamMember WHERE projectId = ?";
         return jdbcTemplate.query(sql, teamMemberRowMapper, projectId);
     }
 
     /** Tæller antal teammedlemmer i et projekt **/
     public int countByProjectId(int projectId) {
-        String sql = "SELECT COUNT(*) FROM teamMember WHERE project_id = ?";
+        String sql = "SELECT COUNT(*) FROM teamMember WHERE projectId = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, projectId);
     }
 

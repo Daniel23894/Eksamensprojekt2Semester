@@ -11,16 +11,6 @@ CREATE TABLE role (
                       roleName VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE teamMember (
-                            memberId INTEGER PRIMARY KEY AUTO_INCREMENT,
-                            name VARCHAR(255) NOT NULL,
-                            email VARCHAR(255) NOT NULL UNIQUE,     -- unique for login
-                            password VARCHAR(255) NOT NULL,         -- store hashed password
-                            role INTEGER,                           -- e.g., 'admin', 'user', 'project_manager'
-                            hoursPerDay DECIMAL(19, 0),
-                            FOREIGN KEY (role) REFERENCES role(roleId)
-);
-
 CREATE TABLE project (
                          projectId INTEGER PRIMARY KEY AUTO_INCREMENT,
                          projectName VARCHAR(255) NOT NULL,
@@ -31,9 +21,23 @@ CREATE TABLE project (
                          actualEndDate DATE,
                          budget DECIMAL(19, 0),
                          completionPercentage INTEGER,
-                         statusId INTEGER,
+                         statusId INTEGER NOT NULL, -- Project must have a status
                          FOREIGN KEY (statusId) REFERENCES stateStatus(statusId)
 );
+
+
+CREATE TABLE teamMember (
+                            memberId INTEGER PRIMARY KEY AUTO_INCREMENT,
+                            name VARCHAR(255) NOT NULL,
+                            email VARCHAR(255) NOT NULL UNIQUE,     -- unique for login
+                            password VARCHAR(255) NOT NULL,         -- store hashed password
+                            role INTEGER,                           -- e.g., 'admin', 'user', 'project_manager'
+                            hoursPerDay DECIMAL(19, 0),
+                            projectId INTEGER NULL, -- NULL to allow projectId  to be empty or unassigned
+                            FOREIGN KEY (role) REFERENCES role(roleId),
+                            FOREIGN KEY (projectId) REFERENCES project(projectId) ON DELETE SET NULL -- ON DELETE SET NULL to avoid errors and keep team members existing if the project is deleted.
+);
+
 
 CREATE TABLE subProject (
                             subProjectId INTEGER PRIMARY KEY AUTO_INCREMENT,

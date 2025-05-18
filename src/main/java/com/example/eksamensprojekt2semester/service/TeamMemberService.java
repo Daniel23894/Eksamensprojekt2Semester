@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.example.eksamensprojekt2semester.repository.TeamMemberRepository;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,13 +14,10 @@ import java.util.List;
 public class TeamMemberService {
 
     private final TeamMemberRepository teamMemberRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public TeamMemberService(TeamMemberRepository teamMemberRepository ,
-                             BCryptPasswordEncoder passwordEncoder) {
+    public TeamMemberService(TeamMemberRepository teamMemberRepository) {
         this.teamMemberRepository = teamMemberRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     // Tjekker om en teammedlem findes i databasen ved hjælp af ID
@@ -43,9 +38,6 @@ public class TeamMemberService {
     /** Creates new team member  **/
     @Transactional
     public TeamMember createTeamMember(TeamMember teamMember) {
-        String rawPassword = teamMember.getPassword();
-        String hashedPassword = passwordEncoder.encode(rawPassword);
-        teamMember.setPassword(hashedPassword);
         return teamMemberRepository.save(teamMember);
     }
 
@@ -56,7 +48,7 @@ public class TeamMemberService {
             TeamMember admin = new TeamMember();
             admin.setName("System Admin");
             admin.setEmail(email);
-            admin.setPassword(passwordEncoder.encode("admin123"));
+            admin.setPassword(("admin123"));
             admin.setRole(Role.ADMIN);
             admin.setHoursPerDay(BigDecimal.valueOf(8));
 
@@ -96,7 +88,7 @@ public class TeamMemberService {
 
         String newPassword = updatedData.getPassword();
         if (newPassword != null && !newPassword.isBlank()) {
-            existing.setPassword(passwordEncoder.encode(newPassword));
+            existing.setPassword((newPassword));
         }
 
         // Save the updated member
@@ -119,6 +111,4 @@ public class TeamMemberService {
         }
         teamMemberRepository.deleteById(memberId);
     }
-
-
 }

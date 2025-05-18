@@ -5,8 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard - Alpha Solutions</title>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="admin-dashboard.css">
+  <link rel="stylesheet" th:href="@{/generic_styles.css}">
+  <link rel="stylesheet" th:href="@{/admin_dashboard.css}">
+
 </head>
 <body>
 <div class="main-container">
@@ -32,7 +33,7 @@
     <div class="section-block">
       <h2 class="section-title text-center">Projektadministration</h2>
       <p class="text-center">Administrer alle projekter</p>
-      <a href="overview_of_projects.html" class="action-button">Gå til projekter</a>
+      <a th:href="@{/projects/overview}" class="action-button">Gå til projekter</a>
     </div>
 
     <div class="logout-section">
