@@ -44,7 +44,7 @@
         <select id="parentProject" th:field="*{projectId}" required>
           <option value="">-- Vælg Projekt --</option>
           <option th:each="project : ${projects}"
-                  th:value="${project.id}"
+                  th:value="${projectId}"
                   th:text="${project.name}">
           </option>
         </select>

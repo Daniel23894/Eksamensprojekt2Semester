@@ -57,12 +57,12 @@ public class SubprojectController {
 
         /** Generic fallback for unexpected errors **/
         } catch (Exception e) {
-            logger.error("Fejl ved oprettelse af subprojekt: ", e); /** Logs the error message and includes technical details of the exception e **/
+            e.printStackTrace(); // <- Dette vil vise stack trace direkte i konsollen
+            logger.error("Fejl ved oprettelse af subprojekt: ", e);
             model.addAttribute("errorMessage", "Der opstod en uventet fejl. Prøv igen senere.");
             model.addAttribute("projects", projectService.getAllProjects());
             return "create_subproject";
         }
     }
-
 }
 
