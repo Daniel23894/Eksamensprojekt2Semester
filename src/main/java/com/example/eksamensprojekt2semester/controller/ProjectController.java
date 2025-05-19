@@ -82,10 +82,8 @@ public class ProjectController {
     }
 
 
-
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
-
     @GetMapping("/overview")
     public String showProjectOverview(HttpSession session,
                                       Model model,
@@ -189,7 +187,7 @@ public class ProjectController {
 
         try {
             /** Convert DTO to Project for use in our domain-driven logic **/
-            Project project = convertToProject(projectDTO);
+            Project project = projectService.convertToProject(projectDTO);
 
             projectService.updateProject(project);
             return "redirect:/projects/overview";
@@ -199,19 +197,6 @@ public class ProjectController {
         }
     }
 
-    private Project convertToProject(ProjectDTO dto) {
-        Project project = new Project();
-        project.setProjectId(dto.getId());
-        project.setName(dto.getName());
-        project.setDescription(dto.getDescription());
-        project.setStartDate(dto.getStartDate());
-        project.setEndDate(dto.getEndDate());
-        project.setActualStartDate(dto.getActualStartDate());
-        project.setActualEndDate(dto.getActualEndDate());
-        project.setBudget(dto.getBudget());
-        project.setCompletionPercentage(dto.getCompletionPercentage());
-        project.setStatus(dto.getStatus()); /** Status represented as a int in database **/
-        return project;
-    }
+
 }
 

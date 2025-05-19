@@ -16,5 +16,7 @@ public interface ProjectService {
     Project getProjectById(int id);
     boolean existsById(int id);
     void updateProject(Project project);
+    Project convertToProject(ProjectDTO dto);
+
 
 }

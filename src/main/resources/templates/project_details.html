@@ -13,9 +13,15 @@
 <div class="main-container">
   <div class="project-container">
     <div class="modal-container project-info">
+
       <!-- Header -->
       <h1 class="modal-title" th:text="${project.name}">Projektnavn</h1>
       <p class="modal-subtitle">Projektdetaljer og subprojekter</p>
+
+      <div class="form-group">
+        <label>Beskrivelse</label>
+        <p th:text="${project.description != null && !project.description.isEmpty() ? project.description : 'Ingen beskrivelse er tilgænglige'}"></p>
+      </div>
 
       <!-- Error message display (if any) -->
       <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
@@ -57,6 +63,22 @@
         <label>Status:</label>
         <p th:text="${project.status.description}">Ikke startet</p>
       </div>
+
+      <div class="form-group">
+        <label>Antal teammedlemmer:</label>
+        <p th:text="${project.teamMemberCount}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal opgaver:</label>
+        <p th:text="${project.totalTasks}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal fuldførte opgaver:</label>
+        <p th:text="${project.completedTasks}">0</p>
+      </div>
+
 
       <div class="form-group mt-20">
         <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
