@@ -11,6 +11,7 @@ public class Subproject {
     private BigDecimal totalHours;
     private BigDecimal remainingHours;
 
+
     /** No-args constructor – required by frameworks and libraries like RowMapper **/
     public Subproject() {
     }
@@ -78,7 +79,6 @@ public class Subproject {
         }
         this.completionPercentage = completionPercentage;
     }
-
     public void setStatus(StateStatus status){
         if (status == null) {
             throw new IllegalArgumentException("Status kan ikke være null.");
@@ -92,7 +92,6 @@ public class Subproject {
         }
         this.projectId = projectId;
     }
-
     public BigDecimal getTotalHours() {
         return totalHours;
     }
@@ -102,10 +101,12 @@ public class Subproject {
 
     public void setTotalHours(BigDecimal totalHours) {
         this.totalHours = totalHours;
+
     }
 
     public void setRemainingHours(BigDecimal remainingHours) {
         this.remainingHours = remainingHours;
+
     }
 
     /** Override toString() method for better readability **/
@@ -120,3 +121,5 @@ public class Subproject {
                 '}';
     }
 }
+
+
