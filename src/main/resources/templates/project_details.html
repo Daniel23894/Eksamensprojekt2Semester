@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Projekt Detaljer</title>
   <link rel="stylesheet" th:href="@{/generic_styles.css}">
-  <link rel="stylesheet" th:href="@{/project-details.css}">
+  <link rel="stylesheet" th:href="@{/project_details.css}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
 </head>
 
@@ -26,9 +26,7 @@
       <!-- Error message display (if any) -->
       <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
 
-      <!-- Project details - fjernet ID
-      #dates.format() works with java.util.Date or java.util.Calendar,not java.time. LocalDate#dates.format() only works with java.util.Date or java.util.Calendar, not java.time.LocalDate which we use in Project
-      therefore in html we use temporals  -->
+      <!-- Project details -->
       <div class="form-group">
         <label>Startdato:</label>
         <p th:text="${#temporals.format(project.startDate, 'dd-MM-yyyy')}">01-01-2025</p>
@@ -79,7 +77,6 @@
         <p th:text="${project.completedTasks}">0</p>
       </div>
 
-
       <div class="form-group mt-20">
         <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
       </div>
@@ -103,22 +100,26 @@
             <p th:text="${subproject.name}">Subprojekt navn</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show completion percentage if value exists -->
+          <div class="form-group" th:if="${subproject.completionPercentage != null}">
             <label>Færdiggørelse (%):</label>
             <p th:text="${subproject.completionPercentage + '%'}">0%</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show status if it exists -->
+          <div class="form-group" th:if="${subproject.status != null}">
             <label>Status:</label>
             <p th:text="${subproject.status.description}">Ikke startet</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show total hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.totalHours != null && subproject.totalHours > 0}">
             <label>Total Hours:</label>
             <p th:text="${subproject.totalHours}">0</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show remaining hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.remainingHours != null && subproject.remainingHours > 0}">
             <label>Remaining Hours:</label>
             <p th:text="${subproject.remainingHours}">0</p>
           </div>
