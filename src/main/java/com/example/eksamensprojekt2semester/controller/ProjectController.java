@@ -197,6 +197,14 @@ public class ProjectController {
         }
     }
 
-
+    @GetMapping("/delete/{id}")
+    public String deleteProject(@PathVariable int id) {
+        try {
+            projectService.deleteProjectById(id);
+        } catch (ProjectNotFoundException e) {
+            return "redirect:/projects/overview?error=notfound";
+        }
+        return "redirect:/projects/overview";
+    }
 }
 

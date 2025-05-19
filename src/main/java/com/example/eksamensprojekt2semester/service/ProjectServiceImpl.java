@@ -104,6 +104,16 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.update(project);
     }
 
+    @Override
+    @Transactional
+    public void deleteProjectById(int id) throws ProjectNotFoundException {
+        if (!projectRepository.existsById(id)) {
+            throw new ProjectNotFoundException("Project with ID " + id + " not found.");
+        }
+        projectRepository.delete(id);
+    }
+
+
 
     /** Converts a list of Project objects to a list of ProjectDTO objects **/
     private List<ProjectDTO> convertToProjectDTOList(List<Project> projects) {
@@ -145,6 +155,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         return project;
     }
+
 
 
 }

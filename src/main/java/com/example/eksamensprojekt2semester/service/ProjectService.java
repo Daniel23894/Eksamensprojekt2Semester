@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt2semester.service;
 
 import com.example.eksamensprojekt2semester.dto.ProjectDTO;
+import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
 import com.example.eksamensprojekt2semester.model.Project;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 
@@ -17,6 +18,8 @@ public interface ProjectService {
     boolean existsById(int id);
     void updateProject(Project project);
     Project convertToProject(ProjectDTO dto);
+    void deleteProjectById(int id) throws ProjectNotFoundException;
+
 
 
 }
