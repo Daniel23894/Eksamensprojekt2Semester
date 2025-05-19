@@ -52,9 +52,12 @@
           <td th:text="${project.name}"></td>
 
           <td>
-            <!-- th:classappend appends a CSS class based on the status, allowing unique styling for each status -->
+            <!-- th:classappend appends adds a CSS class based on the project's status, so each status can have its own style
+             The enum name (e.g., IN_PROGRESS) is converted to lowercase (in_progress),
+             then underscores are replaced with hyphens (in-progress) to match CSS class naming -->
             <span class="status-badge"
-                  th:classappend="${'status-' + project.status.toString().toLowerCase()}"
+                  th:classappend="${'status-' + project.status.toString().toLowerCase().replace('_', '-')}"
+
                   th:text="${project.status}"></span>
           </td>
 
