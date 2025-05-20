@@ -14,53 +14,73 @@
   <div class="project-container">
     <div class="modal-container project-info">
       <!-- Header -->
-      <h1 class="modal-title" th:text="${project != null ? project.name : ''}">Projektnavn</h1>
+      <h1 class="modal-title" th:text="${project.name}">Projektnavn</h1>
       <p class="modal-subtitle">Projektdetaljer og subprojekter</p>
+
+      <div class="form-group">
+        <label>Beskrivelse</label>
+        <p th:text="${project.description != null && !project.description.isEmpty() ? project.description : 'Ingen beskrivelse er tilgænglige'}"></p>
+      </div>
 
       <!-- Error message display (if any) -->
       <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
 
       <!-- Project details -->
-      <div th:if="${project != null}">
-        <div class="form-group">
-          <label>Startdato:</label>
-          <p th:text="${project.startDate != null ? #temporals.format(project.startDate, 'dd-MM-yyyy') : 'Ikke angivet'}">01-01-2025</p>
-        </div>
-
-        <div class="form-group">
-          <label>Slutdato:</label>
-          <p th:text="${project.endDate != null ? #temporals.format(project.endDate, 'dd-MM-yyyy') : 'Ikke angivet'}">31-12-2025</p>
-        </div>
-
-        <div class="form-group">
-          <label>Faktisk startdato:</label>
-          <p th:text="${project.actualStartDate != null ? #temporals.format(project.actualStartDate, 'dd-MM-yyyy') : 'Ikke startet'}">Ikke startet</p>
-        </div>
-
-        <div class="form-group">
-          <label>Faktisk slutdato:</label>
-          <p th:text="${project.actualEndDate != null ? #temporals.format(project.actualEndDate, 'dd-MM-yyyy') : 'Ikke afsluttet'}">Ikke afsluttet</p>
-        </div>
-
-        <div class="form-group">
-          <label>Budget:</label>
-          <p th:text="${project.budget != null ? #numbers.formatDecimal(project.budget, 1, 'POINT', 2, 'COMMA') + ' kr.' : '0,00 kr.'}">0,00 kr.</p>
-        </div>
-
-        <div class="form-group">
-          <label>Færdiggørelse (%):</label>
-          <p th:text="${project.completionPercentage + '%'}">0%</p>
-        </div>
-
-        <div class="form-group">
-          <label>Status:</label>
-          <p th:text="${project.status != null ? project.status.description : 'Ikke angivet'}">Ikke startet</p>
-        </div>
-
-        <div class="form-group mt-20">
-          <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
-        </div>
+      <div class="form-group">
+        <label>Startdato:</label>
+        <p th:text="${#temporals.format(project.startDate, 'dd-MM-yyyy')}">01-01-2025</p>
       </div>
+
+      <div class="form-group">
+        <label>Slutdato:</label>
+        <p th:text="${#temporals.format(project.endDate, 'dd-MM-yyyy')}">31-12-2025</p>
+      </div>
+
+      <div class="form-group">
+        <label>Faktisk startdato:</label>
+        <p th:text="${project.actualStartDate != null ? #temporals.format(project.actualStartDate, 'dd-MM-yyyy') : 'Ikke startet'}">Ikke startet</p>
+      </div>
+
+      <div class="form-group">
+        <label>Faktisk slutdato:</label>
+        <p th:text="${project.actualEndDate != null ? #temporals.format(project.actualEndDate, 'dd-MM-yyyy') : 'Ikke afsluttet'}">Ikke afsluttet</p>
+      </div>
+
+      <div class="form-group">
+        <label>Budget:</label>
+        <p th:text="${project.budget != null ? #numbers.formatDecimal(project.budget, 1, 'POINT', 2, 'COMMA') + ' kr.' : '0,00 kr.'}">0,00 kr.</p>
+      </div>
+
+      <div class="form-group">
+        <label>Færdiggørelse (%):</label>
+        <p th:text="${project.completionPercentage + '%'}">0%</p>
+      </div>
+
+      <div class="form-group">
+        <label>Status:</label>
+        <p th:text="${project.status.description}">Ikke startet</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal teammedlemmer:</label>
+        <p th:text="${project.teamMemberCount}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal opgaver:</label>
+        <p th:text="${project.totalTasks}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal fuldførte opgaver:</label>
+        <p th:text="${project.completedTasks}">0</p>
+      </div>
+
+      <div class="form-group mt-20"
+           th:if="${isAdmin or isPO}">
+        <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
+      </div>
+
     </div>
 
 
@@ -69,49 +89,53 @@
       <h2 class="modal-title">Subprojekter</h2>
 
       <!-- Display message when no subprojects -->
-      <div th:if="${subprojects == null || #lists.isEmpty(subprojects)}" class="text-center mb-20">
+      <div th:if="${#lists.isEmpty(subprojects)}" class="text-center mb-20">
         <p>Der er ingen subprojekter tilknyttet dette projekt endnu.</p>
       </div>
 
       <!-- List of subprojects -->
-      <div th:if="${subprojects != null && !#lists.isEmpty(subprojects)}">
+      <div th:unless="${#lists.isEmpty(subprojects)}">
         <div th:each="subproject : ${subprojects}" class="form-group">
           <div class="form-group">
             <label>Navn:</label>
             <p th:text="${subproject.name}">Subprojekt navn</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show completion percentage if value exists -->
+          <div class="form-group" th:if="${subproject.completionPercentage != null}">
             <label>Færdiggørelse (%):</label>
             <p th:text="${subproject.completionPercentage + '%'}">0%</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show status if it exists -->
+          <div class="form-group" th:if="${subproject.status != null}">
             <label>Status:</label>
-            <p th:text="${subproject.status != null ? subproject.status.description : 'Ikke angivet'}">Ikke startet</p>
+            <p th:text="${subproject.status.description}">Ikke startet</p>
           </div>
 
-          <!-- Only show if these properties exist -->
-          <div class="form-group" th:if="${subproject.totalHours != null}">
+          <!-- Only show total hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.totalHours != null && subproject.totalHours > 0}">
             <label>Total Hours:</label>
             <p th:text="${subproject.totalHours}">0</p>
           </div>
 
-          <div class="form-group" th:if="${subproject.remainingHours != null}">
+          <!-- Only show remaining hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.remainingHours != null && subproject.remainingHours > 0}">
             <label>Remaining Hours:</label>
             <p th:text="${subproject.remainingHours}">0</p>
           </div>
 
           <div class="form-group">
-            <a th:href="@{/subprojects/{id}(id=${subproject.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
+            <a th:href="@{/projects/subprojects/{id}(id=${subproject.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
           </div>
 
           <div class="divider"></div>
         </div>
       </div>
 
-      <!-- Button to add new subproject - FIXED -->
-      <div class="form-group">
+      <!-- Button to add new subproject -->
+      <div class="form-group"
+           th:if="${isAdmin or isPO}">
         <a th:href="@{/projects/subprojects/create(projectId=${project.id})}" class="action-button rounded-button">Tilføj Subprojekt</a>
       </div>
 

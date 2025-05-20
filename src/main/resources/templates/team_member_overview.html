@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Teammedlemsoversigt</title>
+  <link rel="stylesheet" th:href="@{/generic_styles.css}">
+  <link rel="stylesheet" th:href="@{/team_member_overview.css}">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="main-container">
+  <div class="modal-container dashboard-container">
+
+    <!-- Header -->
+    <h1 class="modal-title">Teammedlemsoversigt</h1>
+    <p class="modal-subtitle">Her kan du se alle medlemmer som er i systemet.</p>
+
+    <!-- Teammedlem tabel -->
+    <div class="table-container">
+      <table class="project-table">
+        <thead>
+        <tr>
+          <th>Navn</th>
+          <th>Email</th>
+          <th>Rolle</th>
+          <th>Timer pr. dag</th>
+          <th>Handlinger</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each="teamMember : ${teamMembers}"> <!-- Iterates over the list of team members -->
+          <td th:text="${teamMember.name}"></td>
+          <td th:text="${teamMember.email}"></td>
+          <td th:text="${teamMember.role}"></td>
+          <td th:text="${teamMember.hoursPerDay}"></td>
+
+          <td class="actions-cell">
+            <a th:href="@{/teamMembers/details/{id}(id=${teamMember.memberId})}" class="secondary-button">Se detaljer</a>
+            <a th:href="@{/teamMembers/delete/{id}(id=${teamMember.memberId})}"
+               class="secondary-button"
+               onclick="return confirm('Er du sikker på, at du vil slette dette teammedlem?')">Slet</a>
+          </td>
+        </tr>
+        <!-- In case there are no team members-->
+        <tr th:if="${#lists.isEmpty(teamMembers)}">
+          <td colspan="5" class="text-center">Ingen teammedlemmer fundet</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Create new team member button knap -->
+    <div class="form-group">
+      <a th:href="@{/team-members/create}" class="action-button">Opret nyt teammedlem</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

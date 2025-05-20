@@ -27,16 +27,16 @@ public class TeamMemberController {
     /**
      * Shows a list of all team members.
      */
-    @GetMapping("/list")
-    public String showAllTeamMembers(Model model, HttpSession session) {
-        if (session.getAttribute("employee") == null) {
-            return "redirect:/login";
-        }
-
-        List<TeamMember> teamMembers = teamMemberService.getAllMembers();
-        model.addAttribute("teamMembers", teamMembers);
-        return "team_member_list";
-    }
+//    @GetMapping("/list")
+//    public String showAllTeamMembers(Model model, HttpSession session) {
+//        if (session.getAttribute("employee") == null) {
+//            return "redirect:/login";
+//        }
+//
+//        List<TeamMember> teamMembers = teamMemberService.getAllMembers();
+//        model.addAttribute("teamMembers", teamMembers);
+//        return "team_member_list";
+//    }
 
     /**
      * Shows a form for creating a new team member.
@@ -45,7 +45,7 @@ public class TeamMemberController {
     public String showCreateForm(Model model) {
         model.addAttribute("teamMember", new TeamMember());
         model.addAttribute("roles", Role.values());
-        return "team_member_form";
+        return "create_team_member";
     }
 
     /**
@@ -55,51 +55,51 @@ public class TeamMemberController {
     public String createTeamMember(@ModelAttribute("teamMember") TeamMember teamMember, Model model) {
         try {
             teamMemberService.createTeamMember(teamMember);
-            return "redirect:/team-members/list";
+            return "redirect:/admin/overview";
         } catch (Exception e) {
             logger.error("Fejl under oprettelse af team member", e);
             model.addAttribute("errorMessage", "Noget gik galt. Prøv igen.");
             model.addAttribute("roles", Role.values());
-            return "team_member_form";
+            return "create_team_member";
         }
     }
 
     /**
      * Displays a form to edit an existing team member.
      */
-    @GetMapping("/edit/{id}")
-    public String showEditForm(@PathVariable int id, Model model) {
-        TeamMember teamMember = teamMemberService.getMemberById(id);
-        if (teamMember == null) {
-            return "redirect:/team-members/list";
-        }
-        model.addAttribute("teamMember", teamMember);
-        model.addAttribute("roles", Role.values());
-        return "team_member_form";
-    }
-
-    /**
-     * Handles updating a team member.
-     */
-    @PostMapping("/edit")
-    public String updateTeamMember(@ModelAttribute("teamMember") TeamMember teamMember, Model model) {
-        try {
-            teamMemberService.updateTeamMember(teamMember.getMemberId(), teamMember); ;
-            return "redirect:/team-members/list";
-        } catch (Exception e) {
-            logger.error("Fejl ved opdatering af team member", e);
-            model.addAttribute("errorMessage", "Kunne ikke opdatere team medlem.");
-            model.addAttribute("roles", Role.values());
-            return "team_member_form";
-        }
-    }
-
-    /**
-     * Deletes a team member by ID.
-     */
-    @GetMapping("/delete/{id}")
-    public String deleteTeamMember(@PathVariable int id) {
-        teamMemberService.deleteTeamMember(id);
-        return "redirect:/team-members/list";
-    }
+//    @GetMapping("/edit/{id}")
+//    public String showEditForm(@PathVariable int id, Model model) {
+//        TeamMember teamMember = teamMemberService.getMemberById(id);
+//        if (teamMember == null) {
+//            return "redirect:/admin/overview";
+//        }
+//        model.addAttribute("teamMember", teamMember);
+//        model.addAttribute("roles", Role.values());
+//        return "team_member_form";
+//    }
+//
+//    /**
+//     * Handles updating a team member.
+//     */
+//    @PostMapping("/edit")
+//    public String updateTeamMember(@ModelAttribute("teamMember") TeamMember teamMember, Model model) {
+//        try {
+//            teamMemberService.updateTeamMember(teamMember.getMemberId(), teamMember); ;
+//            return "redirect:/team-members/list";
+//        } catch (Exception e) {
+//            logger.error("Fejl ved opdatering af team member", e);
+//            model.addAttribute("errorMessage", "Kunne ikke opdatere team medlem.");
+//            model.addAttribute("roles", Role.values());
+//            return "team_member_form";
+//        }
+//    }
+//
+//    /**
+//     * Deletes a team member by ID.
+//     */
+//    @GetMapping("/delete/{id}")
+//    public String deleteTeamMember(@PathVariable int id) {
+//        teamMemberService.deleteTeamMember(id);
+//        return "redirect:/team-members/list";
+//    }
 }

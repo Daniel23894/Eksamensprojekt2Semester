@@ -38,6 +38,7 @@ public class ProjectRepository {
         String sql = "INSERT INTO project (projectName, description, startDate, endDate, actualStartDate, actualEndDate, budget, completionPercentage, statusId) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
+
         jdbcTemplate.update(sql, project.getName(), project.getDescription(), project.getStartDate(),
                 project.getEndDate(), project.getActualStartDate(), project.getActualEndDate(), project.getBudget(),
                 project.getCompletionPercentage(), statusId);

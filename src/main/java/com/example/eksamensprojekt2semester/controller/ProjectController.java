@@ -37,7 +37,8 @@ public class ProjectController {
         this.subprojectService = subprojectService;
     }
 
-    /**  ModelAttribute, makes so that is automatically invoked before every controller method. **/
+    /**  This ModelAttribute method is used without a return value which makes so that is automatically invoked
+     *   before every controller method. It adds the role values in this case  to the model **/
     @ModelAttribute
     public void addRoleAttributesToModel(HttpSession session, Model model) {
         TeamMember teamMember = (TeamMember) session.getAttribute("loggedInUser");
@@ -84,10 +85,8 @@ public class ProjectController {
     }
 
 
-
     /** Displays an overview of projects based on user preferences (search and filter).
         Only adjusts what is visible — no data is modified, so no POST method is needed.**/
-
     @GetMapping("/overview")
     public String showProjectOverview(HttpSession session,
                                       Model model,
@@ -191,7 +190,7 @@ public class ProjectController {
 
         try {
             /** Convert DTO to Project for use in our domain-driven logic **/
-            Project project = convertToProject(projectDTO);
+            Project project = projectService.convertToProject(projectDTO);
 
             projectService.updateProject(project);
             return "redirect:/projects/overview";
@@ -201,19 +200,14 @@ public class ProjectController {
         }
     }
 
-    private Project convertToProject(ProjectDTO dto) {
-        Project project = new Project();
-        project.setProjectId(dto.getId());
-        project.setName(dto.getName());
-        project.setDescription(dto.getDescription());
-        project.setStartDate(dto.getStartDate());
-        project.setEndDate(dto.getEndDate());
-        project.setActualStartDate(dto.getActualStartDate());
-        project.setActualEndDate(dto.getActualEndDate());
-        project.setBudget(dto.getBudget());
-        project.setCompletionPercentage(dto.getCompletionPercentage());
-        project.setStatus(dto.getStatus()); /** Status represented as a int in database **/
-        return project;
+    @GetMapping("/delete/{id}")
+    public String deleteProject(@PathVariable int id) {
+        try {
+            projectService.deleteProjectById(id);
+        } catch (ProjectNotFoundException e) {
+            return "redirect:/projects/overview?error=notfound";
+        }
+        return "redirect:/projects/overview";
     }
     @GetMapping("/project/{id}")
     public String viewProject(@PathVariable("id") int id, Model model) {
