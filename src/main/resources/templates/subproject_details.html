@@ -100,7 +100,7 @@
             <!-- Button to add new task -->
             <div class="form-group"
                  th:if="${isAdmin or isPO}">
-                <a th:href="@{/projects/tasks/create(subprojectId=${subproject.id})}" class="action-button rounded-button">Tilføj Opgave</a>
+                <a th:href="@{/tasks/create(subprojectId=${subproject.id})}" class="action-button rounded-button">Tilføj Opgave</a>
             </div>
 
             <!-- Back button -->

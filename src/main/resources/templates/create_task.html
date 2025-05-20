@@ -22,7 +22,7 @@
     <div th:if="${errorMessage != null}" class="error-message" th:text="${errorMessage}"></div>
 
     <!-- Form For Creation Of Task -->
-    <form th:action="@{/tasks/create}" method="post">
+    <form th:action="@{/tasks/create}" method="post" th:object="${task}">
 
       <!-- Name field (required) -->
       <div class="form-group">
@@ -57,14 +57,16 @@
       <!-- Status field -->
       <div class="form-group">
         <label for="status">Status:</label>
-        <select id="status" name="status">
+        <select id="status" name="status" th:field="*{status}">
           <option value="">-- Vælg Status --</option>
-          <option th:each="statusOption : ${T(com.example.eksamensprojekt2semester.model.StateStatus).values()}"
+          <option th:each="statusOption : ${stateStatuses}"
                   th:value="${statusOption}"
-                  th:text="${statusOption}">
+                  th:text="${statusOption.description}"
+                  th:selected="${statusOption} == *{status}">
           </option>
         </select>
       </div>
+
 
       <!-- Parent Subproject field (required) -->
       <div class="form-group">

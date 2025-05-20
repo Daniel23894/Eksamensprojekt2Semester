@@ -27,7 +27,7 @@
           <option value="">Alle statusser</option>
           <option th:each="status : ${stateStatuses}"
                   th:value="${status}"
-                  th:text="${status}"
+                  th:text="${status.description}"
                   th:selected="${param.status == status.name()}"></option>  <!-- Selects the appropriate status based on the selected status in the URL, accessed via param. -->
         </select>
       </div>
@@ -58,7 +58,7 @@
             <span class="status-badge"
                   th:classappend="${'status-' + project.status.toString().toLowerCase().replace('_', '-')}"
 
-                  th:text="${project.status}"></span>
+                  th:text="${project.status.description}"></span>
           </td>
 
           <td>
