@@ -1,0 +1,128 @@
+/* General font and layout */
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0;
+    padding: 40px 0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f0f2f5, #e9ecef);
+}
+
+/* Main container */
+.main-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+/* Modal/form container */
+.modal-container {
+    width: 480px;
+    padding: 35px 40px;
+    background-color: #ffffff;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Title */
+.modal-title {
+    font-size: 32px;
+    font-weight: 900;
+    margin-bottom: 12px;
+    color: #212529;
+    text-align: center;
+}
+
+/* Required note */
+.text-center {
+    text-align: center;
+    font-size: 14px;
+    color: #6c757d;
+    margin-bottom: 20px;
+}
+
+/* Form group layout */
+.form-group {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: #343a40;
+}
+
+/* Inputs & select */
+input[type="text"],
+input[type="date"],
+input[type="number"],
+select {
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #ced4da;
+    font-size: 15px;
+    transition: border-color 0.2s;
+}
+
+input:focus,
+select:focus {
+    border-color: #ff2055;
+    outline: none;
+}
+
+/* Required field asterisk */
+.required {
+    color: #ff2055;
+    font-weight: bold;
+}
+
+/* Error message */
+.error-message {
+    background-color: #ffe3e3;
+    border: 1px solid #ff6b6b;
+    color: #b00020;
+    padding: 12px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Buttons */
+.action-button {
+    background-color: #ff2055;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(255, 50, 90, 0.2);
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.action-button:hover {
+    background-color: #e6003e;
+    transform: translateY(-2px);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
