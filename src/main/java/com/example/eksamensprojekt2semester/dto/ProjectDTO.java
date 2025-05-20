@@ -9,6 +9,7 @@ import com.example.eksamensprojekt2semester.model.StateStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 public class ProjectDTO {
     private int id;
@@ -51,6 +52,9 @@ public class ProjectDTO {
     private int totalTasks;
     @Min(value = 0, message = "Antallet af fuldførte opgaver kan ikke være negativt")
     private int completedTasks;
+
+    // Added subprojects field to maintain relationship with subprojects
+    private List<SubprojectDTO> subprojects;
 
     // Getters and Setters
     public int getId() {
@@ -96,7 +100,6 @@ public class ProjectDTO {
     public LocalDate getActualStartDate() {
         return actualStartDate;
     }
-
 
     public void setActualStartDate(LocalDate actualStartDate) {
         this.actualStartDate = actualStartDate;
@@ -158,6 +161,12 @@ public class ProjectDTO {
         this.completedTasks = completedTasks;
     }
 
+    // New getters and setters for subprojects
+    public List<SubprojectDTO> getSubprojects() {
+        return subprojects;
+    }
 
-
+    public void setSubprojects(List<SubprojectDTO> subprojects) {
+        this.subprojects = subprojects;
+    }
 }
