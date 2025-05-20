@@ -1,14 +1,12 @@
 package com.example.eksamensprojekt2semester.dto;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class ProjectDTO {
     private int id;
@@ -17,12 +15,14 @@ public class ProjectDTO {
     @NotBlank(message = "Project name is required")
     private String name;
 
+    @Size(max = 1000, message = "Beskrivelsen må højst være 1000 tegn")
     private String description;
 
     @NotNull(message = "Start date is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
 
+    @NotNull(message = "Start date is required")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
 
@@ -49,6 +49,7 @@ public class ProjectDTO {
 
     @Min(value = 0, message = "Antallet af opgaver kan ikke være negativt")
     private int totalTasks;
+
     @Min(value = 0, message = "Antallet af fuldførte opgaver kan ikke være negativt")
     private int completedTasks;
 
@@ -92,6 +93,19 @@ public class ProjectDTO {
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
+
+    /** Convert the LocalDate (data type that we choose for dates) to a String in the format yyyy-mm-dd,
+     *  which is what the HTML and Thymeleaf requires to display dates properly **/
+    public String getStartDateFormatted() {
+        return startDate != null ? startDate.format(DateTimeFormatter.ISO_LOCAL_DATE) : ""; /** Method follows ISO standard for dates: YYYY-MM-DD **/
+    }
+
+    /**  If no value found we return a empty string: "" to avoid errors due to null or improperly formatted value
+     *   that won´t show up in front end due to miss matched data types cause value inputs require a string in Thymeleaf **/
+    public String getEndDateFormatted() {
+        return endDate != null ? endDate.format(DateTimeFormatter.ISO_LOCAL_DATE) : "";
+    }
+
 
     public LocalDate getActualStartDate() {
         return actualStartDate;

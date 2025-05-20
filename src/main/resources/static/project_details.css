@@ -1,9 +1,9 @@
-/* Projektside styling - Kun styling specifik for projekt-detaljer siden */
+/* Project details styling, specifically for this page */
 .project-container {
     display: flex;
     justify-content: center;
     gap: 30px;
-    flex-wrap: wrap;
+    flex-direction: row; /* Normal order to put projects on left */
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -11,11 +11,13 @@
 .project-info {
     flex: 1;
     min-width: 400px;
+    order: 1; /* Projects on left */
 }
 
 .subprojects-info {
     flex: 1;
     min-width: 400px;
+    order: 2; /* Subprojects on right */
 }
 
 .divider {
@@ -36,20 +38,64 @@
     font-weight: 600;
 }
 
+/* Updated button styles to match the provided example */
 .detail-button {
-    color: rgb(255, 50, 90);
-    border: 1px solid rgb(255, 50, 90);
+    color: #e63b60;
+    border: 1px solid #e63b60;
     background-color: transparent;
 }
 
 .detail-button:hover {
-    background-color: rgba(255, 50, 90, 0.1);
+    background-color: rgba(230, 59, 96, 0.1);
     text-decoration: none;
+    color: #e63b60;
+}
+
+/* Updated action button style */
+.action-button {
+    background: #e63b60;
+    border-radius: 6px;
+    border: none;
+    color: rgb(255, 255, 255);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer;
+    height: 54px;
+    width: 100%;
+    padding: 16px;
+    transition: background-color 0.2s;
+}
+
+.action-button:hover {
+    background-color: #d23353;
+    color: #fff;
+}
+
+/* Update secondary button to match example */
+.secondary-button {
+    background: transparent;
+    border: 1px solid #e63b60;
+    color: #e63b60;
+    font-weight: 600;
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 6px;
+    text-align: center;
+    min-width: 150px;
+    transition: background-color 0.2s;
+}
+
+.secondary-button:hover {
+    background-color: rgba(230, 59, 96, 0.1);
+    color: #e63b60;
 }
 
 /* Runde knapper */
 .rounded-button {
-    border-radius: 25px !important;  /* Meget afrundede hjørner */
+    border-radius: 25px !important; /* Meget afrundede hjørner */
 }
 
 /* Sikrer at teksten har plads i knappen */
@@ -64,10 +110,46 @@
     color: #fff; /* Behold hvid tekst ved hover */
 }
 
+/* Progress bar styling from the example */
+.progress-bar {
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    height: 10px;
+    width: 100%;
+}
+
+.progress-fill {
+    background-color: #ff6347;
+    border-radius: 10px;
+    height: 100%;
+}
+
+/* Se detaljer button styling to match example */
+a.detail-button {
+    color: #e63b60;
+    border: 1px solid #e63b60;
+    padding: 8px 20px;
+    border-radius: 25px;
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+a.detail-button:hover {
+    background-color: rgba(230, 59, 96, 0.05);
+    color: #e63b60;
+    text-decoration: none;
+}
+
 /* Fjerner understregning fra alle knapper og links ved hover */
-a:hover,
-.action-button:hover,
-.secondary-button:hover,
-.button-link:hover {
+a:hover, .action-button:hover, .secondary-button:hover, .button-link:hover {
     text-decoration: none !important;
+}
+
+/* Responsive design */
+@media screen and (max-width: 900px) {
+    .project-container {
+        flex-direction: column;
+    }
 }

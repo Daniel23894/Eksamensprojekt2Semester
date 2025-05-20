@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Projekt Detaljer</title>
   <link rel="stylesheet" th:href="@{/generic_styles.css}">
-  <link rel="stylesheet" th:href="@{/project-details.css}">
+  <link rel="stylesheet" th:href="@{/project_details.css}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
 </head>
 
@@ -13,16 +13,20 @@
 <div class="main-container">
   <div class="project-container">
     <div class="modal-container project-info">
+
       <!-- Header -->
       <h1 class="modal-title" th:text="${project.name}">Projektnavn</h1>
       <p class="modal-subtitle">Projektdetaljer og subprojekter</p>
 
+      <div class="form-group">
+        <label>Beskrivelse</label>
+        <p th:text="${project.description != null && !project.description.isEmpty() ? project.description : 'Ingen beskrivelse er tilgænglige'}"></p>
+      </div>
+
       <!-- Error message display (if any) -->
       <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
 
-      <!-- Project details - fjernet ID
-      #dates.format() works with java.util.Date or java.util.Calendar,not java.time. LocalDate#dates.format() only works with java.util.Date or java.util.Calendar, not java.time.LocalDate which we use in Project
-      therefore in html we use temporals  -->
+      <!-- Project details -->
       <div class="form-group">
         <label>Startdato:</label>
         <p th:text="${#temporals.format(project.startDate, 'dd-MM-yyyy')}">01-01-2025</p>
@@ -58,9 +62,26 @@
         <p th:text="${project.status.description}">Ikke startet</p>
       </div>
 
-      <div class="form-group mt-20">
+      <div class="form-group">
+        <label>Antal teammedlemmer:</label>
+        <p th:text="${project.teamMemberCount}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal opgaver:</label>
+        <p th:text="${project.totalTasks}">0</p>
+      </div>
+
+      <div class="form-group">
+        <label>Antal fuldførte opgaver:</label>
+        <p th:text="${project.completedTasks}">0</p>
+      </div>
+
+      <div class="form-group mt-20"
+           th:if="${isAdmin or isPO}">
         <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
       </div>
+
     </div>
 
 
@@ -75,28 +96,32 @@
 
       <!-- List of subprojects -->
       <div th:unless="${#lists.isEmpty(subprojects)}">
-        <div th:each="subproject : ${project.subprojects}" class="form-group">
+        <div th:each="subproject : ${subprojects}" class="form-group">
           <div class="form-group">
             <label>Navn:</label>
             <p th:text="${subproject.name}">Subprojekt navn</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show completion percentage if value exists -->
+          <div class="form-group" th:if="${subproject.completionPercentage != null}">
             <label>Færdiggørelse (%):</label>
             <p th:text="${subproject.completionPercentage + '%'}">0%</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show status if it exists -->
+          <div class="form-group" th:if="${subproject.status != null}">
             <label>Status:</label>
             <p th:text="${subproject.status.description}">Ikke startet</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show total hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.totalHours != null && subproject.totalHours > 0}">
             <label>Total Hours:</label>
             <p th:text="${subproject.totalHours}">0</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show remaining hours if greater than 0 -->
+          <div class="form-group" th:if="${subproject.remainingHours != null && subproject.remainingHours > 0}">
             <label>Remaining Hours:</label>
             <p th:text="${subproject.remainingHours}">0</p>
           </div>
@@ -110,13 +135,14 @@
       </div>
 
       <!-- Button to add new subproject -->
-      <div class="form-group">
+      <div class="form-group"
+           th:if="${isAdmin or isPO}">
         <a th:href="@{/projects/subprojects/create(projectId=${project.id})}" class="action-button rounded-button">Tilføj Subprojekt</a>
       </div>
 
       <!-- Back button -->
       <div class="form-group mt-20">
-        <a th:href="@{/projects}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
+        <a th:href="@{/projects/overview}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
       </div>
     </div>
   </div>

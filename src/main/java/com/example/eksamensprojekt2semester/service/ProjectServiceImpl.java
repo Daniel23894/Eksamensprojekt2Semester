@@ -25,13 +25,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public Project createProject(ProjectDTO projectDTO) {
-        Project project = new Project();
-        project.setName(projectDTO.getName());
-        project.setStartDate(projectDTO.getStartDate());
-        project.setEndDate(projectDTO.getEndDate());
-        project.setStatus(projectDTO.getStatus());
-        project.setBudget(projectDTO.getBudget());
-
+        Project project = convertToProject(projectDTO); /** Convert DTO to Project **/
         return projectRepository.save(project);
     }
 
@@ -110,6 +104,16 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.update(project);
     }
 
+    @Override
+    @Transactional
+    public void deleteProjectById(int id) throws ProjectNotFoundException {
+        if (!projectRepository.existsById(id)) {
+            throw new ProjectNotFoundException("Project with ID " + id + " not found.");
+        }
+        projectRepository.delete(id);
+    }
+
+
 
     /** Converts a list of Project objects to a list of ProjectDTO objects **/
     private List<ProjectDTO> convertToProjectDTOList(List<Project> projects) {
@@ -135,5 +139,23 @@ public class ProjectServiceImpl implements ProjectService {
 
         return projectDTOs;
     }
+
+    public Project convertToProject(ProjectDTO dto) {
+        Project project = new Project();
+        project.setProjectId(dto.getId());
+        project.setName(dto.getName());
+        project.setDescription(dto.getDescription());
+        project.setStartDate(dto.getStartDate());
+        project.setEndDate(dto.getEndDate());
+        project.setActualStartDate(dto.getActualStartDate());
+        project.setActualEndDate(dto.getActualEndDate());
+        project.setBudget(dto.getBudget());
+        project.setCompletionPercentage(dto.getCompletionPercentage());
+        project.setStatus(dto.getStatus());
+
+        return project;
+    }
+
+
 
 }
