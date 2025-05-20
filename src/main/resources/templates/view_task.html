@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Task detaljer</title>
+    <link rel="stylesheet" th:href="@{/view_task.css}" />
+</head>
+<body>
+
+<h1 style="text-align:center;">Detaljer for Task</h1>
+
+<div class="project-container">
+    <div class="project-info" th:if="${task != null}">
+        <p><strong>ID:</strong> <span th:text="${task.id}"></span></p>
+        <p><strong>Navn:</strong> <span th:text="${task.name}"></span></p>
+        <p><strong>Deadline:</strong> <span th:text="${task.deadline}"></span></p>
+        <p><strong>Estimerede timer:</strong> <span th:text="${task.estimatedHours}"></span></p>
+        <p><strong>Brugte timer:</strong> <span th:text="${task.usedHours}"></span></p>
+        <p><strong>Færdiggørelsesprocent:</strong> <span th:text="${task.completionPercentage}"></span>%</p>
+        <p><strong>Status:</strong> <span th:text="${task.status}"></span></p>
+        <p><strong>Subprojekt ID:</strong> <span th:text="${task.subprojectId}"></span></p>
+    </div>
+</div>
+
+<div class="project-container" th:if="${errorMessage}">
+    <div class="project-info">
+        <p style="color: red;" th:text="${errorMessage}"></p>
+    </div>
+</div>
+
+<div class="project-container">
+    <a class="button-link detail-button rounded-button" th:href="@{/view_task}">Tilbage til subprojekter</a>
+</div>
+
+</body>
+</html>
