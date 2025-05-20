@@ -1,7 +1,5 @@
 package com.example.eksamensprojekt2semester.service;
 
-
-
 import com.example.eksamensprojekt2semester.exception.SubprojectNotFoundException;
 import com.example.eksamensprojekt2semester.model.StateStatus;
 import com.example.eksamensprojekt2semester.model.Task;
@@ -45,18 +43,17 @@ public class TaskService {
         return taskRepo.getTaskById(id);
     }
 
-
     public boolean existsById(int taskId) {
         return taskRepo.existsById(taskId);
     }
 
     @Transactional
-    public void createTask(Task task) {
+    public int createTask(Task task) {
         /** Check if parent subproject exists **/
         if (!subprojectRepo.existsById(task.getSubprojectId())) {
             throw new SubprojectNotFoundException("Subproject not found with ID: " + task.getSubprojectId());
         }
-        taskRepo.save(task);
+        return taskRepo.save(task);
     }
 
     @Transactional
@@ -99,7 +96,8 @@ public class TaskService {
                 // Brug estimerede timer eller 0 hvis null
                 .map(task -> task.getEstimatedHours() != null ? task.getEstimatedHours() : BigDecimal.ZERO)
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle timer sammen og returnér summen
-}
+    }
+
     public  BigDecimal calculateRemainingHoursBySubproject(int subprojectId) {
         // Beregner hvor mange timer der samlet set er tilbage i et subprojekt
         return taskRepo.findBySubprojectId(subprojectId).stream()// Hent alle opgaver for subprojektet som en stream
