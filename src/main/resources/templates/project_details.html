@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <title>Projekt Detaljer</title>
   <link rel="stylesheet" th:href="@{/generic_styles.css}">
-  <link rel="stylesheet" th:href="@{/project-details.css}">
+  <link rel="stylesheet" th:href="@{/project_details.css}">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
 </head>
 
@@ -14,52 +14,52 @@
   <div class="project-container">
     <div class="modal-container project-info">
       <!-- Header -->
-      <h1 class="modal-title" th:text="${project.name}">Projektnavn</h1>
+      <h1 class="modal-title" th:text="${project != null ? project.name : ''}">Projektnavn</h1>
       <p class="modal-subtitle">Projektdetaljer og subprojekter</p>
 
       <!-- Error message display (if any) -->
       <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
 
-      <!-- Project details - fjernet ID
-      #dates.format() works with java.util.Date or java.util.Calendar,not java.time. LocalDate#dates.format() only works with java.util.Date or java.util.Calendar, not java.time.LocalDate which we use in Project
-      therefore in html we use temporals  -->
-      <div class="form-group">
-        <label>Startdato:</label>
-        <p th:text="${#temporals.format(project.startDate, 'dd-MM-yyyy')}">01-01-2025</p>
-      </div>
+      <!-- Project details -->
+      <div th:if="${project != null}">
+        <div class="form-group">
+          <label>Startdato:</label>
+          <p th:text="${project.startDate != null ? #temporals.format(project.startDate, 'dd-MM-yyyy') : 'Ikke angivet'}">01-01-2025</p>
+        </div>
 
-      <div class="form-group">
-        <label>Slutdato:</label>
-        <p th:text="${#temporals.format(project.endDate, 'dd-MM-yyyy')}">31-12-2025</p>
-      </div>
+        <div class="form-group">
+          <label>Slutdato:</label>
+          <p th:text="${project.endDate != null ? #temporals.format(project.endDate, 'dd-MM-yyyy') : 'Ikke angivet'}">31-12-2025</p>
+        </div>
 
-      <div class="form-group">
-        <label>Faktisk startdato:</label>
-        <p th:text="${project.actualStartDate != null ? #temporals.format(project.actualStartDate, 'dd-MM-yyyy') : 'Ikke startet'}">Ikke startet</p>
-      </div>
+        <div class="form-group">
+          <label>Faktisk startdato:</label>
+          <p th:text="${project.actualStartDate != null ? #temporals.format(project.actualStartDate, 'dd-MM-yyyy') : 'Ikke startet'}">Ikke startet</p>
+        </div>
 
-      <div class="form-group">
-        <label>Faktisk slutdato:</label>
-        <p th:text="${project.actualEndDate != null ? #temporals.format(project.actualEndDate, 'dd-MM-yyyy') : 'Ikke afsluttet'}">Ikke afsluttet</p>
-      </div>
+        <div class="form-group">
+          <label>Faktisk slutdato:</label>
+          <p th:text="${project.actualEndDate != null ? #temporals.format(project.actualEndDate, 'dd-MM-yyyy') : 'Ikke afsluttet'}">Ikke afsluttet</p>
+        </div>
 
-      <div class="form-group">
-        <label>Budget:</label>
-        <p th:text="${project.budget != null ? #numbers.formatDecimal(project.budget, 1, 'POINT', 2, 'COMMA') + ' kr.' : '0,00 kr.'}">0,00 kr.</p>
-      </div>
+        <div class="form-group">
+          <label>Budget:</label>
+          <p th:text="${project.budget != null ? #numbers.formatDecimal(project.budget, 1, 'POINT', 2, 'COMMA') + ' kr.' : '0,00 kr.'}">0,00 kr.</p>
+        </div>
 
-      <div class="form-group">
-        <label>Færdiggørelse (%):</label>
-        <p th:text="${project.completionPercentage + '%'}">0%</p>
-      </div>
+        <div class="form-group">
+          <label>Færdiggørelse (%):</label>
+          <p th:text="${project.completionPercentage + '%'}">0%</p>
+        </div>
 
-      <div class="form-group">
-        <label>Status:</label>
-        <p th:text="${project.status.description}">Ikke startet</p>
-      </div>
+        <div class="form-group">
+          <label>Status:</label>
+          <p th:text="${project.status != null ? project.status.description : 'Ikke angivet'}">Ikke startet</p>
+        </div>
 
-      <div class="form-group mt-20">
-        <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
+        <div class="form-group mt-20">
+          <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
+        </div>
       </div>
     </div>
 
@@ -69,13 +69,13 @@
       <h2 class="modal-title">Subprojekter</h2>
 
       <!-- Display message when no subprojects -->
-      <div th:if="${#lists.isEmpty(subprojects)}" class="text-center mb-20">
+      <div th:if="${subprojects == null || #lists.isEmpty(subprojects)}" class="text-center mb-20">
         <p>Der er ingen subprojekter tilknyttet dette projekt endnu.</p>
       </div>
 
       <!-- List of subprojects -->
-      <div th:unless="${#lists.isEmpty(subprojects)}">
-        <div th:each="subproject : ${project.subprojects}" class="form-group">
+      <div th:if="${subprojects != null && !#lists.isEmpty(subprojects)}">
+        <div th:each="subproject : ${subprojects}" class="form-group">
           <div class="form-group">
             <label>Navn:</label>
             <p th:text="${subproject.name}">Subprojekt navn</p>
@@ -88,35 +88,36 @@
 
           <div class="form-group">
             <label>Status:</label>
-            <p th:text="${subproject.status.description}">Ikke startet</p>
+            <p th:text="${subproject.status != null ? subproject.status.description : 'Ikke angivet'}">Ikke startet</p>
           </div>
 
-          <div class="form-group">
+          <!-- Only show if these properties exist -->
+          <div class="form-group" th:if="${subproject.totalHours != null}">
             <label>Total Hours:</label>
             <p th:text="${subproject.totalHours}">0</p>
           </div>
 
-          <div class="form-group">
+          <div class="form-group" th:if="${subproject.remainingHours != null}">
             <label>Remaining Hours:</label>
             <p th:text="${subproject.remainingHours}">0</p>
           </div>
 
           <div class="form-group">
-            <a th:href="@{/projects/subprojects/{id}(id=${subproject.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
+            <a th:href="@{/subprojects/{id}(id=${subproject.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
           </div>
 
           <div class="divider"></div>
         </div>
       </div>
 
-      <!-- Button to add new subproject -->
+      <!-- Button to add new subproject - FIXED -->
       <div class="form-group">
         <a th:href="@{/projects/subprojects/create(projectId=${project.id})}" class="action-button rounded-button">Tilføj Subprojekt</a>
       </div>
 
       <!-- Back button -->
       <div class="form-group mt-20">
-        <a th:href="@{/projects}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
+        <a th:href="@{/projects/overview}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
       </div>
     </div>
   </div>
