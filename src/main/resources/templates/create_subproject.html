@@ -50,6 +50,19 @@
         </select>
       </div>
 
+      <!-- Status field (required) -->
+      <div class="form-group">
+        <label for="status">Status: <span class="required">*</span></label>
+        <select id="status" th:field="*{status}" required>
+          <option value="">-- Vælg Status --</option>
+          <option th:each="status : ${T(com.example.eksamensprojekt2semester.model.StateStatus).values()}"
+                  th:value="${status}"
+                  th:text="${status.description}">
+          </option>
+        </select>
+      </div>
+
+
       <!-- Submit User Input From The Form Button -->
       <div class="form-group">
         <button type="submit" class="action-button">Opret Subprojekt</button>
