@@ -1,0 +1,59 @@
+.project-container {
+    width: 95%;
+    max-width: 800px;
+    margin: 0 auto 30px auto;
+    padding: 25px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+/* Info-boks for task detaljer */
+.project-info p {
+    margin-bottom: 12px;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+}
+
+.project-info strong {
+    color: #555;
+    margin-right: 5px;
+}
+
+/* Tilbage-knap */
+.button-link {
+    display: inline-block;
+    text-decoration: none;
+    background-color: #ff325a;
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease;
+    text-align: center;
+}
+
+.button-link:hover {
+    background-color: #e6324d;
+    color: #fff;
+}
+
+/* Responsivt design */
+@media screen and (max-width: 768px) {
+    .project-container {
+        padding: 15px;
+        width: 95%;
+    }
+
+    .project-info p {
+        font-size: 14px;
+    }
+
+    .button-link {
+        display: block;
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+}
