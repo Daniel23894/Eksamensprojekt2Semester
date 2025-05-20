@@ -5,8 +5,12 @@ import com.example.eksamensprojekt2semester.model.Task;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -29,27 +33,35 @@ public class TaskRepository {
         task.setUsedHours(rs.getBigDecimal("usedHours"));
         task.setCompletionPercentage(rs.getInt("completionPercentage"));
         task.setStatus(StateStatus.fromValue(rs.getInt("statusId")));
-        task.setSubprojectId(rs.getInt("subprojectId"));
+        task.setSubprojectId(rs.getInt("subProjectId"));
         return task;
     };
 
     /** CREATE **/
-    public void save(Task task) {
-        String sql = "INSERT INTO task (taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId) " +
+    public int save(Task task) {
+        String sql = "INSERT INTO task (taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subProjectId) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql,
-                task.getName(),
-                task.getDeadline(),
-                task.getEstimatedHours(),
-                task.getUsedHours(),
-                task.getCompletionPercentage(),
-                task.getStatus().getValue(),
-                task.getSubprojectId());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            ps.setString(1, task.getName());
+            ps.setObject(2, task.getDeadline());
+            ps.setBigDecimal(3, task.getEstimatedHours());
+            ps.setBigDecimal(4, task.getUsedHours());
+            ps.setInt(5, task.getCompletionPercentage());
+            ps.setInt(6, task.getStatus().getValue());
+            ps.setInt(7, task.getSubprojectId());
+            return ps;
+        }, keyHolder);
+
+        return keyHolder.getKey().intValue();
     }
 
     /** READ **/
     public Task getTaskById(int id) {
-        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId " +
+        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subProjectId " +
                 "FROM task WHERE taskId = ?";
         try {
             return jdbcTemplate.queryForObject(sql, taskRowMapper, id);
@@ -70,19 +82,19 @@ public class TaskRepository {
     }
 
     public List<Task> findAll() {
-        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId " +
+        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subProjectId " +
                 "FROM task";
         return jdbcTemplate.query(sql, taskRowMapper);
     }
 
     public List<Task> findBySubprojectId(int subprojectId) {
-        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId " +
+        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subProjectId " +
                 "FROM task WHERE subprojectId = ?";
         return jdbcTemplate.query(sql, taskRowMapper, subprojectId);
     }
 
     public List<Task> findByProjectId(int projectId) {
-        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subprojectId " +
+        String sql = "SELECT taskId, taskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, subProjectId " +
                 "FROM task WHERE projectId = ?";
         return jdbcTemplate.query(sql, taskRowMapper, projectId);
     }
