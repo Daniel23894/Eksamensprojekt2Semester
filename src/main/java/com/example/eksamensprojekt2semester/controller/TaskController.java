@@ -43,8 +43,9 @@ public class TaskController {
         model.addAttribute("task", task);
         model.addAttribute("teamMembers", members);
         model.addAttribute("assignedMembers", assigned);
-        return "taskView";
+        return "view_task";  //
     }
+
 
     @PostMapping("/tasks/assign")
     public String assignMember(@RequestParam int taskId, @RequestParam int memberId) {
