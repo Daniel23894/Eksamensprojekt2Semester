@@ -71,7 +71,9 @@
 
           <td class="actions-cell">
             <a th:href="@{/projects/details/{id}(id=${project.id})}" class="secondary-button">Se detaljer</a>
-            <a th:href="@{/projects/delete/{id}(id=${project.id})}"
+
+            <a th:if="${member.role.name() == 'ADMIN' or member.role.name() == 'PRODUCT_OWNER'}"
+               th:href="@{/projects/delete/{id}(id=${project.id})}"
                class="secondary-button"
                onclick="return confirm('Er du sikker på, at du vil slette dette projekt? Alle underprojekter og opgaver vil også blive slettet.')">Slet</a>
           </td>
@@ -86,7 +88,8 @@
 
     <!-- Opret nyt projekt knap -->
     <div class="form-group">
-      <a th:href="@{/projects/new}" class="action-button">Opret nyt projekt</a>
+      <a th:if="${member.role.name() == 'ADMIN' or member.role.name() == 'PRODUCT_OWNER'}"
+         th:href="@{/projects/new}" class="action-button">Opret nyt projekt</a>
     </div>
   </div>
 </div>

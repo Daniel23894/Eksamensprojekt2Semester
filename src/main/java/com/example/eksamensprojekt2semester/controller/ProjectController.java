@@ -35,7 +35,8 @@ public class ProjectController {
         this.subprojectService = subprojectService;
     }
 
-    /**  ModelAttribute, makes so that is automatically invoked before every controller method. **/
+    /**  This ModelAttribute method is used without a return value which makes so that is automatically invoked
+     *   before every controller method. It adds the role values in this case  to the model **/
     @ModelAttribute
     public void addRoleAttributesToModel(HttpSession session, Model model) {
         TeamMember teamMember = (TeamMember) session.getAttribute("loggedInUser");

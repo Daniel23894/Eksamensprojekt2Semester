@@ -77,9 +77,11 @@
         <p th:text="${project.completedTasks}">0</p>
       </div>
 
-      <div class="form-group mt-20">
+      <div class="form-group mt-20"
+           th:if="${isAdmin or isPO}">
         <a th:href="@{/projects/edit/{id}(id=${project.id})}" class="secondary-button">Rediger projekt</a>
       </div>
+
     </div>
 
 
@@ -94,7 +96,7 @@
 
       <!-- List of subprojects -->
       <div th:unless="${#lists.isEmpty(subprojects)}">
-        <div th:each="subproject : ${project.subprojects}" class="form-group">
+        <div th:each="subproject : ${subprojects}" class="form-group">
           <div class="form-group">
             <label>Navn:</label>
             <p th:text="${subproject.name}">Subprojekt navn</p>
@@ -133,13 +135,14 @@
       </div>
 
       <!-- Button to add new subproject -->
-      <div class="form-group">
+      <div class="form-group"
+           th:if="${isAdmin or isPO}">
         <a th:href="@{/projects/subprojects/create(projectId=${project.id})}" class="action-button rounded-button">Tilføj Subprojekt</a>
       </div>
 
       <!-- Back button -->
       <div class="form-group mt-20">
-        <a th:href="@{/projects}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
+        <a th:href="@{/projects/overview}" class="button-link detail-button rounded-button">Tilbage til projektoversigt</a>
       </div>
     </div>
   </div>
