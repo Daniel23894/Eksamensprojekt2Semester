@@ -1,0 +1,52 @@
+/* Create Team Member specific styling  */
+
+.help-text {
+    font-size: 12px;
+    color: #666;
+    margin-top: 4px;
+    font-style: italic;
+}
+
+/* Help text */
+
+/* Styling for knapper i bunden af formen */
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.form-actions .action-button {
+    flex: 2;
+}
+
+.form-actions .secondary-button {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 54px;
+    text-decoration: none;
+}
+
+/* Forbedret input styling */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Responsive justeringer */
+@media screen and (max-width: 500px) {
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .form-actions .secondary-button {
+        height: 44px;
+    }
+}
