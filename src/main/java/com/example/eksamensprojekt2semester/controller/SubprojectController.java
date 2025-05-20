@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 @Controller
-public class SubprojectController {
+public class SubprojectController extends BaseController {
     private final ProjectService projectService;
     private final SubprojectService subprojectService;
     private final TaskService taskService;
@@ -90,7 +90,7 @@ public class SubprojectController {
             model.addAttribute("subproject", subproject);
             model.addAttribute("tasks", tasks);
 
-            return "view_subproject"; // Return dedicated subproject details view
+            return "subproject_details"; // Return dedicated subproject details view
         } catch (SubprojectNotFoundException e) {
             logger.error("Subproject not found with ID: " + id, e);
             model.addAttribute("errorMessage", "Subprojektet blev ikke fundet.");

@@ -75,14 +75,20 @@ public class TaskController {
 
     /** Displays the form for creating a new task **/
     @GetMapping("/tasks/create")
-    public String showCreateTaskForm(Model model){
+    public String showCreateTaskForm(@RequestParam(required = false) Integer subprojectId, Model model){
         List<Subproject> listOfAllSubprojects = subprojectService.findAll();
         Task task = new Task();
         task.setStatus(StateStatus.NOT_STARTED);
 
+        /** Pre-select the subproject on the page **/
+        if (subprojectId != null) {
+            task.setSubprojectId(subprojectId);
+        }
+
         /** Add list of subprojects to the model and new Task instance **/
         model.addAttribute("subprojects", listOfAllSubprojects);
         model.addAttribute("task", task);
+        model.addAttribute("stateStatuses", StateStatus.values());
 
         return "create_task";
     }
@@ -90,6 +96,10 @@ public class TaskController {
     /** Processes the submission of the create task form **/
     @PostMapping("/tasks/create")
     public String createTask(@ModelAttribute("task") Task task, Model model){
+
+        if (task.getStatus() == null) { /** Default to NOT_STARTED if status is not set **/
+            task.setStatus(StateStatus.NOT_STARTED);
+        }
         try {
             taskService.createTask(task);
             return "redirect:/subprojects/" + task.getSubprojectId(); /** Redirect to subproject details page **/

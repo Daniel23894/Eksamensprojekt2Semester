@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Subprojekt Detaljer</title>
+    <link rel="stylesheet" th:href="@{/generic_styles.css}">
+    <link rel="stylesheet" th:href="@{/project_details.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+
+<body>
+<div class="main-container">
+    <div class="project-container">
+        <div class="modal-container project-info">
+            <!-- Header -->
+            <h1 class="modal-title" th:text="${subproject.name}">Subprojektnavn</h1>
+            <p class="modal-subtitle">Subprojektdetaljer og opgaver</p>
+
+            <!-- Error message display (if any) -->
+            <div th:if="${errorMessage}" class="error-message mb-20" th:text="${errorMessage}"></div>
+
+            <!-- Subproject details -->
+            <div class="form-group">
+                <label>Projekt:</label>
+                <p><a th:href="@{/projects/details/{id}(id=${subproject.projectId})}" th:text="${projectName}">Projektnavn</a></p>
+            </div>
+
+            <div class="form-group">
+                <label>Status:</label>
+                <p th:text="${subproject.status.description}">Ikke startet</p>
+            </div>
+
+            <div class="form-group">
+                <label>Færdiggørelse (%):</label>
+                <p th:text="${subproject.completionPercentage + '%'}">0%</p>
+            </div>
+
+            <div class="form-group" th:if="${subproject.totalHours != null}">
+                <label>Total Timetal:</label>
+                <p th:text="${subproject.totalHours} + ' timer'">0 timer</p>
+            </div>
+
+            <div class="form-group" th:if="${subproject.remainingHours != null}">
+                <label>Resterende Timer:</label>
+                <p th:text="${subproject.remainingHours} + ' timer'">0 timer</p>
+            </div>
+
+            <div class="form-group mt-20"
+                 th:if="${isAdmin or isPO}">
+                <a th:href="@{/projects/subprojects/edit/{id}(id=${subproject.id})}" class="secondary-button">Rediger subprojekt</a>
+            </div>
+        </div>
+
+        <!-- Tasks Section -->
+        <div class="modal-container subprojects-info">
+            <h2 class="modal-title">Opgaver</h2>
+
+            <!-- Display message when no tasks -->
+            <div th:if="${#lists.isEmpty(tasks)}" class="text-center mb-20">
+                <p>Der er ingen opgaver tilknyttet dette subprojekt endnu.</p>
+            </div>
+
+            <!-- List of tasks -->
+            <div th:unless="${#lists.isEmpty(tasks)}">
+                <div th:each="task : ${tasks}" class="form-group">
+                    <div class="form-group">
+                        <label>Navn:</label>
+                        <p th:text="${task.name}">Opgavenavn</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Deadline:</label>
+                        <p th:text="${#temporals.format(task.deadline, 'dd-MM-yyyy')}">31-12-2025</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status:</label>
+                        <p th:text="${task.status.description}">Ikke startet</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Færdiggørelse (%):</label>
+                        <p th:text="${task.completionPercentage + '%'}">0%</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Estimerede/Brugte Timer:</label>
+                        <p th:text="${task.estimatedHours} + '/' + ${task.usedHours} + ' timer'">0/0 timer</p>
+                    </div>
+
+                    <div class="form-group">
+                        <a th:href="@{/projects/tasks/{id}(id=${task.id})}" class="button-link detail-button rounded-button">Se detaljer</a>
+                    </div>
+
+                    <div class="divider"></div>
+                </div>
+            </div>
+
+            <!-- Button to add new task -->
+            <div class="form-group"
+                 th:if="${isAdmin or isPO}">
+                <a th:href="@{/tasks/create(subprojectId=${subproject.id})}" class="action-button rounded-button">Tilføj Opgave</a>
+            </div>
+
+            <!-- Back button -->
+            <div class="form-group mt-20">
+                <a th:href="@{/projects/details/{id}(id=${subproject.projectId})}" class="button-link detail-button rounded-button">Tilbage til projekt</a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

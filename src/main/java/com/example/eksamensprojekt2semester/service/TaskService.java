@@ -53,6 +53,12 @@ public class TaskService {
         if (!subprojectRepo.existsById(task.getSubprojectId())) {
             throw new SubprojectNotFoundException("Subproject not found with ID: " + task.getSubprojectId());
         }
+
+        /** Set default value to avoid NullPointerException **/
+        if (task.getCompletionPercentage() == null) {
+            task.setCompletionPercentage(0);
+        }
+
         return taskRepo.save(task);
     }
 

@@ -2,7 +2,7 @@ CREATE DATABASE IF NOT EXISTS alphasolutions;
 USE alphasolutions;
 
 CREATE TABLE stateStatus (
-                             statusId INTEGER PRIMARY KEY AUTO_INCREMENT,
+                             statusId INTEGER PRIMARY KEY,
                              statusName VARCHAR(255) NOT NULL
 );
 

@@ -51,7 +51,7 @@ public class TaskRepository {
             ps.setBigDecimal(3, task.getEstimatedHours());
             ps.setBigDecimal(4, task.getUsedHours());
             ps.setInt(5, task.getCompletionPercentage());
-            ps.setInt(6, task.getStatus().getValue());
+            ps.setInt(6, task.getStatus() != null ? task.getStatus().getValue() : StateStatus.NOT_STARTED.getValue());
             ps.setInt(7, task.getSubprojectId());
             return ps;
         }, keyHolder);
@@ -134,7 +134,7 @@ public class TaskRepository {
                 task.getEstimatedHours(),
                 task.getUsedHours(),
                 task.getCompletionPercentage(),
-                task.getStatus().getValue(),
+                task.getStatus() != null ? task.getStatus().getValue() : StateStatus.NOT_STARTED.getValue(),
                 task.getSubprojectId(),
                 task.getId());
 

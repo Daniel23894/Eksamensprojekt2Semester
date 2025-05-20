@@ -5,12 +5,12 @@ INSERT INTO Role (roleId, roleName) VALUES
 (2, 'Product Owner');
 
 -- Indsæt i StateStatus
-INSERT INTO StateStatus (statusName) VALUES
-('Ikke startet'),
-('I gang'),
-('Afsluttet'),
-('Pauset'),
-('Annulleret');
+INSERT INTO StateStatus (statusId, statusName) VALUES
+(0,'Ikke startet'),
+(1,'I gang'),
+(2,'Afsluttet'),
+(3,'Pauset'),
+(4, 'Annulleret');
 
 -- Indsæt i TeamMember
 INSERT INTO TeamMember (name, email, password, role, hoursPerDay) VALUES
@@ -35,9 +35,8 @@ INSERT INTO Task (taskName, deadline, estimatedHours, usedHours, completionPerce
 
 -- Indsæt i Subtask
 INSERT INTO Subtask (subtaskName, deadline, estimatedHours, usedHours, completionPercentage, statusId, taskId) VALUES
-(1, '2025-02-01', 40, 30, 75, 2, 1),
-(2, '2025-03-15', 50, 20, 40, 1, 2);
-
+('UI Wireframes', '2025-02-01', 40, 30, 75, 2, 1),
+('API Testing', '2025-03-15', 50, 20, 40, 1, 2);
 -- Indsæt i TaskAssignment
 INSERT INTO TaskAssignment (taskId, memberId, assignedHours, actualHours) VALUES
 (1, 2, 60, 45),

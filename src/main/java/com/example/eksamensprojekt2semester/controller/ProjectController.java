@@ -21,7 +21,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
-public class ProjectController {
+public class ProjectController extends BaseController {
 
 
     private final ProjectService projectService;
@@ -36,20 +36,6 @@ public class ProjectController {
         this.teamMemberService = teamMemberService;
         this.subprojectService = subprojectService;
     }
-
-    /**  This ModelAttribute method is used without a return value which makes so that is automatically invoked
-     *   before every controller method. It adds the role values in this case  to the model **/
-    @ModelAttribute
-    public void addRoleAttributesToModel(HttpSession session, Model model) {
-        TeamMember teamMember = (TeamMember) session.getAttribute("loggedInUser");
-        if (teamMember != null) {
-            /** == to compare enum constants **/
-            model.addAttribute("isAdmin", teamMember.getRole() == Role.ADMIN);
-            model.addAttribute("isDeveloper", teamMember.getRole() == Role.DEVELOPER);
-            model.addAttribute("isPO", teamMember.getRole() == Role.PRODUCT_OWNER);
-        }
-    }
-
 
     //Viser en liste med alle projekter, kræver login
     @GetMapping("/")

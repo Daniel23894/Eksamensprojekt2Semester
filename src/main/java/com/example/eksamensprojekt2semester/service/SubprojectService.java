@@ -42,10 +42,16 @@ public class SubprojectService {
         }
 
         /** Check if the completion percentage is within the valid range of 0 to 100. **/
-        int completion = subproject.getCompletionPercentage();
+        Integer completionObj = subproject.getCompletionPercentage();
+        int completion = (completionObj != null) ? completionObj : 0;
         if (completion < 0 || completion > 100) {
             throw new IllegalArgumentException("Færdiggørelsesprocent skal være mellem 0 og 100");
         }
+        /** Set default values for status and completion percentage if not provided **/
+        if (completionObj == null) {
+            subproject.setCompletionPercentage(0);
+        }
+
 
         /** Save the subproject if all validations pass **/
         subprojectRepository.save(subproject);

@@ -9,7 +9,7 @@ public class Task {
     private LocalDate deadline;
     private BigDecimal estimatedHours;
     private BigDecimal usedHours;
-    private int completionPercentage;
+    private Integer completionPercentage; /** not int cause we want to allow the value to be null, avoid exceptions when the input is empty **/
     private StateStatus status;
     private int subprojectId;
 
@@ -18,7 +18,7 @@ public class Task {
     }
 
     /** No-args constructor – required by frameworks and libraries like RowMapper **/
-    public Task(String name, LocalDate deadline, BigDecimal estimatedHours, BigDecimal usedHours, int completionPercentage, StateStatus status, int subprojectId) {
+    public Task(String name, LocalDate deadline, BigDecimal estimatedHours, BigDecimal usedHours, Integer completionPercentage, StateStatus status, int subprojectId) {
         this.name = name;
         this.deadline = deadline;
         this.estimatedHours = estimatedHours;
@@ -60,7 +60,7 @@ public class Task {
         return usedHours;
     }
 
-    public int getCompletionPercentage() {
+    public Integer getCompletionPercentage() {
         return completionPercentage;
     }
 
@@ -108,7 +108,8 @@ public class Task {
 
     public void setEstimatedHours(BigDecimal estimatedHours) {
         if (estimatedHours == null) {
-            throw new IllegalArgumentException("Estimerede timer kan ikke være null.");
+            this.estimatedHours = BigDecimal.ZERO;  /** Default to zero if null **/
+            return;
         }
         if (estimatedHours.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Estimerede timer kan ikke være negative.");
@@ -118,7 +119,8 @@ public class Task {
 
     public void setUsedHours(BigDecimal usedHours) {
         if (usedHours == null) {
-            throw new IllegalArgumentException("Brugte timer kan ikke være null.");
+            this.usedHours = BigDecimal.ZERO; /** Default to 0 if not provided to avoid null pointer exception**/
+            return;
         }
         if (usedHours.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("Brugte timer kan ikke være negative.");
@@ -126,8 +128,12 @@ public class Task {
         this.usedHours = usedHours;
     }
 
-    public void setCompletionPercentage(int completionPercentage) {
-        if (completionPercentage < 0 || completionPercentage > 100) {
+    public void setCompletionPercentage(Integer completionPercentage) {
+        if (completionPercentage == null) {
+            this.completionPercentage = null;
+            return;
+        }
+        else if (completionPercentage < 0 || completionPercentage > 100) {
             throw new IllegalArgumentException("Færdiggørelsesprocent for task skal være mellem 0 og 100.");
         }
         this.completionPercentage = completionPercentage;
