@@ -1,6 +1,7 @@
 package com.example.eksamensprojekt2semester.controller;
 
 import com.example.eksamensprojekt2semester.dto.ProjectDTO;
+import com.example.eksamensprojekt2semester.dto.SubprojectDTO;
 import com.example.eksamensprojekt2semester.exception.ProjectNotFoundException;
 import com.example.eksamensprojekt2semester.model.*;
 import com.example.eksamensprojekt2semester.service.SubprojectService;
@@ -21,6 +22,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/projects") //Angiver grund URL for alle endpoints i denne controller
 public class ProjectController {
+
 
     private final ProjectService projectService;
     private final TaskService taskService;
@@ -207,5 +209,28 @@ public class ProjectController {
         }
         return "redirect:/projects/overview";
     }
+    @GetMapping("/project/{id}")
+    public String viewProject(@PathVariable("id") int id, Model model) {
+        try {
+            Project project = projectService.getProjectById(id);
+            List<SubprojectDTO> subprojects = (List<SubprojectDTO>) subprojectService.getSubprojectById(id);
+
+            model.addAttribute("project", project);
+            model.addAttribute("subprojects", subprojects);
+
+            return "project_details";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", "Projektet blev ikke fundet: " + e.getMessage());
+            return "error/error";
+        }
+    }
+    @GetMapping("/create")
+    public String showCreateProjectForm(Model model) {
+        model.addAttribute("projectDTO", new ProjectDTO());
+        model.addAttribute("statuses", StateStatus.values());
+        return "projectForm"; // assumes you have templates/projectForm.html
+    }
+
 }
+
 

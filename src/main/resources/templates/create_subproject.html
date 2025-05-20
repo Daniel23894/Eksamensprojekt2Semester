@@ -44,11 +44,24 @@
         <select id="parentProject" th:field="*{projectId}" required>
           <option value="">-- Vælg Projekt --</option>
           <option th:each="project : ${projects}"
-                  th:value="${project.id}"
+                  th:value="${project.projectId}"
                   th:text="${project.name}">
           </option>
         </select>
       </div>
+
+      <!-- Status field (required) -->
+      <div class="form-group">
+        <label for="status">Status: <span class="required">*</span></label>
+        <select id="status" th:field="*{status}" required>
+          <option value="">-- Vælg Status --</option>
+          <option th:each="status : ${T(com.example.eksamensprojekt2semester.model.StateStatus).values()}"
+                  th:value="${status}"
+                  th:text="${status.description}">
+          </option>
+        </select>
+      </div>
+
 
       <!-- Submit User Input From The Form Button -->
       <div class="form-group">

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Subprojekt detaljer</title>
+</head>
+<body>
+<h1>Detaljer for Subprojekt</h1>
+
+<div th:if="${subproject != null}">
+    <p><strong>ID:</strong> <span th:text="${subproject.id}"></span></p>
+    <p><strong>Navn:</strong> <span th:text="${subproject.name}"></span></p>
+    <p><strong>Status:</strong> <span th:text="${subproject.status}"></span></p>
+    <p><strong>Færdiggørelse:</strong> <span th:text="${subproject.completionPercentage}"></span>%</p>
+    <p><strong>Projekt ID:</strong> <span th:text="${subproject.projectId}"></span></p>
+</div>
+
+<div th:if="${errorMessage}">
+    <p style="color: red;" th:text="${errorMessage}"></p>
+</div>
+
+<a th:href="@{/projects}">Tilbage til projekter</a>
+</body>
+</html>
