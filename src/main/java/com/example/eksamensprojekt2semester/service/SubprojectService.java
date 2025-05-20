@@ -1,5 +1,6 @@
 package com.example.eksamensprojekt2semester.service;
 
+import com.example.eksamensprojekt2semester.exception.SubprojectNotFoundException;
 import com.example.eksamensprojekt2semester.model.Subproject;
 import org.springframework.stereotype.Service;
 import com.example.eksamensprojekt2semester.repository.SubprojectRepository;
@@ -58,7 +59,7 @@ public class SubprojectService {
 
     /** READ - find subprojects by project ID **/
     public List<Subproject> findByProjectId(int projectId) {
-        return subprojectRepository.findAllByProjectId(projectId);
+        return subprojectRepository.findByProjectId(projectId);
     }
 
     /** READ - find all subprojects **/
@@ -125,4 +126,23 @@ public class SubprojectService {
             return BigDecimal.ZERO;
             }
         }
+    // In SubprojectService class
+    public Subproject getSubprojectById(int id) {
+        Subproject subproject = subprojectRepository.getSubprojectById(id);
+        if (subproject == null) {
+            throw new SubprojectNotFoundException("Subproject with ID " + id + " was not found.");
+        }
+        return subproject;
+    }
+    @Transactional
+    public void save(Subproject subproject) {
+        if (subproject.getId() == null || !subprojectRepository.existsById(subproject.getId())) {
+            // New subproject — create it
+            createSubproject(subproject);
+        } else {
+            // Existing subproject — update it
+            updateSubproject(subproject);
+        }
+    }
+
 }
