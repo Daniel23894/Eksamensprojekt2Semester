@@ -23,7 +23,7 @@
             <!-- Subproject details -->
             <div class="form-group">
                 <label>Projekt:</label>
-                <p><a th:href="@{/projects/details/{id}(id=${subproject.projectId})}" th:text="${projectName}">Projektnavn</a></p>
+                <p><a th:href="@{/projects/details/{id}(id=${subproject.projectId})}" th:text="${project.name}">Projektnavn</a></p>
             </div>
 
             <div class="form-group">
@@ -81,7 +81,7 @@
 
                     <div class="form-group">
                         <label>Færdiggørelse (%):</label>
-                        <p th:text="${task.completionPercentage + '%'}">0%</p>
+                        <p th:text="${task.completionPercentage + '%'}"></p>
                     </div>
 
                     <div class="form-group">

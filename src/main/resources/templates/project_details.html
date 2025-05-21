@@ -104,7 +104,7 @@
           <!-- Only show completion percentage if value exists -->
           <div class="form-group" th:if="${subproject.completionPercentage != null}">
             <label>Færdiggørelse (%):</label>
-            <p th:text="${subproject.completionPercentage + '%'}">0%</p>
+            <p th:text="${subproject.completionPercentage + '%'}"></p>
           </div>
 
           <!-- Only show status if it exists -->

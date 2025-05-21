@@ -85,10 +85,15 @@ public class SubprojectController extends BaseController {
 
             // Get tasks associated with this subproject
             List<Task> tasks = taskService.getTasksBySubprojectId(id);
+            for (Task task : tasks){
+                taskService.calculateTaskCompletion(task.getId()); /** Calculate completion percentage for each task **/
+            }
+
 
             // Add the subproject and tasks to the model
             model.addAttribute("subproject", subproject);
             model.addAttribute("tasks", tasks);
+            model.addAttribute("project", projectService.getProjectById(subproject.getProjectId())); /** Get the parent project details **/
 
             return "subproject_details"; // Return dedicated subproject details view
         } catch (SubprojectNotFoundException e) {

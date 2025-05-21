@@ -98,23 +98,21 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public void updateProject(Project project) {
-        if (!projectRepository.existsById(project.getProjectId())) {
+        int affected = projectRepository.update(project); /** Returns number of affected rows, to inform that update failed in case the project didn’t exist**/
+        if (affected == 0) {
             throw new ProjectNotFoundException("Project with ID " + project.getProjectId() + " not found");
         }
-        projectRepository.update(project);
     }
 
     @Override
     @Transactional
-    public void deleteProjectById(int id) throws ProjectNotFoundException {
-        if (!projectRepository.existsById(id)) {
+    public void deleteProjectById(int id) {
+        int affected = projectRepository.delete(id); /** Returns number of affected rows, to inform that delete failed in case  the project didn’t exist**/
+        if (affected == 0) {
             throw new ProjectNotFoundException("Project with ID " + id + " not found.");
         }
-        projectRepository.delete(id);
     }
-
-
-
+    
     /** Converts a list of Project objects to a list of ProjectDTO objects **/
     private List<ProjectDTO> convertToProjectDTOList(List<Project> projects) {
         List<ProjectDTO> projectDTOs = new ArrayList<>();
