@@ -2,6 +2,7 @@ package com.example.eksamensprojekt2semester.service;
 
 import com.example.eksamensprojekt2semester.exception.SubprojectNotFoundException;
 import com.example.eksamensprojekt2semester.model.StateStatus;
+import com.example.eksamensprojekt2semester.model.Subproject;
 import com.example.eksamensprojekt2semester.model.Task;
 import com.example.eksamensprojekt2semester.model.TeamMember;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TaskService {
@@ -117,8 +119,34 @@ public class TaskService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add); // Læg alle tilbageværende timer sammen og returnér summen
     }
 
+    public int calculateProjectCompletion(int projectId) {
+        /** Get all subprojects for the given projectId **/
+        List<Subproject> subprojects = subprojectRepo.findByProjectId(projectId);
+
+        int totalTasks = 0;
+        int completedTasks = 0;
+
+        /** Loop over each subproject **/
+        for (Subproject subproject : subprojects) {
+            List<Task> tasks = taskRepo.findBySubprojectId(subproject.getId());  /** Find tasks for the subproject **/
+
+            /** Count tasks and completed tasks **/
+            for (Task task : tasks) {
+                totalTasks++;
+                if (task.getStatus() == StateStatus.COMPLETED) {
+                    completedTasks++;
+                }
+            }
+        }
+
+        if (totalTasks == 0) {
+            return 0; /** means 0% complete **/
+        }
+        return (int) Math.round((double) completedTasks / totalTasks * 100);
+    }
+
     /**  Method to calculate the completion percentage of a subproject **/
-    public int calculateProjectCompletion(int subprojectId) {
+    public int calculateSubProjectCompletion(int subprojectId) {
         /** Find all tasks for the specified subproject **/
         List<Task> tasks = taskRepo.findBySubprojectId(subprojectId);
 
@@ -142,6 +170,45 @@ public class TaskService {
          *  Math.round() rounds the result to the nearest whole number **/
         return (int) Math.round((double) completedTasks / tasks.size() * 100);
     }
+
+
+
+    /**  Method to calculate the completion percentage of a subproject **/
+    public void calculateTaskCompletion(int taskId) {
+        /** Find the specific tasks for the specified task id **/
+         Optional<Task> optionalTask = taskRepo.findById(taskId);
+
+        /** If there is no task, the completion percentage is 0% **/
+        if (optionalTask.isEmpty()) {
+            return; /** No task found, exit the method **/
+        }
+
+        Task task = optionalTask.get();
+
+        StateStatus status = task.getStatus();
+        int completionPercentage = 0;
+
+        switch (status) {
+            case COMPLETED:
+                completionPercentage = 100;
+                break;
+            case IN_PROGRESS:
+                completionPercentage = 50; // or your own logic
+                break;
+            case NOT_STARTED:
+            case PAUSED:
+            case CANCELLED:
+            default:
+                completionPercentage = 0;
+                break;
+        }
+
+        task.setCompletionPercentage(completionPercentage);
+        taskRepo.update(task);  // <--- SAVE the changes
+
+        System.out.println("Status: " + status + ", Completion: " + completionPercentage);
+    }
+
 
     /** Method to get the number of completed tasks for a subproject **/
     public int getCompletedTaskCount(int subprojectId) {

@@ -81,10 +81,11 @@ public class ProjectRepository {
         return jdbcTemplate.query(sql, projectRowMapper, "%" + name + "%", status.getValue());
     }
 
-    public void update(Project project) {
+    /** Returns number of affected rows, to inform service that the update failed because the project didn’t exist**/
+    public int update(Project project) {
         String sql = "UPDATE project SET projectName = ?, description = ?, startDate = ?, endDate = ?, actualStartDate = ?, actualEndDate = ?, budget = ?, completionPercentage = ?, statusId = ? " +
                 "WHERE projectId = ?";
-        jdbcTemplate.update(sql,
+        return jdbcTemplate.update(sql,
                 project.getName(),
                 project.getDescription(),
                 project.getStartDate(),
@@ -97,8 +98,9 @@ public class ProjectRepository {
                 project.getProjectId());
     }
 
-    public void delete(int id) {
+    /** Returns number of affected rows, to inform service that delete failed because the project didn’t exist**/
+    public int delete(int id) {
         String sql = "DELETE FROM project WHERE projectId = ?";
-        jdbcTemplate.update(sql, id);
+        return jdbcTemplate.update(sql, id);
     }
 }

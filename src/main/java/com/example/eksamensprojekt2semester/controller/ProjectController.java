@@ -141,6 +141,7 @@ public class ProjectController extends BaseController {
             BigDecimal remainingHours = subprojectService.calculateRemainingHours(subproject.getId());
             subproject.setTotalHours(totalHours);
             subproject.setRemainingHours(remainingHours);
+            subproject.setCompletionPercentage(taskService.calculateSubProjectCompletion(subproject.getId()));
         }
 
         /** Add the project statistics,team members data and subproject statistics to the model **/
