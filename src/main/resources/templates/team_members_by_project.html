@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Projektteam</title>
+    <link rel="stylesheet" th:href="@{/generic_styles.css}">
+    <link rel="stylesheet" th:href="@{/team_member_overview.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="main-container">
+    <div class="modal-container dashboard-container">
+
+        <!-- Header -->
+        <h1 class="modal-title">Projektteam</h1>
+        <p class="modal-subtitle">Teammedlemmer tilknyttet dette projekt.</p>
+
+        <!-- Teammedlem tabel -->
+        <div class="table-container">
+            <table class="project-table">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th>Email</th>
+                    <th>Rolle</th>
+                    <th>Timer pr. dag</th>
+                    <th>Handlinger</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="teamMember : ${teamMembers}">
+                    <td th:text="${teamMember.name}"></td>
+                    <td th:text="${teamMember.email}"></td>
+                    <td th:text="${teamMember.role.getDescription()}"></td>
+                    <td th:text="${teamMember.hoursPerDay}"></td>
+
+                    <td class="actions-cell">
+                        <a th:href="@{/team-members/details/{id}(id=${teamMember.memberId})}" class="secondary-button">Se detaljer</a>
+                    </td>
+                </tr>
+                <!-- In case there are no team members-->
+                <tr th:if="${#lists.isEmpty(teamMembers)}">
+                    <td colspan="5" class="text-center">Ingen teammedlemmer tilknyttet dette projekt</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Navigation buttons -->
+        <div class="form-actions">
+            <a th:href="@{/projects/details/{id}(id=${projectId})}" class="secondary-button">Tilbage til projekt</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

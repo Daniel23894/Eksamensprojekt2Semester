@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="da" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Teammedlem detaljer</title>
+    <link rel="stylesheet" th:href="@{/generic_styles.css}">
+    <link rel="stylesheet" th:href="@{/team_member_details.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Montserrat+Alternates:wght@900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="main-container">
+    <div class="modal-container">
+        <!-- Header -->
+        <h1 class="modal-title">Teammedlem detaljer</h1>
+        <p class="modal-subtitle">Information om teammedlemmet.</p>
+
+        <!-- Team member details -->
+        <div class="details-section">
+            <div class="detail-row">
+                <span class="detail-label">Navn:</span>
+                <span class="detail-value" th:text="${teamMember.name}">John Doe</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Email:</span>
+                <span class="detail-value" th:text="${teamMember.email}">john@example.com</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Rolle:</span>
+                <span class="detail-value" th:text="${teamMember.role.getDescription()}">Projektleder</span>
+            </div>
+            <div class="detail-row">
+                <span class="detail-label">Timer pr. dag:</span>
+                <span class="detail-value" th:text="${teamMember.hoursPerDay}">7.5</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="form-actions">
+            <a th:href="@{/team-members/edit/{id}(id=${teamMember.memberId})}" class="action-button">Rediger</a>
+            <a th:href="@{/team-members/delete/{id}(id=${teamMember.memberId})}"
+               class="secondary-button"
+               onclick="return confirm('Er du sikker på, at du vil slette dette teammedlem?')">Slet</a>
+            <a th:href="@{/team-members/list}" class="secondary-button">Tilbage til oversigt</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
