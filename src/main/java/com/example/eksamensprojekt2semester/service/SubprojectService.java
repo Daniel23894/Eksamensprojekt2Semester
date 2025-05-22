@@ -150,6 +150,4 @@ public class SubprojectService {
             updateSubproject(subproject);
         }
     }
-
-
 }
