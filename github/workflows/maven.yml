@@ -1,0 +1,47 @@
+name: Java CI with Maven
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    # The virtual machine that the code/jobs will run on:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Hent koden
+        uses: actions/checkout@v3 # Ready-made GitHub Action that clones code onto the virtual machine:
+
+    # Install Java 21 on the virtual machine ton build and test the Java project:
+      - name: Sæt Java op
+        uses: actions/setup-java@v3 #Pre-made GitHub Action that sets up Java:
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      # Run a Maven command to remove old build files to avoid issues from outdated and compiles
+      # and compile .java files (source code) into .class files (bytecode — a machine-readable format)
+      - name: Byg projektet
+        run: mvn clean compile
+
+      # Run a Maven command to run the tests from test folder:
+      - name: Kør tests
+        run: mvn test
+
+      # Run a Maven command to package the project into a .jar file: file format used to bundle all the
+      # compiled Java code and resources into a single file for distribution and deployment:
+      - name: Pak applikation
+        run: mvn package
+
+      # Saves the .jar file as an artifact ( file produced by the build process of the project)
+      # It can be downloaded directly from GitHub, for reusability
+      # so you don't have to build the .jar file again:
+      - name: Upload build artifacts (valgfrit)
+        uses: actions/upload-artifact@v3
+        with:
+          name: target-jar
+          path: target/*.jar # Specifies where the file is located

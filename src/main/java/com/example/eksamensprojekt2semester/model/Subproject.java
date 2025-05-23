@@ -3,11 +3,11 @@ package com.example.eksamensprojekt2semester.model;
 import java.math.BigDecimal;
 
 public class Subproject {
-    private Integer id;                          // changed from int to Integer
+    private Integer id;                          /** changed from int to Integer **/
     private String name;
-    private Integer completionPercentage;       // changed from int to Integer
+    private Integer completionPercentage;       /** changed from int to Integer **/
     private StateStatus status;
-    private Integer projectId;                   // changed from int to Integer
+    private Integer projectId;                   /** changed from int to Integer **/
     private BigDecimal totalHours;
     private BigDecimal remainingHours;
 
