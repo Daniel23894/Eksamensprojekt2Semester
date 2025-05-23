@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class Project {
-    private Integer projectId;                   // Changed from int to Integer
+    private Integer projectId;                   /** Changed from int to Integer **/
     private String name;
     private String description;
     private LocalDate startDate;
@@ -13,7 +13,7 @@ public class Project {
     private LocalDate actualEndDate;
     private StateStatus status;
     private BigDecimal budget;
-    private Integer completionPercentage;       // Changed from int to Integer
+    private Integer completionPercentage;       /** Changed from int to Integer **/
 
     /** No-args constructor **/
     public Project() {
