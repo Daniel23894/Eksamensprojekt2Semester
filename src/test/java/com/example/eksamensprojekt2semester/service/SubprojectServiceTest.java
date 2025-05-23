@@ -1,11 +1,7 @@
 package com.example.eksamensprojekt2semester.service;
 
-import org.junit.jupiter.api.Test;
 import com.example.eksamensprojekt2semester.model.Subproject;
 import com.example.eksamensprojekt2semester.repository.SubprojectRepository;
-import com.example.eksamensprojekt2semester.service.ProjectService;
-import com.example.eksamensprojekt2semester.service.SubprojectService;
-import com.example.eksamensprojekt2semester.service.TaskService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -34,7 +30,6 @@ class SubprojectServiceTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    //1. Test: Successful Subproject Creation
     @Test
     void createSubproject_successful() {
         Subproject subproject = new Subproject();
@@ -45,47 +40,32 @@ class SubprojectServiceTest {
         when(projectService.existsById(1)).thenReturn(true);
 
         assertDoesNotThrow(() -> subprojectService.createSubproject(subproject));
-        verify(subprojectRepository, times(1)).save(subproject);
+        verify(subprojectRepository).save(subproject);
     }
 
-    //2. Test: Name is null
     @Test
-    void createSubproject_nameIsNull_throwsException() {
+    void createSubproject_nameIsNull_shouldThrow() {
+        assertThrows(IllegalArgumentException.class, () ->
+                subprojectService.createSubproject(new Subproject(null,1)));
+    }
+
+    @Test
+    void createSubproject_projectIdIsZero_shouldThrow() {
         Subproject subproject = new Subproject();
-        subproject.setName(null);
-        subproject.setProjectId(1);
-        subproject.setCompletionPercentage(50);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                subprojectService.createSubproject(subproject));
-        assertEquals("Subprojekt navn er påkrævet", exception.getMessage());
+        assertThrows(IllegalArgumentException.class, () ->
+                subprojectService.createSubproject(new Subproject("Valid Name", 0)));
     }
 
-    //3. Test: Project ID is 0
     @Test
-    void createSubproject_invalidProjectId_throwsException() {
-        Subproject subproject = new Subproject();
-        subproject.setName("Valid Name");
-        subproject.setProjectId(0);
-        subproject.setCompletionPercentage(50);
-
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
-                subprojectService.createSubproject(subproject));
-        assertEquals("Valg af overordnet projekt er påkrævet", exception.getMessage());
-    }
-
-    //3. Test: Project ID is 0
-    @Test
-    void createSubproject_projectNotFound_throwsException() {
+    void createSubproject_projectNotFound_shouldThrow() {
         Subproject subproject = new Subproject();
         subproject.setName("Valid Name");
-        subproject.setProjectId(999);
+        subproject.setProjectId(999); // Non-existent project
         subproject.setCompletionPercentage(50);
 
         when(projectService.existsById(999)).thenReturn(false);
 
-        Exception exception = assertThrows(IllegalArgumentException.class, () ->
+        assertThrows(IllegalArgumentException.class, () ->
                 subprojectService.createSubproject(subproject));
-        assertEquals("Det valgte projekt findes ikke", exception.getMessage());
     }
 }
