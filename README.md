@@ -16,7 +16,8 @@ Once the application is running, open your browser and go to:
 ## Technical Overview
 This project is built with **Java** and **Spring Boot**, following a standard layered architecture **based on the MVC (Model-View-Controller) pattern**.
 
-Project follows a standard layered architecture:
+Project follows a standard layered architecture:  
+
 --  **Handling external libraries**
    - Maven ensuring smooth integration of external libraries.
 
