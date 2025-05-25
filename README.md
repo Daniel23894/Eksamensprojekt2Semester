@@ -27,17 +27,17 @@ This project is built with **Java** and **Spring Boot**, following a standard la
   - **Global error handling:** a `@ControllerAdvice` class manages exceptions centrally, providing consistent error responses and custom error pages.  
   - **Custom converters:** e.g., `StringToStateStatusConverter` converts string request parameters to enums, easing controller input binding.
     
-- **Frontend**  
+  - **Frontend**  
   - HTML files using **Thymeleaf** for dynamic content rendering.  
   - Static **CSS** files for styling.  
   - Minimal JavaScript (e.g., `confirm()` dialogs) for user interaction enhancements such as delete confirmations.
 
-- **Database**  
+-- **Database**  
   - Connected to a MySQL database hosted on **Azure**.  
   - SQL scripts (`schema.sql`) included for initial schema setup, though automatic script execution is disabled in production.  
   - Database credentials are injected securely via environment variables (`MYSQL_USERNAME`, `MYSQL_PASSWORD`).
 
-- **CI/CD**  
+-- **CI/CD**  
   - Basic pipeline setup for continuous integration and automated testing (`mvn clean install`) and deployment.
 
   
