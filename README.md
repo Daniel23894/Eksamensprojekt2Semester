@@ -14,7 +14,11 @@ Once the application is running, open your browser and go to:
 [http://localhost:8080/login](http://localhost:8080/login). You’ll now see the Thymeleaf-powered web interface.
 
 ## Technical Overview
-This project is built with **Java** and **Spring Boot**, following a standard layered architecture:
+This project is built with **Java** and **Spring Boot**, following a standard layered architecture **based on the MVC (Model-View-Controller) pattern**.
+
+Project follows a standard layered architecture:
+--  **Handling external libraries**
+   - Maven ensuring smooth integration of external libraries.
 
 -- **Backend**  
   - `Model` classes representing entities and data structures.  
