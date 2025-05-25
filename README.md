@@ -11,7 +11,7 @@ Make sure you have Java 21+ and Maven installed. Then build and run the project 
 
 3. **Access the application:**
 Once the application is running, open your browser and go to:
-[http://localhost:8080](http://localhost:8080/login). You’ll now see the Thymeleaf-powered web interface.
+[http://localhost:8080/login](http://localhost:8080/login). You’ll now see the Thymeleaf-powered web interface.
 
 ## Technical Overview
 This project is built with **Java** and **Spring Boot**, following a standard layered architecture:
