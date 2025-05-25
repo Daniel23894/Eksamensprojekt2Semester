@@ -32,8 +32,11 @@ This project is built with **Java** and **Spring Boot**, following a standard la
   - Static **CSS** files for styling.  
   - Minimal JavaScript (e.g., `confirm()` dialogs) for user interaction enhancements such as delete confirmations.
 
+- **Project Start Page**  
+  - The application is deployed on Azure and accessible at [https://calculation-tool-engve3hmfyh7afhf.francecentral-01.azurewebsites.net/login](https://calculation-tool-engve3hmfyh7afhf.francecentral-01.azurewebsites.net/login).
+
 - **Database**  
-  - Connected to a MySQL database hosted on **Azure** (default domain: `[the-2nd-term-exam.mysql.database.azure.com](https://calculation-tool-engve3hmfyh7afhf.francecentral-01.azurewebsites.net/login)`).  
+  - Connected to a MySQL database hosted on Azure (`the-2nd-term-exam.mysql.database.azure.com`).  
   - Database credentials (`MYSQL_USERNAME`, `MYSQL_PASSWORD`) are securely injected via environment variables to avoid hardcoding secrets.  
   - SQL scripts (`schema.sql`) are included for initial schema setup.  
   - The project uses Spring Data JDBC for database access and is configured with the official MySQL JDBC driver.
