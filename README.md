@@ -26,8 +26,8 @@ This project is built with **Java** and **Spring Boot**, following a standard la
   - **Custom exception handling:** application-specific exceptions signal business errors clearly.  
   - **Global error handling:** a `@ControllerAdvice` class manages exceptions centrally, providing consistent error responses and custom error pages.  
   - **Custom converters:** e.g., `StringToStateStatusConverter` converts string request parameters to enums, easing controller input binding.
-    
-  - **Frontend**  
+
+-- **Frontend**  
   - HTML files using **Thymeleaf** for dynamic content rendering.  
   - Static **CSS** files for styling.  
   - Minimal JavaScript (e.g., `confirm()` dialogs) for user interaction enhancements such as delete confirmations.
