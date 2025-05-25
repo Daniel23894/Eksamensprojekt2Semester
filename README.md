@@ -11,26 +11,35 @@ Make sure you have Java 21+ and Maven installed. Then build and run the project 
 
 3. **Access the application:**
 Once the application is running, open your browser and go to:
-http://localhost:8080. You’ll now see the Thymeleaf-powered web interface.
+[http://localhost:8080](http://localhost:8080/login). You’ll now see the Thymeleaf-powered web interface.
 
-## Technical Overview  
-This project is built with **Java** and **Spring Boot**, following a standard layered architecture:  
-- **Backend**
-  - `Model` classes for representing entities and data structures.
-  - `Repository` interfaces using Spring Data JPA for database access.
-  - `Service` classes to contain business logic.
-  - `Controller` classes to handle HTTP requests and connect to frontend.
+## Technical Overview
+This project is built with **Java** and **Spring Boot**, following a standard layered architecture:
 
-- **Frontend**
-  - HTML files with **Thymeleaf** annotations for dynamic content rendering.
-  - Static **CSS** files for styling.
+-- **Backend**  
+  - `Model` classes representing entities and data structures.  
+  - `Repository` using Spring Data JDBC for database access.  
+  - **Service layer:**  
+    - A `ProjectService` interface defines the contract for some services, implemented by service classes containing business logic.  
+    - Other service classes are implemented directly without interfaces.  
+  - **DTOs (Data Transfer Objects):** `ProjectDTO`, `SubprojectDTO`, and `ResponseDTO` transfer data between layers and to/from clients, decoupling internal models from external representations.  
+  - **Custom exception handling:** application-specific exceptions signal business errors clearly.  
+  - **Global error handling:** a `@ControllerAdvice` class manages exceptions centrally, providing consistent error responses and custom error pages.  
+  - **Custom converters:** e.g., `StringToStateStatusConverter` converts string request parameters to enums, easing controller input binding.
+    
+- **Frontend**  
+  - HTML files using **Thymeleaf** for dynamic content rendering.  
+  - Static **CSS** files for styling.  
+  - Minimal JavaScript (e.g., `confirm()` dialogs) for user interaction enhancements such as delete confirmations.
 
-- **Database**
-  - SQL scripts included for schema setup and test data.
-  - Configured connection to a relational database (e.g., PostgreSQL/MySQL).
+- **Database**  
+  - Connected to a MySQL database hosted on **Azure**.  
+  - SQL scripts (`schema.sql`) included for initial schema setup, though automatic script execution is disabled in production.  
+  - Database credentials are injected securely via environment variables (`MYSQL_USERNAME`, `MYSQL_PASSWORD`).
 
-- **CI/CD**
-  - Basic pipeline setup for continuous integration
+- **CI/CD**  
+  - Basic pipeline setup for continuous integration and automated testing (`mvn clean install`) and deployment.
+
   
 
 ## Support  
