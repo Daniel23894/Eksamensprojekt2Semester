@@ -40,7 +40,7 @@ Project follows a standard layered architecture:
 - **Project Start Page**  
   - The application is deployed on Azure and accessible at [https://calculation-tool-engve3hmfyh7afhf.francecentral-01.azurewebsites.net/login](https://calculation-tool-engve3hmfyh7afhf.francecentral-01.azurewebsites.net/login).
 
-- **Database**  
+-- **Database**  
   - Connected to a MySQL database hosted on Azure (`the-2nd-term-exam.mysql.database.azure.com`).  
   - Database credentials (`MYSQL_USERNAME`, `MYSQL_PASSWORD`) are securely injected via environment variables to avoid hardcoding secrets.  
   - SQL scripts (`schema.sql`) are included for initial schema setup.  
