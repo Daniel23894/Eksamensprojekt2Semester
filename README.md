@@ -64,6 +64,13 @@ If you'd like to contribute to the project, please refer to the [CONTRIBUTING.md
 See the [LICENSE](LICENSE.md) file.
 
 ## Project Status  
-Just getting started ;) 
+📝 Status
+The application is in a solid working state and includes essential core features. Users can log in with different roles (admin and team members), each with access to specific functionality. Admins can manage users and view all projects, while team members have limited permissions. This role-based access is handled securely and provides a good foundation for further development.
+
+Full CRUD operations are implemented for projects, including the ability to create, edit, delete, and view them. The project overview includes search and filter options, making it easier to navigate larger data sets. The frontend uses consistent design patterns with reusable CSS components to ensure a clean and uniform user experience.
+
+On the backend, the project follows a layered architecture. Business logic is separated into service methods, including calculations like project completion percentage. We’ve used DTOs to control which data is exposed to the user, and custom exceptions for clearer error handling. The repository layer uses JDBC with dependency injection, including RowMappers for clean and reusable database interactions.
+
+CI/CD is configured through GitHub Actions. On each push to the main branch, the application is built, unit tests are run, and – if successful – the app is deployed automatically to Azure. Environment variables and connection strings are handled via the Azure App Service configuration and secrets. The database is set up using schema.sql and data.sql files, which define structure and default data.
 
 
